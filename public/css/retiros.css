@@ -1,0 +1,66 @@
+/* ----------Lista de retiros-------------- */
+.dato-retiro-numero {
+    font-weight: 800;
+    color: #13224a;
+    white-space: nowrap;
+}
+
+
+/* ----------Formulario de retiro-------------- */
+.formulario-retiro {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 980px;
+}
+
+.filas-dinamicas {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.fila-dinamica {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.fila-dinamica input {
+    flex: 1 1 160px;
+}
+
+.boton-quitar {
+    min-height: 44px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #f1bdb6;
+    background: #ffffff;
+    color: #922b25;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.boton-quitar:hover {
+    background: #fbe5e2;
+}
+
+.casilla-inscripciones {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: #e6ebf6;
+    font-weight: 700;
+    color: #13224a;
+    cursor: pointer;
+}
+
+.casilla-inscripciones input {
+    width: 20px;
+    height: 20px;
+}

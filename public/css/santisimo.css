@@ -1,0 +1,337 @@
+/* ----------Cabecera y avisos-------------- */
+.acciones-santisimo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.acciones-santisimo form {
+    margin: 0;
+}
+
+.enlace-volver {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #1c2f5e;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.texto-ayuda-arriba {
+    margin: -10px 0 16px;
+}
+
+.formulario-preparar {
+    margin-top: 14px;
+}
+
+
+/* ----------Mi equipo (lo primero que se ve en el celular)-------------- */
+.tarjeta-mi-equipo {
+    margin-bottom: 16px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+.mi-equipo-nombre {
+    font-size: 14px;
+    color: #c9d1e3;
+}
+
+.mi-equipo-nombre strong {
+    color: #f4c20d;
+}
+
+.mi-equipo-etiqueta {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #c9d1e3;
+}
+
+.mi-equipo-turno {
+    margin-top: 2px;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.mi-equipo-total {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #c9d1e3;
+}
+
+
+/* ----------Pestañas-------------- */
+.pestanas-santisimo {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.pestana-santisimo {
+    flex: 1 1 0;
+    min-height: 44px;
+    border: 2px solid #c9d1e3;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #1c2f5e;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.pestana-activa {
+    border-color: #1c2f5e;
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+
+/* ----------Horario para leer-------------- */
+.dia-santisimo + .dia-santisimo {
+    margin-top: 18px;
+}
+
+.titulo-dia-santisimo {
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1c2f5e;
+}
+
+.lista-franjas {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #dde2ec;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.franja {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+    padding: 10px 14px;
+    border-top: 1px solid #eef0f5;
+    font-size: 15px;
+}
+
+.franja:first-child {
+    border-top: 0;
+}
+
+.franja-hora {
+    flex: 0 0 76px;
+    font-weight: 700;
+    color: #13224a;
+}
+
+.franja-quien {
+    flex: 1 1 120px;
+    font-weight: 700;
+}
+
+.franja-actividad {
+    font-size: 13px;
+    color: #5b6479;
+}
+
+.franja-todos {
+    background: #f7f8fc;
+}
+
+.franja-mia {
+    background: #fdf3d3;
+}
+
+.franja-mia .franja-quien {
+    color: #7a5600;
+}
+
+.franja-vacia .franja-quien {
+    color: #922b25;
+}
+
+.franja-pasada {
+    opacity: 0.55;
+}
+
+.franja-ahora {
+    opacity: 1;
+    box-shadow: inset 4px 0 0 #f4c20d;
+}
+
+/* En la pestaña "Mi equipo" solo se ven sus franjas y los días que las tienen */
+.solo-mias .franja:not(.franja-mia) {
+    display: none;
+}
+
+.solo-mias .dia-santisimo:not(:has(.franja-mia)) {
+    display: none;
+}
+
+
+/* ----------Editor-------------- */
+.resumen-santisimo {
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.resumen-linea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.resumen-equipos {
+    margin-top: 8px;
+}
+
+.formulario-agregar-franja {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 14px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.formulario-agregar-franja select,
+.formulario-agregar-franja input {
+    min-height: 40px;
+}
+
+.titulo-dia-editor {
+    margin: 18px 0 8px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1c2f5e;
+}
+
+.lista-franjas-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.fila-franja {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    padding: 6px 10px;
+    border: 1px solid #dde2ec;
+    border-radius: 10px;
+    background: #ffffff;
+    transition: 0.4s;
+}
+
+.fila-hora {
+    flex: 0 0 150px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #13224a;
+}
+
+.fila-franja select,
+.fila-franja input {
+    min-height: 40px;
+    padding: 6px 8px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #ffffff;
+}
+
+.campo-cubre {
+    flex: 1 1 170px;
+}
+
+.campo-actividad {
+    flex: 1 1 150px;
+}
+
+.fila-todos {
+    background: #f7f8fc;
+}
+
+.fila-vacia {
+    border-color: #e8b4ae;
+    background: #fbe5e2;
+}
+
+.fila-cambiada {
+    border-color: #f4c20d;
+    box-shadow: inset 4px 0 0 #f4c20d;
+}
+
+.boton-texto {
+    min-height: 36px;
+    padding: 0 4px;
+    border: 0;
+    background: transparent;
+    color: #922b25;
+    font-family: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Siempre a la vista: con 93 franjas el botón de guardar no puede quedar al final */
+.barra-guardar {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 12px 14px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 -4px 16px rgba(19, 34, 74, 0.08);
+}
+
+.barra-guardar-texto {
+    font-size: 14px;
+    font-weight: 700;
+    color: #5b6479;
+}
+
+.barra-con-cambios .barra-guardar-texto {
+    color: #7a5600;
+}
+
+
+@media (max-width: 760px) {
+    .fila-hora {
+        flex-basis: 100%;
+    }
+
+    .mi-equipo-turno {
+        font-size: 20px;
+    }
+}

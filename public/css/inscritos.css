@@ -1,0 +1,355 @@
+/* ----------Pestañas y filtros-------------- */
+.pestanas-inscritos {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 2px solid #dde2ec;
+    margin-bottom: 16px;
+}
+
+.pestana {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    margin-bottom: -2px;
+    border-bottom: 3px solid transparent;
+    color: #5b6479;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: 0.4s;
+}
+
+.pestana span {
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: #eef0f5;
+    font-size: 12px;
+}
+
+.pestana-activa {
+    color: #13224a;
+    border-color: #f4c20d;
+}
+
+.pestana-activa span {
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+.filtros-inscritos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.filtros-inscritos .buscador {
+    flex: 1 1 240px;
+}
+
+.filtros-inscritos input,
+.filtros-inscritos select {
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    background: #ffffff;
+}
+
+.enlace-inscrito {
+    color: #13224a;
+    font-weight: 700;
+}
+
+.fila-fuera td {
+    color: #8a92a6;
+}
+
+.dato-valor {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.dato-sin-salto {
+    white-space: nowrap;
+}
+
+.dato-secundario {
+    font-size: 13px;
+    color: #5b6479;
+}
+
+
+/* ----------Ficha-------------- */
+.enlace-volver {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #1c2f5e;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.cabecera-ficha {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.cabecera-ficha .vista-titulo {
+    margin-bottom: 4px;
+}
+
+.ficha-retiro {
+    color: #5b6479;
+    font-weight: 600;
+}
+
+.chips-ficha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.acciones-ficha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.acciones-ficha form {
+    margin: 0;
+}
+
+.boton-peligro {
+    min-height: 44px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 2px solid #f1bdb6;
+    background: #ffffff;
+    color: #922b25;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.boton-peligro:hover {
+    background: #fbe5e2;
+}
+
+.rejilla-ficha {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.bloque-ficha {
+    padding: 18px 20px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+    min-width: 0;
+}
+
+.titulo-bloque-ficha {
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.datos-ficha {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6px 14px;
+    margin: 0;
+    font-size: 14px;
+}
+
+.datos-ficha dt {
+    color: #5b6479;
+    font-weight: 600;
+}
+
+.datos-ficha dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.contacto-ficha {
+    padding: 10px 0;
+    border-bottom: 1px solid #eef0f5;
+    font-size: 14px;
+}
+
+.contacto-ficha:last-child {
+    border-bottom: 0;
+}
+
+.contacto-nombre {
+    font-weight: 700;
+}
+
+.contacto-nombre span {
+    font-weight: 500;
+    color: #5b6479;
+}
+
+
+/* ----------Pagos-------------- */
+.bloque-pagos {
+    margin-top: 16px;
+    scroll-margin-top: 20px;
+}
+
+.resumen-pagos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.resumen-pagos > div {
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: #f7f8fc;
+}
+
+.resumen-tesoreria > div {
+    background: #ffffff;
+    border: 1px solid #dde2ec;
+}
+
+.cifra-numero {
+    font-size: 24px;
+    font-weight: 800;
+    color: #13224a;
+    font-variant-numeric: tabular-nums;
+}
+
+.cifra-etiqueta {
+    font-size: 13px;
+    color: #5b6479;
+}
+
+.acciones-pago {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.boton-texto {
+    min-height: 36px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #1c2f5e;
+    font-family: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.formulario-pago {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+/* Solo los campos sueltos de la fila: dentro de una columna, el 140px se volvía alto */
+.formulario-pago > input {
+    flex: 1 1 140px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.formulario-pago-nuevo {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 10px;
+    background: #fdf8e6;
+}
+
+.formulario-pago-nuevo .titulo-contacto {
+    flex-basis: 100%;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.formulario-pago-nuevo .elemento-formulario {
+    flex: 1 1 160px;
+}
+
+
+/* ----------Formulario de edición-------------- */
+.formulario-inscrito {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 1080px;
+}
+
+.linea-separada {
+    margin-top: 14px;
+}
+
+.casillas-sacramentos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 8px;
+}
+
+.casilla {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #dde2ec;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.casilla input,
+.opciones-en-linea input {
+    width: 20px;
+    height: 20px;
+    accent-color: #1c2f5e;
+}
+
+.opciones-en-linea {
+    display: flex;
+    gap: 18px;
+    min-height: 44px;
+    align-items: center;
+}
+
+.opciones-en-linea label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+[hidden] {
+    display: none !important;
+}

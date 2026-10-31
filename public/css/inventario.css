@@ -1,0 +1,364 @@
+/* ----------Elegir equipo-------------- */
+.texto-ayuda-arriba {
+    margin: 0 0 14px;
+}
+
+.rejilla-equipos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.tarjeta-equipo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 16px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #1b2237;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+.tarjeta-equipo:hover {
+    transform: scale(1.03);
+    border-color: #1c2f5e;
+}
+
+.nombre-equipo {
+    font-size: 17px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.detalle-equipo {
+    font-size: 13px;
+    color: #5b6479;
+}
+
+.enlace-volver {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #1c2f5e;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+
+/* ----------Nuevo artículo-------------- */
+.nuevo-articulo {
+    margin-bottom: 16px;
+}
+
+.nuevo-articulo > summary {
+    list-style: none;
+    width: max-content;
+}
+
+.nuevo-articulo > summary::-webkit-details-marker {
+    display: none;
+}
+
+.nuevo-articulo[open] > summary {
+    margin-bottom: 12px;
+}
+
+.formulario-articulo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    align-items: end;
+    padding: 14px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #dde2ec;
+}
+
+.elemento-largo {
+    grid-column: span 2;
+}
+
+.titulo-elemento small {
+    font-weight: 500;
+    color: #5b6479;
+}
+
+
+/* ----------Filtros-------------- */
+.filtros-inventario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.filtros-inventario .buscador {
+    flex: 1 1 220px;
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid #c9d1e3;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.interruptor-inventario {
+    display: flex;
+    padding: 3px;
+    border-radius: 10px;
+    background: #e6ebf6;
+}
+
+.opcion-filtro {
+    min-height: 42px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #5b6479;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.opcion-activa {
+    background: #ffffff;
+    color: #13224a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ----------Tarjetas de artículos-------------- */
+.lista-articulos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+}
+
+.tarjeta-articulo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+    min-width: 0;
+}
+
+.tarjeta-articulo[hidden] {
+    display: none;
+}
+
+.cabecera-articulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.nombre-articulo {
+    font-size: 16px;
+    font-weight: 800;
+    color: #13224a;
+    overflow-wrap: anywhere;
+}
+
+.chips-articulo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.cantidad-articulo {
+    flex: none;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    color: #13224a;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.cantidad-articulo span {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5b6479;
+}
+
+
+/* ----------Salida y entrada-------------- */
+.movimientos-rapidos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.movimiento > summary {
+    list-style: none;
+}
+
+.movimiento > summary::-webkit-details-marker {
+    display: none;
+}
+
+.boton-salida,
+.boton-entrada {
+    display: grid;
+    place-items: center;
+    min-height: 46px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.boton-salida {
+    background: #fbe5e2;
+    color: #922b25;
+}
+
+.boton-entrada {
+    background: #e3f3e9;
+    color: #165c34;
+}
+
+.boton-salida:hover,
+.boton-entrada:hover {
+    transform: scale(1.03);
+}
+
+/* El abierto ocupa el ancho de la tarjeta; su botón queda visible para cerrarlo */
+.movimiento[open] {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formulario-movimiento {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.formulario-movimiento input[name="cantidad"] {
+    width: 86px;
+    min-height: 46px;
+    padding: 8px;
+    border: 1px solid #c9d1e3;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.formulario-movimiento input[name="nota"] {
+    flex: 1 1 140px;
+    min-height: 46px;
+    padding: 8px 10px;
+    border: 1px solid #c9d1e3;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.formulario-movimiento button {
+    flex: 1 1 100px;
+}
+
+.formulario-movimiento button:disabled {
+    opacity: 0.6;
+}
+
+
+/* ----------Más opciones-------------- */
+.mas-articulo > summary {
+    min-height: 36px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1c2f5e;
+    cursor: pointer;
+}
+
+.mas-articulo[open] {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mas-articulo .formulario-articulo {
+    padding: 10px;
+    background: #f7f8fc;
+}
+
+.formulario-ajuste {
+    padding: 10px;
+    border-radius: 12px;
+    background: #f7f8fc;
+}
+
+.historial-articulo {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+}
+
+.historial-articulo li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid #eef0f5;
+    color: #5b6479;
+}
+
+.tipo-movimiento {
+    min-width: 46px;
+    font-weight: 800;
+}
+
+.tipo-entrada {
+    color: #165c34;
+}
+
+.tipo-salida {
+    color: #922b25;
+}
+
+.tipo-ajuste {
+    color: #1c2f5e;
+}
+
+.resultante {
+    margin-left: auto;
+    font-weight: 700;
+    color: #13224a;
+}
+
+
+/* ----------Celular-------------- */
+@media (max-width: 600px) {
+
+    .elemento-largo {
+        grid-column: 1 / -1;
+    }
+
+    .lista-articulos {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,137 @@
+/* ----------Centro de impresiones-------------- */
+.avisos-impresion {
+    margin-bottom: 18px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: #fdf3d3;
+    color: #7a5600;
+}
+
+.titulo-avisos {
+    font-weight: 800;
+}
+
+.avisos-impresion ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+}
+
+.rejilla-impresiones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+.tarjeta-impresion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.nombre-impresion {
+    font-size: 18px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.descripcion-impresion {
+    flex: 1;
+    font-size: 14px;
+    color: #5b6479;
+}
+
+.botones-impresion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.botones-impresion a {
+    flex: 1 1 90px;
+}
+
+.formulario-letreros {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formulario-letreros select,
+.formulario-letreros input {
+    min-height: 40px;
+    padding: 6px 10px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #ffffff;
+}
+
+
+/* ----------Datos para imprimir-------------- */
+.enlace-volver {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #1c2f5e;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.bloque-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+    scroll-margin-top: 20px;
+}
+
+.titulo-bloque-datos {
+    font-size: 17px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.texto-ayuda-arriba {
+    margin: 0;
+}
+
+.tabla-datos td {
+    padding: 6px 8px;
+}
+
+.tabla-datos input {
+    width: 100%;
+    min-width: 120px;
+    min-height: 40px;
+    padding: 8px 10px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.dato-cargo {
+    font-weight: 700;
+    color: #13224a;
+    white-space: nowrap;
+}
+
+.acciones-entre {
+    justify-content: space-between;
+}
+
+.boton-texto {
+    min-height: 36px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #922b25;
+    font-family: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}

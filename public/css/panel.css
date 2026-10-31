@@ -1,0 +1,232 @@
+/* ----------Retiro actual-------------- */
+.tarjeta-retiro-actual {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 24px;
+    border-radius: 12px;
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+.retiro-actual-etiqueta {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f4c20d;
+}
+
+.retiro-actual-nombre {
+    margin: 4px 0 2px;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.retiro-actual-fechas {
+    color: #c9d3ea;
+}
+
+.retiro-actual-estado {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tarjeta-sin-retiro div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.tarjeta-sin-retiro .boton-azul {
+    background: #f4c20d;
+    border-color: #f4c20d;
+    color: #13224a;
+}
+
+
+/* ----------Inscritos-------------- */
+.resumen-inscritos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.cifra-inscritos {
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #dde2ec;
+}
+
+.cifra-numero {
+    font-size: 30px;
+    font-weight: 800;
+    color: #13224a;
+    font-variant-numeric: tabular-nums;
+}
+
+.cifra-etiqueta {
+    font-size: 13px;
+    color: #5b6479;
+}
+
+
+/* ----------Cronograma y checklist-------------- */
+.seccion-cronograma {
+    margin-top: 28px;
+    padding: 20px 22px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #dde2ec;
+    scroll-margin-top: 20px;
+}
+
+.cabecera-cronograma {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.avance-cronograma {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #5b6479;
+}
+
+.barra-avance {
+    flex: 1;
+    height: 10px;
+    border-radius: 999px;
+    background: #eef0f5;
+    overflow: hidden;
+}
+
+.barra-avance span {
+    display: block;
+    height: 100%;
+    background: #1f7a45;
+    transition: 0.4s;
+}
+
+.dia-cronograma + .dia-cronograma {
+    margin-top: 18px;
+}
+
+.titulo-dia {
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1c2f5e;
+}
+
+.lista-tareas {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tarea {
+    display: grid;
+    grid-template-columns: 44px 84px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #dde2ec;
+    border-left-width: 5px;
+    transition: 0.4s;
+}
+
+.formulario-marcar {
+    margin: 0;
+}
+
+.casilla-tarea {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 2px solid #1c2f5e;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.hora-tarea {
+    white-space: nowrap;
+    font-weight: 800;
+    color: #13224a;
+    font-variant-numeric: tabular-nums;
+}
+
+.texto-tarea p {
+    overflow-wrap: anywhere;
+}
+
+.detalle-tarea {
+    font-size: 12px;
+    color: #5b6479;
+}
+
+.tarea-pendiente {
+    border-left-color: #c9d1e3;
+}
+
+.tarea-alerta {
+    border-color: #f1bdb6;
+    border-left-color: #c0392b;
+    background: #fbe5e2;
+}
+
+.tarea-alerta .hora-tarea {
+    color: #922b25;
+}
+
+.tarea-hecha {
+    border-left-color: #1f7a45;
+    background: #f1faf4;
+}
+
+.tarea-hecha .casilla-tarea {
+    border-color: #1f7a45;
+    background: #1f7a45;
+}
+
+.tarea-hecha .texto-tarea > p:first-child {
+    color: #5b6479;
+    text-decoration: line-through;
+}
+
+
+/* ----------Avance-------------- */
+.seccion-avance {
+    margin-top: 28px;
+    padding: 20px 24px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #dde2ec;
+}
+
+.texto-avance {
+    color: #5b6479;
+}

@@ -1,0 +1,382 @@
+/* ----------Resumen del retiro-------------- */
+.resumen-inscripcion {
+    padding: 36px max(16px, 6vw) 64px;
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+.resumen-inscripcion-contenido {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.resumen-inscripcion-titulo {
+    margin-top: 6px;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 900;
+}
+
+.resumen-inscripcion-texto {
+    margin-top: 4px;
+    color: #c9d3ea;
+    font-weight: 600;
+}
+
+.resumen-inscripcion-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 16px 0 0;
+    padding-left: 18px;
+    font-size: 14px;
+    color: #e6ebf6;
+}
+
+.resumen-inscripcion-lista strong {
+    color: #f4c20d;
+}
+
+
+/* ----------Formulario-------------- */
+.contenedor-inscripcion {
+    max-width: 760px;
+    margin: -40px auto 64px;
+    padding: 0 16px;
+    position: relative;
+}
+
+.formulario-inscripcion {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 24px max(16px, 3vw) 28px;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 12px 32px rgba(19, 34, 74, 0.14);
+    scroll-margin-top: 120px;
+}
+
+.progreso-inscripcion {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.barra-paso {
+    height: 5px;
+    border-radius: 3px;
+    background: #dde2ec;
+    transition: 0.4s;
+}
+
+.barra-activa {
+    background: #f4c20d;
+}
+
+.texto-paso {
+    margin-top: -8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #5b6479;
+}
+
+.paso-inscripcion {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.paso-inscripcion[hidden] {
+    display: none;
+}
+
+.titulo-paso {
+    padding: 0;
+    margin-bottom: 4px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.ayuda-paso,
+.ayuda-campo {
+    font-size: 13px;
+    color: #5b6479;
+}
+
+.linea-inscripcion {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.linea-tres {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.titulo-elemento small {
+    font-weight: 500;
+    color: #5b6479;
+}
+
+.elemento-formulario input[type="file"] {
+    padding: 8px;
+    background: #f7f8fc;
+}
+
+.elemento-formulario textarea {
+    resize: vertical;
+}
+
+#formaPagoOtro {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 6px;
+    padding: 10px 12px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+
+/* ----------Opciones grandes (sexo, sí/no)-------------- */
+.opciones-tarjeta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.opcion-tarjeta {
+    position: relative;
+    cursor: pointer;
+}
+
+.opcion-tarjeta input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+}
+
+.opcion-tarjeta span {
+    display: grid;
+    place-items: center;
+    min-height: 52px;
+    border: 2px solid #c9d1e3;
+    border-radius: 10px;
+    font-weight: 700;
+    color: #1c2f5e;
+    transition: 0.4s;
+}
+
+.opcion-tarjeta input:checked + span {
+    border-color: #1c2f5e;
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+.opcion-tarjeta input:focus-visible + span {
+    outline: 3px solid #f4c20d;
+    outline-offset: 2px;
+}
+
+
+/* ----------Lista de opciones (forma de pago)-------------- */
+.opciones-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.opcion-lista {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 10px 14px;
+    border: 1px solid #c9d1e3;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.opcion-lista:has(input:checked) {
+    border-color: #1c2f5e;
+    background: #e6ebf6;
+    font-weight: 700;
+}
+
+.opcion-lista input,
+.casilla input {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    accent-color: #1c2f5e;
+}
+
+
+/* ----------Casillas-------------- */
+.casillas-sacramentos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.casilla {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #dde2ec;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.atajos-sacramentos {
+    display: flex;
+    gap: 16px;
+}
+
+.boton-texto {
+    min-height: 36px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #1c2f5e;
+    font-family: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+/* ----------Bloques-------------- */
+.aviso-retiro {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #fdf3d3;
+    color: #7a5600;
+    font-weight: 700;
+}
+
+.bloque-contacto {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #f7f8fc;
+}
+
+.bloque-contacto[hidden] {
+    display: none;
+}
+
+.titulo-contacto {
+    font-weight: 800;
+    color: #13224a;
+}
+
+.bloque-autorizaciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.casilla-autorizacion {
+    background: #f7f8fc;
+    font-size: 14px;
+}
+
+
+/* ----------Botones-------------- */
+.botones-paso {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.botones-paso button {
+    flex: 1 1 0;
+}
+
+.botones-paso button[hidden] {
+    display: none;
+}
+
+.botones-paso button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+
+/* ----------Inscripción recibida-------------- */
+.tarjeta-recibida {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 620px;
+    margin: 48px auto 72px;
+    padding: 32px max(16px, 3vw);
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 12px 32px rgba(19, 34, 74, 0.14);
+    text-align: center;
+}
+
+.icono-recibida {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #e3f3e9;
+}
+
+.icono-recibida svg {
+    width: 38px;
+    height: 38px;
+    fill: none;
+    stroke: #1f7a45;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.retiro-recibido {
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #1c2f5e;
+    color: #ffffff;
+    font-weight: 800;
+}
+
+.recordatorio-soporte {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #fdf3d3;
+    color: #7a5600;
+    font-weight: 600;
+    text-align: left;
+}
+
+
+/* ----------Celular-------------- */
+@media (max-width: 600px) {
+
+    .linea-inscripcion,
+    .linea-tres,
+    .casillas-sacramentos {
+        grid-template-columns: 1fr;
+    }
+
+    .contenedor-inscripcion {
+        padding: 0 10px;
+    }
+}

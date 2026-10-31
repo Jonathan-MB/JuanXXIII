@@ -1,0 +1,288 @@
+/* ----------Cabecera-------------- */
+.acciones-desarrollo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.acciones-desarrollo form {
+    margin: 0;
+}
+
+.enlace-volver {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #1c2f5e;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.texto-ayuda-arriba {
+    margin: -10px 0 16px;
+}
+
+.formulario-preparar {
+    margin-top: 14px;
+}
+
+
+/* ----------Pestañas Hombres / Mujeres-------------- */
+.pestanas-desarrollo {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.pestana-desarrollo {
+    flex: 0 1 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    border: 2px solid #c9d1e3;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #1c2f5e;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+.pestana-activa {
+    border-color: #1c2f5e;
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+
+/* ----------Lectura-------------- */
+.jornada + .jornada {
+    margin-top: 18px;
+}
+
+.titulo-jornada {
+    margin: 18px 0 8px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1c2f5e;
+}
+
+.lista-actividades {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #dde2ec;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.actividad {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+    padding: 10px 14px;
+    border-top: 1px solid #eef0f5;
+    font-size: 15px;
+}
+
+.actividad:first-child {
+    border-top: 0;
+}
+
+.actividad-hora {
+    flex: 0 0 150px;
+    font-weight: 700;
+    color: #13224a;
+}
+
+.actividad-nombre {
+    flex: 1 1 200px;
+}
+
+.actividad-charla .actividad-nombre {
+    font-weight: 800;
+    color: #13224a;
+}
+
+.actividad-charlista {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5b6479;
+}
+
+.actividad-duracion {
+    font-size: 13px;
+    color: #5b6479;
+}
+
+.actividad-charla {
+    background: #f7f8fc;
+}
+
+.actividad-pasada {
+    opacity: 0.55;
+}
+
+.actividad-ahora {
+    opacity: 1;
+    box-shadow: inset 4px 0 0 #f4c20d;
+    background: #fdf3d3;
+}
+
+
+/* ----------Editor-------------- */
+.agregar-actividad {
+    margin-bottom: 16px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.agregar-actividad summary {
+    padding: 12px 14px;
+    font-weight: 800;
+    color: #1c2f5e;
+    cursor: pointer;
+}
+
+.formulario-agregar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 0 14px 14px;
+}
+
+.formulario-agregar .elemento-formulario {
+    flex: 1 1 110px;
+}
+
+.formulario-agregar .elemento-nombre {
+    flex: 3 1 220px;
+}
+
+.formulario-agregar select,
+.formulario-agregar input[type="time"],
+.formulario-agregar input[type="text"] {
+    min-height: 40px;
+}
+
+.lista-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.fila-actividad {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    padding: 6px 10px;
+    border: 1px solid #dde2ec;
+    border-radius: 10px;
+    background: #ffffff;
+    transition: 0.4s;
+}
+
+.fila-actividad select,
+.fila-actividad input[type="time"],
+.fila-actividad input[type="text"] {
+    min-height: 40px;
+    padding: 6px 8px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #ffffff;
+}
+
+.campo-dia {
+    flex: 0 0 104px;
+}
+
+.campo-nombre {
+    flex: 3 1 220px;
+}
+
+.campo-charlista {
+    flex: 2 1 160px;
+}
+
+.casilla-charla,
+.casilla-quitar {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 40px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #5b6479;
+    cursor: pointer;
+}
+
+.casilla-quitar {
+    color: #922b25;
+}
+
+.fila-charla {
+    background: #f7f8fc;
+}
+
+.fila-cambiada {
+    border-color: #f4c20d;
+    box-shadow: inset 4px 0 0 #f4c20d;
+}
+
+.fila-quitada {
+    border-color: #e8b4ae;
+    background: #fbe5e2;
+    opacity: 0.7;
+}
+
+.fila-quitada input[type="text"] {
+    text-decoration: line-through;
+}
+
+/* Siempre a la vista: la lista es larga */
+.barra-guardar {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 12px 14px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 -4px 16px rgba(19, 34, 74, 0.08);
+}
+
+.barra-guardar-texto {
+    font-size: 14px;
+    font-weight: 700;
+    color: #5b6479;
+}
+
+.barra-con-cambios .barra-guardar-texto {
+    color: #7a5600;
+}
+
+
+@media (max-width: 760px) {
+    .actividad-hora {
+        flex-basis: 100%;
+    }
+
+    .pestana-desarrollo {
+        flex: 1 1 0;
+    }
+}

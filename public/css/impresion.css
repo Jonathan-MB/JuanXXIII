@@ -1,0 +1,881 @@
+/* ----------Hoja carta para todo lo impreso-------------- */
+@page {
+    size: letter;
+    margin: 1.6cm 1.8cm;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.35;
+    color: #111111;
+    background: #ffffff;
+}
+
+p {
+    margin: 0;
+}
+
+.pagina {
+    break-after: page;
+}
+
+.pagina:last-of-type {
+    break-after: auto;
+}
+
+
+/* ----------Solo en pantalla: barra y hojas con sombra-------------- */
+@media screen {
+
+    body {
+        background: #e9ecf2;
+        padding-bottom: 40px;
+    }
+
+    .barra-impresion {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 16px;
+        background: #1c2f5e;
+        color: #ffffff;
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .barra-titulo {
+        font-weight: 700;
+    }
+
+    .barra-botones {
+        display: flex;
+        gap: 8px;
+    }
+
+    .barra-boton {
+        display: inline-flex;
+        align-items: center;
+        min-height: 40px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid #ffffff;
+        background: transparent;
+        color: #ffffff;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+
+    .barra-imprimir {
+        background: #f4c20d;
+        border-color: #f4c20d;
+        color: #13224a;
+    }
+
+    .barra-boton:hover {
+        transform: scale(1.04);
+    }
+
+    .pagina {
+        width: 21.59cm;
+        max-width: calc(100% - 24px);
+        min-height: 27.94cm;
+        margin: 20px auto;
+        padding: 1.6cm 1.8cm;
+        background: #ffffff;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .pagina-vacia {
+        min-height: 0;
+        font-size: 13pt;
+    }
+}
+
+
+/* ----------Al imprimir-------------- */
+@media print {
+
+    .barra-impresion {
+        display: none;
+    }
+}
+
+
+/* ----------Membrete-------------- */
+.membrete {
+    display: grid;
+    grid-template-columns: 2.2cm 1fr 2.2cm;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.membrete-logo {
+    width: 2.1cm;
+    height: 2.1cm;
+    object-fit: contain;
+}
+
+.membrete-movimiento {
+    font-size: 13pt;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.membrete-arquidiocesis {
+    font-size: 11pt;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.membrete-subtitulo {
+    margin-top: 4px;
+    font-size: 11pt;
+}
+
+
+/* ----------Carta al presbítero-------------- */
+.carta {
+    font-family: 'Arial Narrow', 'Roboto Condensed', Arial, sans-serif;
+    font-size: 12pt;
+    line-height: 1.45;
+}
+
+.carta p {
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+.carta-destinatario {
+    margin-bottom: 18px;
+}
+
+.carta-destinatario p {
+    margin-bottom: 2px;
+    text-align: left;
+}
+
+.linea-mano {
+    width: 9cm;
+    height: 22px;
+    border-bottom: 1px solid #111111;
+    margin-bottom: 6px !important;
+}
+
+.espacio-mano {
+    display: inline-block;
+    width: 4cm;
+    border-bottom: 1px solid #111111;
+}
+
+.espacio-largo {
+    width: 7cm;
+}
+
+/* Justificado, las líneas en blanco estiraban los espacios entre palabras */
+.carta .parrafo-con-espacios {
+    text-align: left;
+}
+
+.carta-despedida {
+    margin-top: 18px;
+}
+
+.firmas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5cm, 1fr));
+    gap: 1cm;
+    margin-top: 1.6cm;
+}
+
+.firma {
+    border-top: 1px solid #111111;
+    padding-top: 4px;
+}
+
+.firma p {
+    margin: 0;
+    text-align: left;
+}
+
+.firma-nombre {
+    font-weight: 700;
+}
+
+
+/* ----------Tablas (correcciones y directorio)-------------- */
+.instruccion {
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
+.tabla-impresion {
+    width: 100%;
+    margin-bottom: 14px;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+}
+
+.tabla-impresion caption {
+    padding: 4px 0;
+    text-align: left;
+    font-size: 11pt;
+    font-weight: 700;
+}
+
+.tabla-impresion th,
+.tabla-impresion td {
+    padding: 4px 6px;
+    border: 1px solid #555555;
+    text-align: left;
+    vertical-align: top;
+}
+
+.tabla-impresion th {
+    background: #e6e6e6;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.bloque-mesa {
+    break-inside: avoid;
+}
+
+.columna-silla {
+    width: 1.3cm;
+    text-align: center !important;
+    font-weight: 700;
+}
+
+.fila-catequista td {
+    font-weight: 700;
+    background: #f4f4f4;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.fila-catequista td:first-child {
+    text-align: center;
+}
+
+.dato-negrita {
+    font-weight: 700;
+}
+
+
+/* ----------Lista de llegada-------------- */
+.tabla-llegada td {
+    padding: 5px 6px;
+}
+
+.columna-edad {
+    width: 1.3cm;
+    text-align: center !important;
+}
+
+.columna-check {
+    width: 1.4cm;
+    text-align: center !important;
+}
+
+.casilla-papel {
+    display: inline-block;
+    width: 0.5cm;
+    height: 0.5cm;
+    border: 1.5px solid #111111;
+    line-height: 0.45cm;
+    font-weight: 700;
+}
+
+.pie-lista {
+    margin-top: 6px;
+    font-size: 8.5pt;
+    color: #444444;
+}
+
+
+/* ----------Hojas de mesa en blanco-------------- */
+.mesa-en-blanco {
+    break-inside: avoid;
+    margin-bottom: 1cm;
+}
+
+.cabecera-mesa-blanco {
+    display: grid;
+    grid-template-columns: 1.4cm 1fr auto;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 9.5pt;
+}
+
+.logo-mesa-blanco {
+    width: 1.4cm;
+    height: 1.4cm;
+    object-fit: contain;
+}
+
+.numero-mesa-blanco {
+    padding: 4px 12px;
+    border: 2px solid #111111;
+    border-radius: 6px;
+    font-size: 16pt;
+    font-weight: 700;
+}
+
+.tabla-en-blanco td {
+    height: 0.95cm;
+}
+
+.columna-cedula {
+    width: 3.6cm;
+}
+
+.columna-telefono {
+    width: 3.2cm;
+}
+
+
+/* ----------Directorio-------------- */
+.datos-directorio {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 11pt;
+}
+
+.numero-directorio {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.tabla-rectorado {
+    margin-bottom: 18px;
+}
+
+.bloque-perseverancias {
+    margin-top: 10px;
+    break-inside: avoid;
+}
+
+.titulo-perseverancias {
+    padding: 4px 8px;
+    border: 1px solid #555555;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.rejilla-perseverancias {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-left: 1px solid #555555;
+    border-top: 0;
+    font-size: 8.5pt;
+}
+
+.perseverancia {
+    padding: 5px 6px;
+    border-right: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+}
+
+.perseverancia-tipo {
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.perseverancia-direccion {
+    color: #444444;
+}
+
+
+/* ----------Hoja de ubicación-------------- */
+.datos-ubicacion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+    margin-bottom: 24px;
+    font-size: 11pt;
+}
+
+.plano-mesa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.catequista-plano {
+    padding: 6px 16px;
+    border: 2px solid #111111;
+    border-radius: 6px;
+    font-size: 12pt;
+    font-weight: 700;
+}
+
+.cuerpo-plano {
+    display: grid;
+    grid-template-columns: 1fr 3.4cm 1fr;
+    gap: 14px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.lado-plano {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lado-plano li {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    min-height: 1.3cm;
+    border-bottom: 1px solid #111111;
+    font-size: 11pt;
+}
+
+.lado-derecho li {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.lado-plano .silla-sin {
+    border-bottom: 0;
+}
+
+.numero-plano {
+    flex: none;
+    font-size: 14pt;
+    font-weight: 700;
+}
+
+.nombre-plano {
+    flex: 1;
+}
+
+.mesa-plano {
+    display: grid;
+    place-items: center;
+    border: 3px solid #111111;
+    border-radius: 10px;
+    font-size: 14pt;
+    font-weight: 700;
+}
+
+
+/* ----------Rotación del Santísimo: el sábado tiene 48 franjas y debe caber en una hoja-------------- */
+.tabla-santisimo {
+    font-size: 8.5pt;
+    line-height: 1.15;
+}
+
+.tabla-santisimo th,
+.tabla-santisimo td {
+    padding: 1px 6px;
+}
+
+.tabla-santisimo .columna-hora {
+    width: 34%;
+    white-space: nowrap;
+}
+
+.tabla-santisimo .fila-todos td {
+    font-weight: 700;
+    background: #f1f1f1;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+
+/* ----------Desarrollo del retiro-------------- */
+.rectorado-desarrollo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 18px;
+    margin-bottom: 10px;
+    font-size: 9pt;
+}
+
+.tabla-desarrollo {
+    font-size: 8.5pt;
+    line-height: 1.15;
+    break-inside: avoid;
+}
+
+.tabla-desarrollo caption {
+    font-size: 10pt;
+    text-transform: uppercase;
+}
+
+.tabla-desarrollo th,
+.tabla-desarrollo td {
+    padding: 1px 6px;
+}
+
+.tabla-desarrollo .columna-hora {
+    width: 22%;
+    white-space: nowrap;
+}
+
+.tabla-desarrollo .columna-tiempo {
+    width: 10%;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.tabla-desarrollo .fila-charla td:first-child {
+    font-weight: 700;
+}
+
+
+/* ----------Camisetas por talla-------------- */
+.tabla-conteo-tallas th,
+.tabla-conteo-tallas td {
+    text-align: center;
+}
+
+.tabla-conteo-tallas td {
+    font-size: 12pt;
+}
+
+.columnas-tallas {
+    column-count: 2;
+    column-gap: 14px;
+}
+
+.tabla-tallas {
+    font-size: 8.5pt;
+    break-inside: avoid;
+}
+
+.tabla-tallas .columna-talla {
+    width: 14%;
+    text-align: center;
+    font-weight: 700;
+}
+
+
+/* ----------Rótulos para sobres: 2 columnas x 5 filas-------------- */
+.pagina-rotulos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 4.7cm;
+    gap: 0;
+    align-content: start;
+}
+
+.rotulo-sobre {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px dashed #888888;
+}
+
+.rotulo-logo {
+    width: 2.2cm;
+    height: 2.2cm;
+    flex-shrink: 0;
+}
+
+.rotulo-titulo {
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.rotulo-nombre {
+    margin: 4px 0;
+    font-size: 13pt;
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.rotulo-puesto {
+    font-size: 11pt;
+}
+
+.rotulo-retiro {
+    margin-top: 2px;
+    font-size: 8.5pt;
+    color: #444444;
+}
+
+
+/* ----------Llamadas familiares-------------- */
+.tabla-llamadas {
+    font-size: 8.5pt;
+}
+
+.tabla-llamadas .fila-segundo-contacto td {
+    border-top-style: dotted;
+}
+
+
+/* ----------Letreros para la pared: hoja carta horizontal, sobrios-------------- */
+@page letrero {
+    size: letter landscape;
+    margin: 1.2cm;
+}
+
+.pagina-letrero {
+    page: letrero;
+    display: flex;
+    height: 19.1cm;
+}
+
+/* Marco fino doble; el color solo va aquí y en el texto principal */
+.letrero-marco {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.4cm;
+    padding: 1cm 1.6cm;
+    border: 3px double #1c2f5e;
+    outline: 1px solid #1c2f5e;
+    outline-offset: -0.45cm;
+    color: #333333;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.letrero-logo {
+    width: 6.5cm;
+    height: 6.5cm;
+    flex-shrink: 0;
+}
+
+.letrero-texto {
+    text-align: center;
+}
+
+/* "Mesa 1" en una sola línea */
+.letrero-principal {
+    font-size: 100pt;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* "Directores" y otros textos largos: más pequeño para que quepa */
+.letrero-largo {
+    font-size: 66pt;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.letrero-nombre {
+    margin-top: 0.2cm;
+    font-size: 22pt;
+    font-style: italic;
+}
+
+.letrero-retiro {
+    margin-top: 0.5cm;
+    padding-top: 0.3cm;
+    border-top: 1px solid #bbbbbb;
+    font-size: 14pt;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #555555;
+}
+
+.letrero-hombres .letrero-marco {
+    border-color: #1c2f5e;
+    outline-color: #1c2f5e;
+}
+
+.letrero-hombres .letrero-principal {
+    color: #1c2f5e;
+}
+
+.letrero-mujeres .letrero-marco {
+    border-color: #8a2346;
+    outline-color: #8a2346;
+}
+
+.letrero-mujeres .letrero-principal {
+    color: #8a2346;
+}
+
+@media screen {
+    /* En pantalla también del tamaño real, para ver si el texto cabe */
+    .pagina.pagina-letrero {
+        width: 27.94cm;
+        max-width: none;
+        height: 21.59cm;
+        min-height: 21.59cm;
+        padding: 1.2cm;
+    }
+}
+
+
+/* ----------Entrega de previstos-------------- */
+.tabla-previstos {
+    font-size: 8.5pt;
+}
+
+.tabla-previstos .columna-entrega {
+    width: 9%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.tabla-previstos th.columna-entrega {
+    font-size: 7pt;
+}
+
+.tabla-previstos .casilla-papel {
+    width: 0.35cm;
+    height: 0.35cm;
+    vertical-align: middle;
+}
+
+
+/* ----------Tarjetas De / Para de las flores: en blanco, para recortar-------------- */
+@page oficio {
+    size: 8.5in 13in;
+    margin: 0.5cm 0.7cm;
+}
+
+@page cartaTarjetas {
+    size: letter;
+    margin: 0.5cm 0.7cm;
+}
+
+.pagina-oficio {
+    page: oficio;
+}
+
+.pagina-carta {
+    page: cartaTarjetas;
+}
+
+/* Las tarjetas miden lo mismo en los dos papeles: 3 columnas de 3,55 cm de alto */
+.pagina-flores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 3.55cm;
+    align-content: start;
+}
+
+.tarjeta-flor {
+    display: flex;
+    align-items: center;
+    gap: 0.25cm;
+    padding: 0.2cm 0.3cm;
+    border: 1px dashed #999999;
+}
+
+.flor-logo {
+    width: 2cm;
+    height: 2cm;
+    flex-shrink: 0;
+}
+
+.flor-campos {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35cm;
+    font-size: 9pt;
+    font-weight: 700;
+}
+
+.flor-linea {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+}
+
+.flor-espacio {
+    flex: 1 1 auto;
+    min-width: 0.6cm;
+    border-bottom: 1px solid #333333;
+}
+
+.flor-puesto .flor-espacio + span {
+    margin-left: 4px;
+}
+
+@media screen {
+    .pagina.pagina-oficio {
+        width: 21.59cm;
+        min-height: 33.02cm;
+        padding: 0.5cm 0.7cm;
+    }
+
+    .pagina.pagina-carta {
+        min-height: 27.94cm;
+        padding: 0.5cm 0.7cm;
+    }
+}
+
+
+/* ----------Inventario de un equipo-------------- */
+.tabla-inventario {
+    font-size: 9pt;
+}
+
+.tabla-inventario .columna-numero {
+    width: 9%;
+    text-align: right;
+}
+
+.tabla-inventario .columna-conteo {
+    width: 11%;
+}
+
+.resumen-comprar {
+    margin-top: 6px;
+    font-size: 9pt;
+}
+
+.firmas-inventario {
+    display: flex;
+    justify-content: space-around;
+    gap: 1cm;
+    margin-top: 1.4cm;
+    text-align: center;
+    font-size: 9pt;
+    break-inside: avoid;
+}
+
+.firmas-inventario > div {
+    flex: 0 1 6.5cm;
+}
+
+.linea-firma {
+    display: block;
+    margin-bottom: 3px;
+    border-top: 1px solid #111111;
+}

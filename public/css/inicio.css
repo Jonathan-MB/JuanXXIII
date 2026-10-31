@@ -1,0 +1,436 @@
+/* ----------Encabezado público-------------- */
+.cuerpo-publico {
+    background: #ffffff;
+}
+
+.header-publico {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px max(16px, 3vw);
+    background: #13224a;
+}
+
+.header-publico-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.header-publico-logo img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.header-publico-nombre {
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.header-publico-nombre small {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c9d3ea;
+}
+
+.header-publico-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+/* ----------Portada-------------- */
+.portada {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 32px;
+    padding: 56px max(16px, 6vw) 72px;
+    background: #1c2f5e;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+/* Las dos diagonales blancas del volante */
+.portada::before,
+.portada::after {
+    content: "";
+    position: absolute;
+    background: #ffffff;
+    opacity: 0.06;
+    transform: rotate(45deg);
+}
+
+.portada::before {
+    width: 420px;
+    height: 420px;
+    left: -210px;
+    bottom: -260px;
+}
+
+.portada::after {
+    width: 300px;
+    height: 300px;
+    right: 8%;
+    top: -220px;
+}
+
+.portada-contenido {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.portada-movimiento {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #c9d3ea;
+}
+
+.portada-titulo {
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(44px, 8vw, 96px);
+    font-weight: 900;
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+}
+
+.portada-titulo-amarillo {
+    color: #f4c20d;
+}
+
+.portada-subtitulo {
+    font-size: clamp(16px, 2.2vw, 22px);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.portada-fechas {
+    margin-top: 10px;
+    padding-bottom: 6px;
+    border-bottom: 3px dashed #f4c20d;
+    font-size: clamp(22px, 3.4vw, 34px);
+    font-weight: 800;
+}
+
+.portada-lugar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #e6ebf6;
+}
+
+.icono-lugar {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: #f4c20d;
+    stroke-width: 2;
+    flex: none;
+}
+
+.portada-cita {
+    margin-top: 18px;
+    font-size: 14px;
+    font-style: italic;
+    color: #c9d3ea;
+}
+
+.portada-cita span {
+    font-style: normal;
+}
+
+
+/* El logo con rayos, como la custodia del volante */
+.portada-sello {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    max-width: 420px;
+    width: 100%;
+    justify-self: center;
+}
+
+.sello-rayos {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: repeating-conic-gradient(from 0deg, #f4c20d 0deg 2deg, transparent 2deg 9deg);
+    opacity: 0.35;
+    -webkit-mask: radial-gradient(circle, transparent 34%, #000000 35%, #000000 64%, transparent 70%);
+    mask: radial-gradient(circle, transparent 34%, #000000 35%, #000000 64%, transparent 70%);
+}
+
+.portada-sello img {
+    position: relative;
+    width: 62%;
+    filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.35));
+}
+
+
+/* ----------Datos del retiro-------------- */
+.franja-datos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    max-width: 1180px;
+    margin: -36px auto 0;
+    padding: 28px max(16px, 3vw);
+    position: relative;
+    z-index: 2;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(19, 34, 74, 0.14);
+}
+
+.dato-retiro {
+    display: flex;
+    gap: 14px;
+    min-width: 0;
+}
+
+.dato-icono {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid #f4c20d;
+}
+
+.dato-icono svg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: #c99a00;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.dato-titulo {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1c2f5e;
+}
+
+.dato-texto {
+    font-size: 18px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.dato-detalle {
+    font-size: 14px;
+    color: #5b6479;
+}
+
+
+/* ----------Secciones-------------- */
+.seccion-dias,
+.seccion-requisitos,
+.seccion-inscripcion {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 64px max(16px, 3vw) 0;
+}
+
+.titulo-seccion {
+    font-size: clamp(24px, 3.4vw, 34px);
+    font-weight: 900;
+    color: #13224a;
+}
+
+.texto-seccion {
+    max-width: 62ch;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #5b6479;
+}
+
+.tarjetas-dias {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.tarjeta-dia {
+    padding: 24px;
+    border-radius: 12px;
+    background: #1c2f5e;
+    color: #ffffff;
+    transition: 0.4s;
+}
+
+.tarjeta-dia:hover {
+    transform: scale(1.02);
+}
+
+.tarjeta-dia-nombre {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #f4c20d;
+}
+
+.tarjeta-dia h3 {
+    margin-top: 6px;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.lista-requisitos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px 28px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lista-requisitos li {
+    padding: 14px 16px;
+    border-left: 4px solid #f4c20d;
+    background: #f7f8fc;
+    border-radius: 0 8px 8px 0;
+    font-weight: 500;
+}
+
+.seccion-inscripcion {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding-bottom: 80px;
+}
+
+
+/* ----------Lema (colores del afiche de perseverancia)-------------- */
+.franja-lema {
+    margin-top: 72px;
+    padding: 40px max(16px, 3vw);
+    text-align: center;
+    background: linear-gradient(120deg, #3b2160 0%, #1c3d3a 55%, #1f7a45 100%);
+    color: #ffffff;
+}
+
+.franja-lema p {
+    font-size: clamp(18px, 3vw, 28px);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.lema-verde {
+    color: #4fd08a;
+}
+
+
+/* ----------Pie-------------- */
+.pie-publico {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px 32px;
+    padding: 32px max(16px, 6vw);
+    background: #13224a;
+    color: #c9d3ea;
+    font-size: 14px;
+}
+
+.pie-publico img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.pie-nombre {
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.pie-informes {
+    margin-left: auto;
+    padding-left: 20px;
+    border-left: 3px solid #f4c20d;
+}
+
+.pie-informes-titulo {
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
+.pie-informes strong {
+    color: #ffffff;
+}
+
+
+/* ----------Celular-------------- */
+@media (max-width: 760px) {
+
+    .header-publico-nombre small {
+        display: none;
+    }
+
+    .header-publico-botones {
+        width: 100%;
+    }
+
+    .header-publico-botones a {
+        flex: 1 1 140px;
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    .portada {
+        grid-template-columns: 1fr;
+        padding-top: 36px;
+    }
+
+    .portada-sello {
+        order: -1;
+        max-width: 220px;
+    }
+
+    .franja-datos {
+        margin: -24px 16px 0;
+    }
+
+    .pie-informes {
+        margin-left: 0;
+    }
+}

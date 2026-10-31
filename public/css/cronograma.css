@@ -1,0 +1,113 @@
+/* ----------Lista de tareas-------------- */
+.enlace-volver {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #1c2f5e;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.texto-ayuda-arriba {
+    margin: -10px 0 16px;
+}
+
+.formulario-tarea {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 8px;
+    margin: 0;
+}
+
+.tarea-nueva {
+    margin-bottom: 22px;
+    padding: 14px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.tarea-nueva .elemento-formulario {
+    flex: 1 1 130px;
+}
+
+.tarea-nueva .elemento-descripcion {
+    flex: 3 1 260px;
+}
+
+.titulo-elemento small {
+    font-weight: 500;
+    color: #5b6479;
+}
+
+.titulo-dia-editor {
+    margin: 18px 0 8px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1c2f5e;
+}
+
+.lista-tareas-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fila-tarea-editor {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid #dde2ec;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.fila-tarea-editor .formulario-tarea {
+    flex: 1 1 auto;
+    align-items: center;
+}
+
+.fila-tarea-editor select,
+.fila-tarea-editor input,
+.tarea-nueva select {
+    min-height: 40px;
+    padding: 6px 8px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #ffffff;
+}
+
+.fila-tarea-editor .campo-descripcion {
+    flex: 3 1 240px;
+}
+
+.fila-tarea-editor input[name="responsable"] {
+    flex: 1 1 130px;
+}
+
+.fila-tarea-editor .boton-secundario {
+    min-height: 40px;
+    padding: 6px 12px;
+}
+
+.fila-tarea-editor form:last-child {
+    margin: 0;
+}
+
+.boton-texto {
+    min-height: 36px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #922b25;
+    font-family: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}

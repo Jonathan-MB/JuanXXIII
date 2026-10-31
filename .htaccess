@@ -1,0 +1,17 @@
+# ============ SOLO SE SIRVE public/ ============
+# XAMPP publica toda la carpeta del proyecto. Sin esto, cualquiera en la red
+# podía leer .env, los logs o los comprobantes entrando por la URL.
+# Todo lo que no empiece por public/ se redirige a public/, donde Laravel
+# decide: /JuanXXIII/ abre el inicio y /JuanXXIII/.env termina en un 404.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Ojo: depende del NOMBRE de la carpeta en htdocs. Si se renombra, cambiar aquí.
+    # En Hostinger no se usa: allá el dominio apunta directo a public/.
+    RewriteBase /JuanXXIII/
+    RewriteRule ^(?!public/)(.*)$ public/$1 [R=302,L]
+</IfModule>
+
+# Si mod_rewrite no estuviera activo, se niega todo en vez de exponerlo
+<IfModule !mod_rewrite.c>
+    Require all denied
+</IfModule>

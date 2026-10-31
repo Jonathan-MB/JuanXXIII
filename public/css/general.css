@@ -1,0 +1,517 @@
+/* ----------Base-------------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #1b2237;
+    background: #f3f5fa;
+}
+
+img {
+    max-width: 100%;
+}
+
+h1,
+h2,
+h3 {
+    margin: 0;
+    line-height: 1.2;
+}
+
+p {
+    margin: 0;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid #f4c20d;
+    outline-offset: 2px;
+}
+
+
+/* ----------Botones-------------- */
+.boton-azul,
+.boton-amarillo,
+.boton-secundario,
+.boton-borde-claro {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.boton-azul {
+    background: #1c2f5e;
+    color: #ffffff;
+    border: 2px solid #1c2f5e;
+}
+
+.boton-amarillo {
+    background: #f4c20d;
+    color: #13224a;
+    border: 2px solid #f4c20d;
+}
+
+.boton-secundario {
+    background: #ffffff;
+    color: #1c2f5e;
+    border: 2px solid #c9d1e3;
+}
+
+.boton-borde-claro {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+
+.boton-azul:hover,
+.boton-amarillo:hover,
+.boton-secundario:hover,
+.boton-borde-claro:hover {
+    transform: scale(1.04);
+}
+
+.boton-ancho {
+    width: 100%;
+}
+
+.boton-grande {
+    min-height: 52px;
+    padding: 12px 32px;
+    font-size: 16px;
+}
+
+
+/* ----------Formularios-------------- */
+.elemento-formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.titulo-elemento {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1c2f5e;
+}
+
+.elemento-formulario input,
+.elemento-formulario select,
+.elemento-formulario textarea,
+.fila-dinamica input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    color: #1b2237;
+    background: #ffffff;
+}
+
+
+/* ----------Mensajes-------------- */
+.mensaje {
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: #e3f3e9;
+    color: #165c34;
+    border: 1px solid #b6dfc4;
+    font-weight: 600;
+    transition: 0.4s;
+}
+
+.mensaje ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+    font-weight: 500;
+}
+
+.mensaje-alerta {
+    background: #fdf3d3;
+    color: #7a5600;
+    border-color: #f1dc95;
+}
+
+.mensaje-error {
+    background: #fbe5e2;
+    color: #922b25;
+    border-color: #f1bdb6;
+}
+
+.mensaje-oculto {
+    opacity: 0;
+    transform: translateY(-6px);
+}
+
+
+/* ----------Chips-------------- */
+.chip {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+
+.chip-verde {
+    background: #e3f3e9;
+    color: #165c34;
+}
+
+.chip-gris {
+    background: #eef0f5;
+    color: #5b6479;
+    border-color: #dde2ec;
+}
+
+.chip-azul {
+    background: #e6ebf6;
+    color: #1c2f5e;
+}
+
+.chip-amarillo {
+    background: #fdf3d3;
+    color: #7a5600;
+}
+
+.chip-rojo {
+    background: #fbe5e2;
+    color: #922b25;
+}
+
+.chip-boton {
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.chip-boton:hover {
+    transform: scale(1.06);
+}
+
+
+/* ----------Panel: encabezado-------------- */
+.header-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px max(16px, 2vw);
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+.header-panel-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.02em;
+}
+
+.header-panel-logo img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+.header-panel-usuario {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.usuario-nombre {
+    font-weight: 700;
+    font-size: 14px;
+    text-align: right;
+}
+
+.usuario-rol {
+    font-size: 12px;
+    color: #c9d3ea;
+    text-align: right;
+}
+
+.boton-salir {
+    min-height: 40px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #5b6f9e;
+    background: transparent;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.boton-salir:hover {
+    background: #13224a;
+}
+
+
+/* ----------Panel: estructura y menú-------------- */
+.estructura-panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.menu-panel {
+    flex: 1 1 220px;
+    max-width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 18px 12px;
+    background: #ffffff;
+    border-right: 1px solid #dde2ec;
+    min-height: calc(100vh - 62px);
+}
+
+.menu-grupo {
+    margin-top: 14px;
+    padding: 0 12px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #5b6479;
+}
+
+.menu-enlace {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #1b2237;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.4s;
+}
+
+a.menu-enlace:hover {
+    background: #eef1f8;
+}
+
+.menu-activo {
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+a.menu-activo:hover {
+    background: #13224a;
+}
+
+.menu-pronto {
+    color: #8a92a6;
+    font-weight: 500;
+    cursor: default;
+}
+
+.menu-pronto small {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #a6aec0;
+}
+
+.contenedor-general {
+    flex: 999 1 560px;
+    min-width: 0;
+    padding: 28px max(16px, 3vw) 48px;
+}
+
+.vista-titulo {
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.subtitulo-vista {
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #13224a;
+}
+
+
+/* ----------Vistas del panel: cabecera, formularios y ayudas-------------- */
+.cabecera-vista {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.cabecera-vista .vista-titulo {
+    margin-bottom: 0;
+}
+
+.formulario-interruptor {
+    margin: 0;
+}
+
+.enlace-accion {
+    color: #1c2f5e;
+    font-weight: 700;
+}
+
+.texto-ayuda,
+.texto-vacio {
+    margin-top: 14px;
+    font-size: 14px;
+    color: #5b6479;
+}
+
+.bloque-formulario {
+    margin: 0;
+    padding: 18px 20px 20px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.bloque-formulario legend {
+    padding: 0 6px;
+    font-size: 15px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.linea-formulario {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+}
+
+.linea-formulario + .linea-formulario {
+    margin-top: 14px;
+}
+
+.elemento-ancho {
+    grid-column: span 2;
+}
+
+.acciones-formulario {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+
+/* ----------Tablas-------------- */
+.contenedor-tabla {
+    overflow-x: auto;
+    background: #ffffff;
+    border: 1px solid #dde2ec;
+    border-radius: 10px;
+}
+
+.tabla-general {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tabla-general th {
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #5b6479;
+    background: #f7f8fc;
+    border-bottom: 1px solid #dde2ec;
+}
+
+.tabla-general td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #eef0f5;
+    font-variant-numeric: tabular-nums;
+}
+
+.tabla-general tr:last-child td {
+    border-bottom: 0;
+}
+
+
+/* ----------Celular-------------- */
+@media (max-width: 760px) {
+
+    .header-panel-logo span,
+    .usuario-rol {
+        display: none;
+    }
+
+    .menu-panel {
+        max-width: none;
+        flex-basis: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        scrollbar-width: none;
+        min-height: 0;
+        padding: 8px 12px;
+        border-right: 0;
+        border-bottom: 1px solid #dde2ec;
+    }
+
+    .menu-grupo,
+    .menu-pronto {
+        display: none;
+    }
+
+    .menu-enlace {
+        white-space: nowrap;
+    }
+
+    .vista-titulo {
+        font-size: 22px;
+    }
+
+    .elemento-ancho {
+        grid-column: auto;
+    }
+}
+
+.acciones-cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}

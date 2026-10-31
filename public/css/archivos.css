@@ -1,0 +1,288 @@
+/* ----------Pestañas-------------- */
+.pestanas-archivos {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 2px solid #dde2ec;
+    margin-bottom: 16px;
+}
+
+.pestana {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    margin-bottom: -2px;
+    border-bottom: 3px solid transparent;
+    color: #5b6479;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.pestana span {
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: #eef0f5;
+    font-size: 12px;
+}
+
+.pestana-activa {
+    color: #13224a;
+    border-color: #f4c20d;
+}
+
+.pestana-activa span {
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+.aviso-charlas {
+    margin-bottom: 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #fdf3d3;
+    color: #7a5600;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* ----------Subir-------------- */
+.subir-archivos {
+    margin-bottom: 18px;
+}
+
+.subir-archivos > summary {
+    list-style: none;
+    width: max-content;
+}
+
+.subir-archivos > summary::-webkit-details-marker {
+    display: none;
+}
+
+.formulario-subir {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 14px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.zona-archivos {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px;
+    border: 2px dashed #c9d1e3;
+    border-radius: 12px;
+    background: #f7f8fc;
+    cursor: pointer;
+}
+
+.zona-titulo {
+    font-weight: 800;
+    color: #13224a;
+}
+
+.zona-detalle {
+    font-size: 13px;
+    color: #5b6479;
+}
+
+.lista-elegidos {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 14px;
+}
+
+.elegido-grande {
+    color: #922b25;
+    font-weight: 700;
+}
+
+.formulario-subir .boton-azul {
+    align-self: flex-start;
+}
+
+.formulario-subir .boton-azul:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+
+/* ----------Lista-------------- */
+.buscador-archivos {
+    width: 100%;
+    min-height: 48px;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border: 1px solid #c9d1e3;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.lista-archivos {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.fila-archivo {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 6px 14px;
+    padding: 12px 14px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.fila-archivo[hidden] {
+    display: none;
+}
+
+.tipo-archivo {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
+    background: #eef0f5;
+    color: #5b6479;
+}
+
+.tipo-pdf {
+    background: #fbe5e2;
+    color: #922b25;
+}
+
+.tipo-doc,
+.tipo-docx {
+    background: #e6ebf6;
+    color: #1c2f5e;
+}
+
+.tipo-xls,
+.tipo-xlsx {
+    background: #e3f3e9;
+    color: #165c34;
+}
+
+.tipo-ppt,
+.tipo-pptx {
+    background: #fdf3d3;
+    color: #7a5600;
+}
+
+.titulo-archivo {
+    font-weight: 700;
+    color: #13224a;
+    overflow-wrap: anywhere;
+}
+
+.numero-archivo {
+    display: inline-block;
+    min-width: 28px;
+    margin-right: 4px;
+    color: #c99a00;
+    font-variant-numeric: tabular-nums;
+}
+
+.detalle-archivo {
+    font-size: 13px;
+    color: #5b6479;
+}
+
+.acciones-archivo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.acciones-archivo a {
+    min-height: 40px;
+    padding: 8px 14px;
+}
+
+.editar-archivo {
+    grid-column: 1 / -1;
+}
+
+.editar-archivo > summary {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1c2f5e;
+    cursor: pointer;
+}
+
+.formulario-editar-archivo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+.formulario-editar-archivo input,
+.formulario-editar-archivo select {
+    min-height: 40px;
+    padding: 6px 8px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #ffffff;
+}
+
+.formulario-editar-archivo input[name="numero"] {
+    width: 70px;
+}
+
+.formulario-editar-archivo input[name="titulo"] {
+    flex: 2 1 220px;
+}
+
+.formulario-editar-archivo input[name="descripcion"] {
+    flex: 2 1 200px;
+}
+
+.formulario-editar-archivo .boton-secundario {
+    min-height: 40px;
+    padding: 6px 12px;
+}
+
+.boton-texto {
+    min-height: 36px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #922b25;
+    font-family: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+/* ----------Celular-------------- */
+@media (max-width: 600px) {
+
+    .fila-archivo {
+        grid-template-columns: 76px minmax(0, 1fr);
+    }
+
+    .acciones-archivo {
+        grid-column: 1 / -1;
+    }
+}

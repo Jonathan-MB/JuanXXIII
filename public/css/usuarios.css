@@ -1,0 +1,44 @@
+/* ----------Lista de cuentas-------------- */
+.dato-cuenta-nombre {
+    font-weight: 700;
+    color: #13224a;
+}
+
+.fila-inactiva td {
+    color: #8a92a6;
+}
+
+
+/* ----------Formulario de cuenta-------------- */
+.formulario-cuenta {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 980px;
+}
+
+.titulo-elemento small {
+    font-weight: 500;
+    color: #5b6479;
+}
+
+.texto-ayuda-arriba {
+    margin: 0 0 12px;
+}
+
+.casilla-destacada {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: #e6ebf6;
+    font-weight: 700;
+    color: #13224a;
+    cursor: pointer;
+}
+
+.casilla-destacada input {
+    width: 20px;
+    height: 20px;
+}

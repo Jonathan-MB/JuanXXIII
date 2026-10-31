@@ -1,0 +1,77 @@
+@php
+    use App\Models\Rol;
+
+    $usuario      = auth()->user();
+    $verTodo      = $usuario->tieneRol(Rol::ADMINISTRACION, Rol::SECRETARIA);
+    $verPagos     = $verTodo || $usuario->tieneRol(Rol::TESORERIA);
+    $verDirectivo = $usuario->tieneRol(Rol::ADMINISTRACION, Rol::DIRECTIVOS);
+@endphp
+</head>
+
+<body class="cuerpo-panel">
+
+    <header class="header-panel">
+        <a class="header-panel-logo" href="{{ route('panel') }}">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo del Movimiento Juan XXIII">
+            <span>Juan XXIII</span>
+        </a>
+
+        <div class="header-panel-usuario" id="contenedor-usuario">
+            <div class="usuario-datos">
+                <p class="usuario-nombre">{{ $usuario->nombre }}</p>
+                <p class="usuario-rol">{{ $usuario->rol?->nombre }}{{ $usuario->equipo ? ' · ' . $usuario->equipo->nombre : '' }}</p>
+            </div>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="boton-salir">Cerrar sesión</button>
+            </form>
+        </div>
+    </header>
+
+    <div class="estructura-panel">
+
+        {{-- --------------------MENÚ SEGÚN EL ROL------------------- --}}
+        <nav class="menu-panel" aria-label="Menú principal">
+            <a class="menu-enlace {{ request()->routeIs('panel') ? 'menu-activo' : '' }}" href="{{ route('panel') }}">Inicio</a>
+
+            @if ($verPagos)
+                <p class="menu-grupo">Retiro actual</p>
+                <a class="menu-enlace {{ request()->routeIs('inscritos.*') ? 'menu-activo' : '' }}" href="{{ route('inscritos.index') }}">Inscritos</a>
+                <a class="menu-enlace {{ request()->routeIs('pagos.*') ? 'menu-activo' : '' }}" href="{{ route('pagos.index') }}">Pagos</a>
+            @endif
+
+            @if ($verTodo)
+                <a class="menu-enlace {{ request()->routeIs('llegada.*') ? 'menu-activo' : '' }}" href="{{ route('llegada.index') }}">Llegada</a>
+                <a class="menu-enlace {{ request()->routeIs('mesas.*') ? 'menu-activo' : '' }}" href="{{ route('mesas.index') }}">Mesas</a>
+                <a class="menu-enlace {{ request()->routeIs('impresiones.*') ? 'menu-activo' : '' }}" href="{{ route('impresiones.index') }}">Impresiones</a>
+                <a class="menu-enlace {{ request()->routeIs('desarrollo.*') ? 'menu-activo' : '' }}" href="{{ route('desarrollo.index') }}">Desarrollo del retiro</a>
+            @endif
+
+            <p class="menu-grupo">Horarios</p>
+            <a class="menu-enlace {{ request()->routeIs('santisimo.*') ? 'menu-activo' : '' }}" href="{{ route('santisimo.index') }}">Santísimo</a>
+
+            @if ($verTodo)
+                <p class="menu-grupo">Archivos</p>
+                @foreach (\App\Models\Archivo::CATEGORIAS as $claveMenu => $etiquetaMenu)
+                    <a class="menu-enlace {{ request()->routeIs('archivos.*') && request('categoria', 'documentos') === $claveMenu ? 'menu-activo' : '' }}" href="{{ route('archivos.index', ['categoria' => $claveMenu]) }}">{{ $etiquetaMenu }}</a>
+                @endforeach
+            @endif
+
+            <p class="menu-grupo">General</p>
+            @if ($verTodo)
+                <a class="menu-enlace {{ request()->routeIs('retiros.*') ? 'menu-activo' : '' }}" href="{{ route('retiros.index') }}">Retiros</a>
+                <a class="menu-enlace {{ request()->routeIs('historial.*') ? 'menu-activo' : '' }}" href="{{ route('historial.index') }}">Historial</a>
+            @endif
+            <a class="menu-enlace {{ request()->routeIs('inventario.*') ? 'menu-activo' : '' }}" href="{{ route('inventario.index') }}">Inventario</a>
+
+            @if ($verDirectivo)
+                <span class="menu-enlace menu-pronto">Directivos <small>pronto</small></span>
+            @endif
+
+            @if ($usuario->tieneRol(Rol::ADMINISTRACION))
+                <p class="menu-grupo">Administración</p>
+                <a class="menu-enlace {{ request()->routeIs('usuarios.*') ? 'menu-activo' : '' }}" href="{{ route('usuarios.index') }}">Cuentas</a>
+            @endif
+        </nav>
+
+        <main class="contenedor-general">

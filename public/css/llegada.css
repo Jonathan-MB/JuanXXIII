@@ -1,0 +1,466 @@
+/* ----------Pestañas-------------- */
+.pestanas-llegada {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 2px solid #dde2ec;
+    margin-bottom: 16px;
+}
+
+.pestana {
+    padding: 10px 14px;
+    margin-bottom: -2px;
+    border-bottom: 3px solid transparent;
+    color: #5b6479;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: 0.4s;
+}
+
+.pestana-activa {
+    color: #13224a;
+    border-color: #f4c20d;
+}
+
+.pestana-derecha {
+    margin-left: auto;
+    color: #1c2f5e;
+    text-decoration: underline;
+}
+
+.contador-llegada {
+    font-size: 15px;
+    color: #5b6479;
+}
+
+.contador-llegada strong {
+    font-size: 22px;
+    color: #13224a;
+}
+
+
+/* ----------Estructura: búsqueda + mapa-------------- */
+.estructura-llegada {
+    display: grid;
+    grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.columna-busqueda {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.buscar-llegada {
+    display: flex;
+    gap: 8px;
+}
+
+.buscar-llegada .buscador {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 16px;
+    background: #ffffff;
+}
+
+.puesto-siguiente {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #e6ebf6;
+    color: #1c2f5e;
+    font-size: 14px;
+}
+
+.tarjeta-llegada {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 16px;
+    border: 2px solid #f4c20d;
+    border-radius: 12px;
+    background: #fffbea;
+}
+
+.tarjeta-llego {
+    border-color: #b6dfc4;
+    background: #f1faf4;
+}
+
+.nombre-llegada {
+    font-size: 17px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.detalle-llegada,
+.puesto-actual {
+    font-size: 14px;
+    color: #5b6479;
+}
+
+.puesto-actual strong {
+    color: #165c34;
+}
+
+.aviso-saldo {
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #fbe5e2;
+    color: #922b25;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.formulario-puesto {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.casilla-puesto {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #5b6479;
+}
+
+.casilla-puesto input {
+    width: 64px;
+    min-height: 44px;
+    padding: 8px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    color: #13224a;
+}
+
+.formulario-puesto .boton-secundario {
+    min-height: 44px;
+    padding: 8px 14px;
+}
+
+.formulario-un-clic {
+    margin: 0;
+}
+
+
+/* ----------Puestos de todo el grupo-------------- */
+.seccion-puestos {
+    margin-top: 28px;
+}
+
+.texto-ayuda-puestos {
+    margin: 0 0 12px;
+}
+
+.cabecera-puestos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.botones-imprimir-llegada {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.buscador-puestos {
+    width: 100%;
+    min-height: 48px;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border: 1px solid #c9d1e3;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.fila-puesto[hidden] {
+    display: none;
+}
+
+.corregir-datos > summary {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5b6479;
+    cursor: pointer;
+}
+
+.formulario-corregir {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.formulario-corregir input {
+    flex: 1 1 120px;
+    min-height: 40px;
+    padding: 6px 8px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.formulario-corregir .boton-secundario {
+    min-height: 40px;
+    padding: 6px 12px;
+}
+
+.tabla-puestos td {
+    vertical-align: middle;
+}
+
+.boton-texto {
+    min-height: 36px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #1c2f5e;
+    font-family: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.faltan-llegar {
+    padding: 12px 16px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.faltan-llegar summary {
+    font-weight: 800;
+    color: #13224a;
+    cursor: pointer;
+    min-height: 32px;
+}
+
+.lista-faltan {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.lista-faltan li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid #eef0f5;
+    font-size: 14px;
+}
+
+.lista-faltan a {
+    color: #1b2237;
+}
+
+.lista-faltan form {
+    margin: 0;
+}
+
+
+/* ----------Mapa de mesas-------------- */
+.mapa-mesas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.tarjeta-mesa {
+    padding: 12px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+    min-width: 0;
+}
+
+.cabecera-mesa {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.numero-mesa {
+    font-weight: 800;
+    color: #13224a;
+}
+
+.ocupacion-mesa {
+    font-size: 12px;
+    font-weight: 700;
+    color: #5b6479;
+    font-variant-numeric: tabular-nums;
+}
+
+.catequistas-mesa {
+    margin: 2px 0 8px;
+    font-size: 12px;
+    color: #5b6479;
+}
+
+.sillas-mesa {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.silla {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 4px 6px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.silla a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #13224a;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.numero-silla {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.silla-ocupada {
+    background: #e6ebf6;
+}
+
+.silla-ocupada .numero-silla {
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+.silla-libre {
+    border: 1px dashed #c9d1e3;
+    color: #8a92a6;
+}
+
+.silla-libre .numero-silla {
+    background: #eef0f5;
+    color: #5b6479;
+}
+
+
+/* ----------Configurar mesas-------------- */
+.texto-ayuda-mesas {
+    margin: 0 0 16px;
+}
+
+.agregar-mesa {
+    margin-bottom: 16px;
+}
+
+.agregar-mesa > summary {
+    list-style: none;
+    width: max-content;
+}
+
+.agregar-mesa > summary::-webkit-details-marker {
+    display: none;
+}
+
+.formulario-agregar-mesa {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    align-items: end;
+    margin-top: 12px;
+    padding: 14px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.rejilla-config-mesas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+}
+
+.tarjeta-config-mesa {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.cabecera-config-mesa {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titulo-elemento small {
+    font-weight: 500;
+    color: #5b6479;
+}
+
+.acciones-config-mesa {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.boton-quitar-mesa {
+    color: #922b25;
+}
+
+
+/* ----------Celular-------------- */
+@media (max-width: 900px) {
+
+    .estructura-llegada {
+        grid-template-columns: 1fr;
+    }
+}
