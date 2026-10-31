@@ -3,7 +3,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/usuarios.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/usuarios.css') }}">
 <title>{{ $editando ? 'Editar cuenta' : 'Nueva cuenta' }} · Juan XXIII</title>
 
 @include('partials.header')
@@ -92,5 +92,5 @@
         </div>
     </form>
 
-<script src="{{ asset('js/usuarios.js') }}"></script>
+<script src="{{ recurso('js/usuarios.js') }}"></script>
 @include('partials.footerPanel')

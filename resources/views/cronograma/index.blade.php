@@ -6,7 +6,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/cronograma.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/cronograma.css') }}">
 <title>Lista de tareas · Juan XXIII</title>
 
 @include('partials.header')
@@ -82,5 +82,5 @@
         @endforeach
     @endif
 
-<script src="{{ asset('js/cronograma.js') }}"></script>
+<script src="{{ recurso('js/cronograma.js') }}"></script>
 @include('partials.footerPanel')

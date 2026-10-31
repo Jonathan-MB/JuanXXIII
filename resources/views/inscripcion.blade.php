@@ -1,7 +1,7 @@
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/inicio.css') }}">
-<link rel="stylesheet" href="{{ asset('css/inscripcion.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/inicio.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/inscripcion.css') }}">
 <title>Inscripción · Retiros Juan XXIII</title>
 
 @include('partials.headerPublico')
@@ -319,7 +319,7 @@
             const rutaVerificarCedula = @json(url('/inscripcion/verificar-cedula'));
             const erroresServidor = @json(array_keys($errors->getMessages()));
         </script>
-        <script src="{{ asset('js/inscripcion.js') }}"></script>
+        <script src="{{ recurso('js/inscripcion.js') }}"></script>
     @endif
 
 @include('partials.footer')

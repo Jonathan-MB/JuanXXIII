@@ -1,7 +1,7 @@
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/inicio.css') }}">
-<link rel="stylesheet" href="{{ asset('css/inscripcion.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/inicio.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/inscripcion.css') }}">
 <title>Inscripción recibida · Retiros Juan XXIII</title>
 
 @include('partials.headerPublico')

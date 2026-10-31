@@ -55,7 +55,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/impresiones.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/impresiones.css') }}">
 <title>Impresiones · Juan XXIII</title>
 
 @include('partials.header')

@@ -6,7 +6,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/retiros.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/retiros.css') }}">
 <title>{{ $editando ? 'Editar retiro' : 'Nuevo retiro' }} · Juan XXIII</title>
 
 @include('partials.header')
@@ -163,5 +163,5 @@
         </div>
     </template>
 
-<script src="{{ asset('js/retiros.js') }}"></script>
+<script src="{{ recurso('js/retiros.js') }}"></script>
 @include('partials.footerPanel')

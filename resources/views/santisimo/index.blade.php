@@ -1,6 +1,6 @@
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/santisimo.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/santisimo.css') }}">
 <title>Santísimo · Juan XXIII</title>
 
 @include('partials.header')
@@ -97,5 +97,5 @@
         </div>
     @endif
 
-<script src="{{ asset('js/santisimo.js') }}"></script>
+<script src="{{ recurso('js/santisimo.js') }}"></script>
 @include('partials.footerPanel')

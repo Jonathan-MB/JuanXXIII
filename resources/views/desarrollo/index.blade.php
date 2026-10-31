@@ -3,7 +3,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/desarrollo.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/desarrollo.css') }}">
 <title>Desarrollo del retiro · Juan XXIII</title>
 
 @include('partials.header')

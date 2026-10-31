@@ -16,7 +16,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/inscritos.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/inscritos.css') }}">
 <title>Editar · {{ $persona->nombre_completo }}</title>
 
 @include('partials.header')
@@ -190,5 +190,5 @@
         </div>
     </form>
 
-<script src="{{ asset('js/inscritos.js') }}"></script>
+<script src="{{ recurso('js/inscritos.js') }}"></script>
 @include('partials.footerPanel')

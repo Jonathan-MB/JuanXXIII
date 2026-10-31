@@ -1,6 +1,6 @@
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/panel.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/panel.css') }}">
 <title>Panel · Retiros Juan XXIII</title>
 
 @include('partials.header')
@@ -107,5 +107,5 @@
         </section>
     @endif
 
-<script src="{{ asset('js/panel.js') }}"></script>
+<script src="{{ recurso('js/panel.js') }}"></script>
 @include('partials.footerPanel')

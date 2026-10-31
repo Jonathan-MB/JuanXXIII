@@ -1,6 +1,6 @@
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/login.css') }}">
 <title>Iniciar sesión · Retiros Juan XXIII</title>
 
 </head>

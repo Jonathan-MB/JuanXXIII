@@ -1,6 +1,6 @@
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/retiros.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/retiros.css') }}">
 <title>Retiros · Juan XXIII</title>
 
 @include('partials.header')

@@ -5,7 +5,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/archivos.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/archivos.css') }}">
 <title>{{ $nombreCategoria }} · Juan XXIII</title>
 
 @include('partials.header')
@@ -96,5 +96,5 @@
         </ul>
     @endif
 
-<script src="{{ asset('js/archivos.js') }}"></script>
+<script src="{{ recurso('js/archivos.js') }}"></script>
 @include('partials.footerPanel')

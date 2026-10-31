@@ -1,4 +1,4 @@
 
-<script src="{{ asset('js/impresion.js') }}"></script>
+<script src="{{ recurso('js/impresion.js') }}"></script>
 </body>
 </html>

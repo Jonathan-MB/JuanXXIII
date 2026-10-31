@@ -5,7 +5,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/desarrollo.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/desarrollo.css') }}">
 <title>{{ $esBase ? 'Desarrollo base' : 'Editar desarrollo' }} · Juan XXIII</title>
 
 @include('partials.header')
@@ -133,5 +133,5 @@
         </form>
     @endif
 
-<script src="{{ asset('js/desarrollo.js') }}"></script>
+<script src="{{ recurso('js/desarrollo.js') }}"></script>
 @include('partials.footerPanel')

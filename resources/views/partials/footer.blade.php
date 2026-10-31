@@ -1,4 +1,4 @@
 
-<script src="{{ asset('js/general.js') }}"></script>
+<script src="{{ recurso('js/general.js') }}"></script>
 </body>
 </html>

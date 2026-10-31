@@ -3,7 +3,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/llegada.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/llegada.css') }}">
 <title>Llegada y puestos · Juan XXIII</title>
 
 @include('partials.header')
@@ -183,5 +183,5 @@
         </section>
     @endif
 
-<script src="{{ asset('js/llegada.js') }}"></script>
+<script src="{{ recurso('js/llegada.js') }}"></script>
 @include('partials.footerPanel')

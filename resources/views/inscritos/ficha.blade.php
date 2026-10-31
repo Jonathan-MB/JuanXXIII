@@ -12,7 +12,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/inscritos.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/inscritos.css') }}">
 <title>{{ $persona->nombre_completo }} · Inscritos</title>
 
 @include('partials.header')
@@ -244,5 +244,5 @@
         @endif
     </section>
 
-<script src="{{ asset('js/inscritos.js') }}"></script>
+<script src="{{ recurso('js/inscritos.js') }}"></script>
 @include('partials.footerPanel')

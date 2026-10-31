@@ -1,6 +1,6 @@
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/impresiones.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/impresiones.css') }}">
 <title>Datos para imprimir · Juan XXIII</title>
 
 @include('partials.header')
@@ -119,5 +119,5 @@
         </tr>
     </template>
 
-<script src="{{ asset('js/impresiones.js') }}"></script>
+<script src="{{ recurso('js/impresiones.js') }}"></script>
 @include('partials.footerPanel')

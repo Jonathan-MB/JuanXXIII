@@ -3,7 +3,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/santisimo.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/santisimo.css') }}">
 <title>{{ $esBase ? 'Horario base del Santísimo' : 'Editar Santísimo' }} · Juan XXIII</title>
 
 @include('partials.header')
@@ -131,5 +131,5 @@
         @endif
     @endif
 
-<script src="{{ asset('js/santisimo.js') }}"></script>
+<script src="{{ recurso('js/santisimo.js') }}"></script>
 @include('partials.footerPanel')

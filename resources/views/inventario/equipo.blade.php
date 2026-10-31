@@ -3,7 +3,7 @@
 @endphp
 @include('partials.head')
 
-<link rel="stylesheet" href="{{ asset('css/inventario.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/inventario.css') }}">
 <title>Inventario {{ $equipo->nombre }} · Juan XXIII</title>
 
 @include('partials.header')
@@ -160,5 +160,5 @@
         </div>
     @endif
 
-<script src="{{ asset('js/inventario.js') }}"></script>
+<script src="{{ recurso('js/inventario.js') }}"></script>
 @include('partials.footerPanel')
