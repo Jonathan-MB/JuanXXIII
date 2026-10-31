@@ -21,6 +21,13 @@ class DesarrolloController extends Controller
         'mujeres' => 'Femenino',
     ];
 
+    // Lo que se imprime con el horario del retiro (?formato=)
+    private const FORMATOS = [
+        'desarrollo' => 'Desarrollo del retiro',
+        'charlistas' => 'Lista de charlistas',
+        'sala'       => 'Rotación al Santísimo en sala',
+    ];
+
 
 
     // Para leer (también en el celular durante el retiro)
@@ -220,7 +227,9 @@ class DesarrolloController extends Controller
 
 
 
-    // Hombres, mujeres o ambos (uno detrás del otro)
+    //  Hombres, mujeres o ambos (uno detrás del otro). Con ?formato salen
+    // los otros formatos de las carpetas del rectorado que se arman con
+    // el mismo horario: la lista de charlistas y la rotación en sala.
     public function imprimir(Request $request)
     {
         $retiro = Retiro::actual();
@@ -229,8 +238,9 @@ class DesarrolloController extends Controller
             return redirect()->route('desarrollo.index')->with('error', 'No hay un retiro próximo.');
         }
 
-        $grupos = array_key_exists($request->sexo, self::SEXOS) ? [$request->sexo] : array_keys(self::SEXOS);
-        $titulo = 'Desarrollo del retiro';
+        $formato = array_key_exists($request->formato, self::FORMATOS) ? $request->formato : 'desarrollo';
+        $grupos  = array_key_exists($request->sexo, self::SEXOS) ? [$request->sexo] : array_keys(self::SEXOS);
+        $titulo  = self::FORMATOS[$formato];
 
         $hojas = collect($grupos)
             ->mapWithKeys(fn ($grupo) => [$grupo => $this->actividadesDelRetiro($retiro, $grupo)])
@@ -243,7 +253,25 @@ class DesarrolloController extends Controller
 
         $rectorados = $retiro->rectorados()->orderBy('orden')->get()->groupBy('sexo');
 
-        return view('desarrollo.imprimir', compact('retiro', 'hojas', 'titulo', 'rectorados'));
+        if ($formato === 'charlistas') {
+            $hojas = $hojas->map(fn ($jornadas) => $jornadas
+                ->map(fn ($delDia) => $delDia->where('es_charla', true)->values())
+                ->filter(fn ($charlas) => $charlas->isNotEmpty()));
+        }
+
+        if ($formato === 'sala') {
+            $hojas = $hojas->map(fn ($jornadas) => $jornadas
+                ->map(fn ($delDia) => $this->franjasEnSala($delDia))
+                ->filter(fn ($franjas) => $franjas->isNotEmpty()));
+        }
+
+        $vista = match ($formato) {
+            'charlistas' => 'desarrollo.charlistas',
+            'sala'       => 'desarrollo.rotacionSala',
+            default      => 'desarrollo.imprimir',
+        };
+
+        return view($vista, compact('retiro', 'hojas', 'titulo', 'rectorados'));
     }
 
 
@@ -285,6 +313,69 @@ class DesarrolloController extends Controller
         ]);
 
         return back()->with('mensajeActualizado', ucfirst(implode(' y ', $partes)) . '.');
+    }
+
+
+
+    //  Franjas de una hora mientras hay charlas, para que el rector anote
+    // qué catequista acompaña al Santísimo en la sala. La primera empieza
+    // con la primera charla y las demás en punto; las horas sin charla
+    // (comidas, descanso) no salen.
+    private function franjasEnSala(Collection $delDia): Collection
+    {
+        $charlas = $delDia->where('es_charla', true)->filter(fn ($actividad) => $actividad->fin)->values();
+
+        if ($charlas->isEmpty()) {
+            return collect();
+        }
+
+        $franjas = collect();
+        $inicio  = $charlas->first()->inicio->copy();
+        $final   = $charlas->max('fin');
+
+        while ($inicio->lt($final)) {
+            $siguiente = $inicio->copy()->startOfHour()->addHour();
+            $fin       = $siguiente->lt($final) ? $siguiente : $final->copy();
+
+            $enCurso = $charlas->filter(fn ($charla) => $charla->inicio->lt($fin) && $charla->fin->gt($inicio));
+
+            if ($enCurso->isNotEmpty()) {
+                $franjas->push([
+                    'inicio'  => $inicio->copy(),
+                    'fin'     => $fin,
+                    'charlas' => $enCurso->pluck('nombre')->implode(' / '),
+                ]);
+            }
+
+            $inicio = $siguiente;
+        }
+
+        //  Un pedazo de menos de media hora al principio o al final no da
+        // para un turno: se une a la franja de al lado.
+        if ($franjas->count() > 1 && $franjas->first()['inicio']->diffInMinutes($franjas->first()['fin']) < 30) {
+            $primera = $franjas->shift();
+            $franjas->transform(fn ($franja, $indice) => $indice === 0 ? $this->unirFranjas($primera, $franja) : $franja);
+        }
+
+        if ($franjas->count() > 1 && $franjas->last()['inicio']->diffInMinutes($franjas->last()['fin']) < 30) {
+            $ultima = $franjas->pop();
+            $franjas->push($this->unirFranjas($franjas->pop(), $ultima));
+        }
+
+        return $franjas->values();
+    }
+
+
+
+    private function unirFranjas(array $antes, array $despues): array
+    {
+        $charlas = collect(explode(' / ', $antes['charlas']))->merge(explode(' / ', $despues['charlas']))->unique();
+
+        return [
+            'inicio'  => $antes['inicio'],
+            'fin'     => $despues['fin'],
+            'charlas' => $charlas->implode(' / '),
+        ];
     }
 
 

@@ -51,6 +51,23 @@
             'nombre'      => 'Entrega de previstos',
             'descripcion' => 'Por mesa, con CT y CA: casillas para camiseta (con la talla), crucifijo, camándula, cartas y previstos; falda solo en mujeres.',
         ],
+        [
+            'ruta'        => 'impresiones.catequistas',
+            'nombre'      => 'Catequistas por mesa',
+            'descripcion' => 'Carpetas del rectorado: cada mesa con su CT y su CA, ubicadas en U como en la sala. Si aún no hay mesas, salen en blanco.',
+        ],
+        [
+            'ruta'        => 'desarrollo.imprimir',
+            'parametros'  => ['formato' => 'charlistas'],
+            'nombre'      => 'Lista de charlistas',
+            'descripcion' => 'Carpetas del rectorado: las charlas de cada día con su hora y el charlista escrito en el Desarrollo del retiro.',
+        ],
+        [
+            'ruta'        => 'desarrollo.imprimir',
+            'parametros'  => ['formato' => 'sala'],
+            'nombre'      => 'Rotación al Santísimo en sala',
+            'descripcion' => 'Carpeta del rector(a), dos copias: franjas de una hora durante las charlas, con espacio para escribir el catequista.',
+        ],
     ];
 @endphp
 @include('partials.head')
@@ -101,10 +118,10 @@
                     <h2 class="nombre-impresion">{{ $documento['nombre'] }}</h2>
                     <p class="descripcion-impresion">{{ $documento['descripcion'] }}</p>
                     <div class="botones-impresion">
-                        <a class="boton-azul" href="{{ route($documento['ruta'], ['sexo' => 'hombres']) }}" target="_blank" rel="noopener">Hombres</a>
-                        <a class="boton-azul" href="{{ route($documento['ruta'], ['sexo' => 'mujeres']) }}" target="_blank" rel="noopener">Mujeres</a>
+                        <a class="boton-azul" href="{{ route($documento['ruta'], ['sexo' => 'hombres'] + ($documento['parametros'] ?? [])) }}" target="_blank" rel="noopener">Hombres</a>
+                        <a class="boton-azul" href="{{ route($documento['ruta'], ['sexo' => 'mujeres'] + ($documento['parametros'] ?? [])) }}" target="_blank" rel="noopener">Mujeres</a>
                         @unless ($documento['soloGrupo'] ?? false)
-                            <a class="boton-secundario" href="{{ route($documento['ruta']) }}" target="_blank" rel="noopener">Ambos</a>
+                            <a class="boton-secundario" href="{{ route($documento['ruta'], $documento['parametros'] ?? []) }}" target="_blank" rel="noopener">Ambos</a>
                         @endunless
                     </div>
                 </article>

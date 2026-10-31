@@ -12,13 +12,7 @@
         <section class="pagina">
             @include('partials.membrete', ['subtitulo' => 'Desarrollo del retiro · Retiro N.º ' . $numero . ' ' . ucfirst($grupo) . ' · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year])
 
-            @if ($rectorado->isNotEmpty())
-                <p class="rectorado-desarrollo">
-                    @foreach ($rectorado as $persona)
-                        <span><strong>{{ $persona->cargo }}:</strong> {{ $persona->nombre }}</span>
-                    @endforeach
-                </p>
-            @endif
+            @include('partials.rectoradoImpresion')
 
             @foreach ($jornadas as $jornada => $delDia)
                 <table class="tabla-impresion tabla-desarrollo">

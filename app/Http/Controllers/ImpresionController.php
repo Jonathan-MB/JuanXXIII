@@ -286,6 +286,45 @@ class ImpresionController extends Controller
 
 
 
+    //  Distribución de catequistas en sala (carpetas del rectorado): cada
+    // mesa con su CT y su CA. Las mesas van en U, como se ubican en la
+    // sala: la primera mitad baja por la izquierda y el resto sube por la
+    // derecha. Si aún no hay mesas, salen 10 en blanco para llenar a mano.
+    public function catequistas(Request $request)
+    {
+        $retiro = $this->retiroOFallar();
+        $sexo   = $this->sexoPedido($request);
+
+        $mesas      = $retiro->mesas()->orderBy('numero')->get()->groupBy('sexo');
+        $rectorados = $retiro->rectorados()->orderBy('orden')->get()->groupBy('sexo');
+
+        $grupos = collect(['Masculino', 'Femenino'])
+            ->when($sexo, fn ($sexos) => $sexos->filter(fn ($grupo) => $grupo === $sexo))
+            ->mapWithKeys(function ($grupo) use ($mesas) {
+                $delGrupo = $mesas->get($grupo, collect())->values();
+
+                if ($delGrupo->isEmpty()) {
+                    $delGrupo = collect(range(1, 10))->map(fn ($numero) => new Mesa(['numero' => $numero]));
+                }
+
+                $mitad = (int) ceil($delGrupo->count() / 2);
+
+                return [$grupo => [
+                    'izquierda' => $delGrupo->take($mitad)->values(),
+                    'derecha'   => $delGrupo->slice($mitad)->reverse()->values(),
+                ]];
+            });
+
+        return view('impresiones.catequistas', [
+            'retiro'     => $retiro,
+            'grupos'     => $grupos,
+            'rectorados' => $rectorados,
+            'titulo'     => 'Catequistas por mesa',
+        ]);
+    }
+
+
+
     //  Tarjetas "De / Para" de las flores, en blanco para llenar a mano
     // y recortar. En oficio caben 27 (3 x 9), como el Word de siempre; en
     // carta, 21 (3 x 7), del mismo tamaño.

@@ -879,3 +879,39 @@ p {
     margin-bottom: 3px;
     border-top: 1px solid #111111;
 }
+
+
+/* ----------Lista de charlistas y rotación en sala-------------- */
+.tabla-charlistas .columna-charlista,
+.tabla-rotacion-sala .columna-charlista {
+    width: 38%;
+}
+
+.tabla-charlistas td,
+.tabla-rotacion-sala td {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+
+/* ----------Catequistas por mesa-------------- */
+.sala-catequistas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 28px;
+}
+
+.tabla-catequistas {
+    margin-bottom: 0;
+    font-size: 9pt;
+    break-inside: avoid;
+}
+
+.tabla-catequistas th {
+    width: 42%;
+    font-size: 7.5pt;
+}
+
+.tabla-catequistas td {
+    height: 22px;
+}
