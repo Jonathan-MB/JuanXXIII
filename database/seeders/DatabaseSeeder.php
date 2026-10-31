@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PerseveranciaSeeder::class,
             SantisimoBaseSeeder::class,
             ActividadBaseSeeder::class,
+            FuncionesSecretariaSeeder::class,
         ]);
     }
 }
