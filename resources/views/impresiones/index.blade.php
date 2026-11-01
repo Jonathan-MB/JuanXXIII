@@ -68,6 +68,42 @@
             'nombre'      => 'Rotación al Santísimo en sala',
             'descripcion' => 'Carpeta del rector(a), dos copias: franjas de una hora durante las charlas, con espacio para escribir el catequista.',
         ],
+        [
+            'ruta'        => 'impresiones.informe',
+            'parametros'  => ['formato' => 'dirigente'],
+            'nombre'      => 'Informe del dirigente responsable',
+            'descripcion' => 'Carpeta del dirigente: cada charla del desarrollo con renglones para comentarla, la clausura y las observaciones.',
+        ],
+        [
+            'ruta'        => 'impresiones.informe',
+            'parametros'  => ['formato' => 'rector'],
+            'nombre'      => 'Informe del rector(a)',
+            'descripcion' => 'Catequistas que no asistieron, la llegada de cada CT, CA y CR por mesa, colaboraciones, sacerdotes y lo que se adjunta.',
+        ],
+        [
+            'ruta'        => 'impresiones.informe',
+            'parametros'  => ['formato' => 'vicerrector'],
+            'nombre'      => 'Informe del vicerrector(a)',
+            'descripcion' => 'Quienes no asistieron a sus equipos, la llegada del responsable de cada equipo y el accionar de los equipos (precios y servicio).',
+        ],
+        [
+            'ruta'        => 'impresiones.informe',
+            'parametros'  => ['formato' => 'equipos'],
+            'nombre'      => 'Evaluación de equipos',
+            'descripcion' => 'Carpeta del vicerrector(a): una tabla por equipo con el nombre de cada dirigente, su hora de llegada y observaciones.',
+        ],
+        [
+            'ruta'        => 'impresiones.informe',
+            'parametros'  => ['formato' => 'problematicas'],
+            'nombre'      => 'Problemáticas',
+            'descripcion' => 'Hoja numerada del 1 al 20 para anotar la problemática de cada invitado y su mesa.',
+        ],
+        [
+            'ruta'        => 'impresiones.informe',
+            'parametros'  => ['formato' => 'ofrenda'],
+            'nombre'      => 'Acta de entrega de la ofrenda',
+            'descripcion' => 'Arqueo de billetes y monedas con el rectorado ya escrito, para entregar la ofrenda al tesorero(a) con las firmas.',
+        ],
     ];
 @endphp
 @include('partials.head')

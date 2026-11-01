@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GuardarFirmantesRequest;
 use App\Http\Requests\GuardarPerseveranciasRequest;
 use App\Http\Requests\GuardarRectoradoRequest;
+use App\Models\ActividadBase;
 use App\Models\Firmante;
 use App\Models\Inscripcion;
 use App\Models\Mesa;
@@ -18,6 +19,31 @@ use Illuminate\Support\Facades\DB;
 
 class ImpresionController extends Controller
 {
+
+    //  Los formatos de las carpetas del rectorado que se llenan a mano
+    // durante el retiro. La vista de cada uno está en impresiones/informes.
+    public const INFORMES = [
+        'dirigente'     => 'Informe del dirigente responsable',
+        'rector'        => 'Informe del rector(a)',
+        'vicerrector'   => 'Informe del vicerrector(a)',
+        'equipos'       => 'Evaluación de equipos',
+        'problematicas' => 'Problemáticas',
+        'ofrenda'       => 'Acta de entrega de la ofrenda',
+    ];
+
+    //  Los equipos de servicio tal como van en el informe del
+    // vicerrector(a) y en la evaluación de equipos (Formatos Rectorados).
+    private const EQUIPOS_SERVICIO = [
+        'Montaje',
+        'Cocina',
+        'Secretaría',
+        'Librería',
+        'Floristería',
+        'Cafetería',
+        'Coro',
+        'Previstos',
+        'Premontaje',
+    ];
 
     // El centro de impresiones: qué se puede imprimir y qué falta
     public function index()
@@ -321,6 +347,61 @@ class ImpresionController extends Controller
             'rectorados' => $rectorados,
             'titulo'     => 'Catequistas por mesa',
         ]);
+    }
+
+
+
+    //  Informes, problemáticas, evaluación de equipos y acta de la
+    // ofrenda. Salen con el retiro y el rectorado ya escritos; lo demás
+    // queda en blanco. El del dirigente trae las charlas del desarrollo
+    // (o las de la base si todavía no se preparó) y el del rector, los
+    // catequistas de cada mesa para anotar su hora de llegada.
+    public function informe(Request $request, string $formato)
+    {
+        abort_unless(array_key_exists($formato, self::INFORMES), 404);
+
+        $retiro = $this->retiroOFallar();
+        $sexo   = $this->sexoPedido($request);
+
+        $rectorados = $retiro->rectorados()->orderBy('orden')->get()->groupBy('sexo');
+
+        $grupos = collect(['Masculino', 'Femenino'])
+            ->when($sexo, fn ($sexos) => $sexos->filter(fn ($grupo) => $grupo === $sexo))
+            ->mapWithKeys(fn ($grupo) => [$grupo => [
+                'rectorado' => $rectorados->get($grupo, collect()),
+                'charlas'   => $formato === 'dirigente' ? $this->charlasDe($retiro, $grupo) : collect(),
+                'mesas'     => $formato === 'rector' ? $retiro->mesas()->where('sexo', $grupo)->orderBy('numero')->get() : collect(),
+            ]]);
+
+        return view('impresiones.informes.' . $formato, [
+            'retiro'  => $retiro,
+            'grupos'  => $grupos,
+            'equipos' => self::EQUIPOS_SERVICIO,
+            'titulo'  => self::INFORMES[$formato],
+        ]);
+    }
+
+
+
+    //  Los nombres de las charlas en el orden del retiro, sin repetir
+    // (algunas se parten en dos bloques en el desarrollo).
+    private function charlasDe(Retiro $retiro, string $sexo): Collection
+    {
+        $charlas = $retiro->actividades()
+            ->where('sexo', $sexo)
+            ->where('es_charla', true)
+            ->orderBy('inicio')
+            ->pluck('nombre');
+
+        if ($charlas->isEmpty()) {
+            $charlas = ActividadBase::where('sexo', $sexo)
+                ->where('es_charla', true)
+                ->get()
+                ->sortBy(fn ($actividad) => $actividad->dia_relativo . $actividad->orden)
+                ->pluck('nombre');
+        }
+
+        return $charlas->unique()->values();
     }
 
 

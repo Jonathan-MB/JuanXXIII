@@ -166,6 +166,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/impresiones/previstos', [ImpresionController::class, 'previstos'])->name('impresiones.previstos');
         Route::get('/impresiones/flores', [ImpresionController::class, 'flores'])->name('impresiones.flores');
         Route::get('/impresiones/catequistas', [ImpresionController::class, 'catequistas'])->name('impresiones.catequistas');
+        Route::get('/impresiones/informes/{formato}', [ImpresionController::class, 'informe'])->name('impresiones.informe');
     });
 
 

@@ -915,3 +915,185 @@ p {
 .tabla-catequistas td {
     height: 22px;
 }
+
+
+/* ----------Informes del rectorado, problemáticas y acta de la ofrenda-------------- */
+.datos-informe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 22px;
+    margin-bottom: 12px;
+    font-size: 9.5pt;
+}
+
+.dato-nombre {
+    flex: 1 1 100%;
+}
+
+.linea-llenar {
+    display: inline-block;
+    min-width: 8cm;
+    border-bottom: 1px solid #111111;
+}
+
+.titulo-informe {
+    margin: 12px 0 4px;
+    font-size: 10.5pt;
+    text-transform: uppercase;
+}
+
+.subtitulo-informe {
+    margin: 6px 0 0;
+    font-size: 9.5pt;
+}
+
+.bloque-informe {
+    break-inside: avoid;
+}
+
+.renglones {
+    display: flex;
+    flex-direction: column;
+}
+
+.renglon {
+    height: 22px;
+    border-bottom: 1px solid #888888;
+}
+
+.tabla-informe td {
+    height: 22px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.tabla-informe .columna-corta {
+    width: 13%;
+}
+
+.tabla-informe .columna-media {
+    width: 22%;
+}
+
+.celda-centro {
+    text-align: center !important;
+}
+
+.celda-derecha {
+    text-align: right !important;
+    white-space: nowrap;
+}
+
+.tabla-equipo {
+    break-inside: avoid;
+}
+
+.tabla-problematicas td {
+    height: 34px;
+}
+
+.firmas-informe {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1cm 1.5cm;
+    margin-top: 1.3cm;
+    text-align: center;
+    font-size: 9pt;
+    break-inside: avoid;
+}
+
+.firmas-informe > div {
+    flex: 0 1 6.5cm;
+}
+
+.linea-firma-informe {
+    display: block;
+    margin-bottom: 3px;
+    border-top: 1px solid #111111;
+}
+
+.nombre-firma {
+    display: block;
+    font-weight: 700;
+}
+
+.nota-informe {
+    margin-top: 14px;
+    font-size: 8.5pt;
+    font-style: italic;
+}
+
+.lista-adjuntos {
+    columns: 2;
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    font-size: 9pt;
+}
+
+/* Casilla para marcar lo que se adjunta */
+.lista-adjuntos li::before {
+    content: "☐ ";
+}
+
+.texto-acta {
+    margin: 10px 0 14px;
+    font-size: 10.5pt;
+    line-height: 2;
+    text-align: justify;
+}
+
+.hueco {
+    display: inline-block;
+    min-width: 3.5cm;
+    border-bottom: 1px solid #111111;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.hueco-corto {
+    min-width: 1.5cm;
+}
+
+.hueco-nombre {
+    min-width: 6cm;
+}
+
+.hueco-largo {
+    min-width: 8cm;
+}
+
+.conteo-ofrenda {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 24px;
+    align-items: start;
+}
+
+.fila-total th {
+    text-align: right;
+}
+
+.total-ofrenda {
+    margin: 8px 0;
+    font-size: 10.5pt;
+}
+
+.firmas-acta {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    break-inside: avoid;
+}
+
+.firmas-acta .firmas-informe {
+    margin-top: 0.6cm;
+}
+
+.titulo-firmas {
+    margin: 14px 0 0;
+    font-size: 9.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+}
