@@ -25,6 +25,7 @@
                 @if ($filas->isNotEmpty())
                     <a class="boton-secundario" href="{{ route('santisimo.imprimir') }}" target="_blank">Imprimir</a>
                 @endif
+                <a class="boton-secundario" href="{{ route('santisimo.reparto') }}">Reparto automático</a>
                 <a class="boton-secundario" href="{{ route('santisimo.base') }}">Horario base</a>
             @endif
         </div>

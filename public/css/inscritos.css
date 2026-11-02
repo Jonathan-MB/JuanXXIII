@@ -353,3 +353,19 @@
 [hidden] {
     display: none !important;
 }
+
+/* ----------Correo de confirmación en la ficha-------------- */
+.formulario-en-linea {
+    display: inline;
+    margin-left: 8px;
+}
+
+.boton-enlace {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}

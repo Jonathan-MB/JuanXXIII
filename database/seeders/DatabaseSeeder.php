@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             FirmanteSeeder::class,
             PerseveranciaSeeder::class,
             SantisimoBaseSeeder::class,
+            SantisimoReglaSeeder::class,
             ActividadBaseSeeder::class,
             FuncionesSecretariaSeeder::class,
         ]);

@@ -1,0 +1,62 @@
+/* ----------Formulario de ajustes-------------- */
+.formulario-ajustes {
+    max-width: 760px;
+}
+
+.formulario-ajustes .bloque-formulario {
+    margin-bottom: 18px;
+}
+
+.formulario-ajustes textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.formulario-ajustes code {
+    padding: 1px 5px;
+    border-radius: 6px;
+    background: #eef1f7;
+    color: #1c2f5e;
+    font-size: 13px;
+}
+
+.casilla-ajuste {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.aviso-ajuste {
+    margin-top: 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #fff6d6;
+    color: #6b5200;
+    font-size: 14px;
+}
+
+.qr-actual {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.qr-actual img {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    border: 1px solid #dde2ec;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.qr-actual .casilla-ajuste {
+    margin-top: 0;
+}

@@ -1,5 +1,9 @@
 @php
     use App\Models\ActividadBase;
+    use App\Models\Rol;
+
+    // Directivos solo consulta: sin editar, imprimir ni preparar
+    $puedeEditar = auth()->user()->tieneRol(Rol::ADMINISTRACION, Rol::SECRETARIA);
 @endphp
 @include('partials.head')
 
@@ -10,7 +14,7 @@
 
     <div class="cabecera-vista">
         <h1 class="vista-titulo">Desarrollo del retiro</h1>
-        @if ($retiro)
+        @if ($retiro && $puedeEditar)
             <div class="acciones-desarrollo">
                 @if ($actividades->isNotEmpty())
                     <a class="boton-secundario" href="{{ route('desarrollo.imprimir', ['sexo' => $grupo]) }}" target="_blank">Imprimir {{ $grupo }}</a>
@@ -25,17 +29,19 @@
     @if (! $retiro)
         <p class="texto-vacio">No hay un retiro próximo.</p>
     @else
-        <p class="texto-ayuda texto-ayuda-arriba">{{ $retiro->nombre }} · {{ $retiro->dias_texto }}. Actividades y charlas para el papeleo de Secretaría; el de mujeres va más temprano.</p>
+        <p class="texto-ayuda texto-ayuda-arriba">{{ $retiro->nombre }} · {{ $retiro->dias_texto }}. Actividades y charlas de cada día; el de mujeres va más temprano.</p>
 
         @include('desarrollo.pestanas', ['ruta' => 'desarrollo.index'])
 
         @if ($actividades->isEmpty())
             <p class="texto-vacio">El desarrollo de {{ $grupo }} todavía no está preparado para este retiro.</p>
-            <form method="POST" action="{{ route('desarrollo.copiarBase') }}" class="formulario-preparar">
-                @csrf
-                <input type="hidden" name="sexo" value="{{ $grupo }}">
-                <button type="submit" class="boton-amarillo">Preparar desde la base</button>
-            </form>
+            @if ($puedeEditar)
+                <form method="POST" action="{{ route('desarrollo.copiarBase') }}" class="formulario-preparar">
+                    @csrf
+                    <input type="hidden" name="sexo" value="{{ $grupo }}">
+                    <button type="submit" class="boton-amarillo">Preparar desde la base</button>
+                </form>
+            @endif
         @else
             @foreach ($jornadas as $jornada => $delDia)
                 <section class="jornada">

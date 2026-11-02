@@ -335,3 +335,66 @@
         font-size: 20px;
     }
 }
+
+
+/* ----------Reparto automático-------------- */
+.bloque-reparto {
+    margin-bottom: 22px;
+    padding: 16px;
+    border: 1px solid #dde2ec;
+    border-radius: 14px;
+    background: #f7f9fc;
+}
+
+.titulo-bloque-reparto {
+    margin-bottom: 6px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #1c2f5e;
+}
+
+.bloque-reparto .texto-ayuda {
+    margin-bottom: 12px;
+}
+
+.lista-equipos-reparto {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.fila-equipo-reparto {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    border: 1px solid #dde2ec;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.nombre-equipo-reparto {
+    flex: 1;
+    font-weight: 700;
+}
+
+.campo-personas {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #5b6478;
+}
+
+.campo-personas input {
+    width: 64px;
+    min-height: 36px;
+}
+
+.casilla-participa {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+}

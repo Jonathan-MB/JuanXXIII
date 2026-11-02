@@ -7,7 +7,7 @@
             <h2 class="titulo-informe">A. Desarrollo de charlas</h2>
             @foreach ($grupo['charlas'] as $charla)
                 <div class="bloque-informe">
-                    <h3 class="subtitulo-informe">{{ $charla }}</h3>
+                    <h3 class="subtitulo-informe">{{ $charla['nombre'] }}</h3>
                     @include('impresiones.informes.renglones', ['cantidad' => 3])
                 </div>
             @endforeach

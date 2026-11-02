@@ -57,6 +57,16 @@ p {
         font-weight: 700;
     }
 
+    .aviso-carpeta {
+        max-width: 816px;
+        margin: 14px auto 0;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: #fff6d6;
+        color: #6b5200;
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
     .barra-botones {
         display: flex;
         gap: 8px;
@@ -109,7 +119,8 @@ p {
 /* ----------Al imprimir-------------- */
 @media print {
 
-    .barra-impresion {
+    .barra-impresion,
+    .aviso-carpeta {
         display: none;
     }
 }
@@ -1096,4 +1107,89 @@ p {
     font-size: 9.5pt;
     font-weight: 700;
     text-transform: uppercase;
+}
+
+
+/* ----------Evaluación de charlas: una hoja por charla-------------- */
+.evaluacion-charla {
+    font-size: 8.5pt;
+}
+
+.evaluacion-charla .membrete {
+    margin-bottom: 4px;
+}
+
+.nombre-charla {
+    margin: 2px 0 6px;
+    font-size: 12pt;
+}
+
+.preguntas-charla p,
+p.preguntas-charla {
+    margin: 0 0 5px;
+}
+
+.casilla {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin: 0 2px;
+    border: 1px solid #111111;
+    vertical-align: middle;
+}
+
+.si-no {
+    white-space: nowrap;
+    font-size: 7.5pt;
+}
+
+.temas-charla {
+    margin: 0 0 6px;
+    padding-left: 0;
+    list-style: none;
+}
+
+.temas-charla li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 14px;
+    padding: 1px 0;
+    border-bottom: 1px dotted #999999;
+}
+
+.evaluacion-charla .renglon {
+    height: 16px;
+}
+
+.evaluacion-charla .tabla-informe td {
+    height: 22px;
+}
+
+.pie-evaluacion {
+    margin-top: 10px;
+}
+
+
+/* ----------Grupo de WhatsApp al pie del directorio-------------- */
+.bloque-whatsapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 10px;
+    padding: 6px 8px;
+    border: 1px solid #555555;
+    font-size: 9pt;
+    text-align: center;
+    break-inside: avoid;
+}
+
+.bloque-whatsapp strong {
+    word-break: break-all;
+}
+
+.qr-whatsapp {
+    width: 2.6cm;
+    height: 2.6cm;
+    object-fit: contain;
 }

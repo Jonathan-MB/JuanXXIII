@@ -61,11 +61,17 @@
             @if ($verTodo)
                 <a class="menu-enlace {{ request()->routeIs('retiros.*') ? 'menu-activo' : '' }}" href="{{ route('retiros.index') }}">Retiros</a>
                 <a class="menu-enlace {{ request()->routeIs('historial.*') ? 'menu-activo' : '' }}" href="{{ route('historial.index') }}">Historial</a>
+                <a class="menu-enlace {{ request()->routeIs('ajustes.*') ? 'menu-activo' : '' }}" href="{{ route('ajustes.index') }}">Ajustes</a>
             @endif
             <a class="menu-enlace {{ request()->routeIs('inventario.*') ? 'menu-activo' : '' }}" href="{{ route('inventario.index') }}">Inventario</a>
 
             @if ($verDirectivo)
-                <span class="menu-enlace menu-pronto">Directivos <small>pronto</small></span>
+                <p class="menu-grupo">Directivos</p>
+                <a class="menu-enlace {{ request()->routeIs('directivos.*') ? 'menu-activo' : '' }}" href="{{ route('directivos.index') }}">Inscritos del retiro</a>
+                {{-- Administración ya lo tiene arriba, en Retiro actual --}}
+                @unless ($verTodo)
+                    <a class="menu-enlace {{ request()->routeIs('desarrollo.*') ? 'menu-activo' : '' }}" href="{{ route('desarrollo.index') }}">Desarrollo del retiro</a>
+                @endunless
             @endif
 
             @if ($usuario->tieneRol(Rol::ADMINISTRACION))

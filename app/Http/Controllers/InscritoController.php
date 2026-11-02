@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateInscritoRequest;
+use App\Mail\ConfirmacionInscripcion;
 use App\Models\Inscripcion;
 use App\Models\Retiro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class InscritoController extends Controller
@@ -159,6 +162,31 @@ class InscritoController extends Controller
         $inscripcion->update($cambios);
 
         return back()->with('mensajeActualizado', 'Estado cambiado a: ' . $inscripcion->nombre_estado . '.');
+    }
+
+
+
+    //  Manda (o vuelve a mandar) el correo de confirmación de cupo. Si el
+    // servidor de correo falla, se avisa sin perder nada.
+    public function enviarConfirmacion(Inscripcion $inscripcion)
+    {
+        $correo = $inscripcion->persona->correo;
+
+        if (! $correo) {
+            return back()->with('error', 'Esta persona no tiene correo.');
+        }
+
+        try {
+            Mail::to($correo)->send(new ConfirmacionInscripcion($inscripcion));
+        } catch (\Throwable $error) {
+            Log::error('No se pudo enviar la confirmación', ['inscripcion' => $inscripcion->id, 'error' => $error->getMessage()]);
+
+            return back()->with('error', 'No se pudo enviar el correo. Revisa la configuración del correo del servidor.');
+        }
+
+        $inscripcion->update(['confirmacion_enviada' => now()]);
+
+        return back()->with('mensajeActualizado', 'Se envió el correo de confirmación a ' . $correo . '.');
     }
 
 

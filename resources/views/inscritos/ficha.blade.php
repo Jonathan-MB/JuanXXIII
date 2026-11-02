@@ -118,6 +118,16 @@
                 <dt>Inscrito el</dt><dd>{{ $inscripcion->created_at->format('d/m/Y g:i a') }}</dd>
                 <dt>Llegada</dt><dd>{{ $inscripcion->llegada_en ? $inscripcion->llegada_en->format('d/m/Y g:i a') : 'Todavía no' }}</dd>
                 <dt>Puesto</dt><dd>{{ $inscripcion->mesa ? 'Mesa ' . $inscripcion->mesa->numero . ' · Silla ' . $inscripcion->silla : 'Sin asignar' }}</dd>
+                <dt>Confirmación</dt>
+                <dd>
+                    {{ $inscripcion->confirmacion_enviada ? 'Correo enviado el ' . $inscripcion->confirmacion_enviada->format('d/m/Y g:i a') : 'Sin enviar' }}
+                    @if ($puedeEditar && $persona->correo)
+                        <form method="POST" action="{{ route('inscritos.confirmacion', $inscripcion) }}" class="formulario-confirmar formulario-en-linea" data-confirmar="¿Enviar el correo de confirmación de cupo a {{ $persona->correo }}?">
+                            @csrf
+                            <button type="submit" class="enlace-accion boton-enlace">{{ $inscripcion->confirmacion_enviada ? 'Volver a enviar' : 'Enviar correo' }}</button>
+                        </form>
+                    @endif
+                </dd>
                 <dt>Forma de pago</dt><dd>{{ $inscripcion->forma_pago }}</dd>
                 <dt>Comprobante</dt>
                 <dd>

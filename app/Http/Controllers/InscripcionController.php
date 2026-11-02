@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInscripcionRequest;
+use App\Mail\ConfirmacionInscripcion;
+use App\Models\Ajuste;
 use App\Models\Inscripcion;
 use App\Models\Persona;
 use App\Models\Retiro;
+use App\Models\RetiristaAnterior;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class InscripcionController extends Controller
 {
@@ -50,7 +55,11 @@ class InscripcionController extends Controller
             // la segunda espera y entonces sí ve la inscripción de la primera.
             $persona = Persona::where('cedula', $data['cedula'])->lockForUpdate()->first();
 
-            if ($persona && $persona->yaHizoRetiro()) {
+            //  Puede que nunca se haya inscrito aquí pero esté en los
+            // registros de antes de la aplicación.
+            $yaVivio = $persona ? $persona->yaHizoRetiro() : RetiristaAnterior::where('cedula', $data['cedula'])->exists();
+
+            if ($yaVivio) {
                 return 'Esta cédula ya vivió el retiro Juan XXIII. El retiro se vive una sola vez.';
             }
 
@@ -92,6 +101,17 @@ class InscripcionController extends Controller
             return back()->withInput()->withErrors(['cedula' => $resultado]);
         }
 
+        //  Solo si en Ajustes se pidió mandarlo apenas se inscribe. Si el correo
+        // falla, la inscripción ya quedó guardada: se anota y se sigue.
+        if (Ajuste::valor(Ajuste::CORREO_AUTOMATICO) === '1' && $data['correo']) {
+            try {
+                Mail::to($data['correo'])->send(new ConfirmacionInscripcion($resultado));
+                $resultado->update(['confirmacion_enviada' => now()]);
+            } catch (\Throwable $error) {
+                Log::error('No se pudo enviar la confirmación', ['inscripcion' => $resultado->id, 'error' => $error->getMessage()]);
+            }
+        }
+
         return redirect()->route('inscripcion.recibida')->with('inscripcionRecibida', [
             'nombre'         => $data['nombres'],
             'retiro'         => ($data['sexo'] === 'Femenino' ? 'Retiro de mujeres N.º ' : 'Retiro de hombres N.º ') . $retiro->numeroPara($data['sexo']),
@@ -124,9 +144,11 @@ class InscripcionController extends Controller
     public function verificarCedula(string $cedula)
     {
         $retiro  = Retiro::proximoAbierto();
-        $persona = Persona::where('cedula', Persona::normalizarCedula($cedula))->first();
+        $cedula  = Persona::normalizarCedula($cedula);
+        $persona = Persona::where('cedula', $cedula)->first();
+        $yaVivio = $persona ? $persona->yaHizoRetiro() : RetiristaAnterior::where('cedula', $cedula)->exists();
 
-        if ($persona && $persona->yaHizoRetiro()) {
+        if ($yaVivio) {
             return response()->json(['puede' => false, 'mensaje' => 'Esta cédula ya vivió el retiro Juan XXIII. El retiro se vive una sola vez.']);
         }
 

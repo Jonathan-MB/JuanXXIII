@@ -80,6 +80,21 @@
                     </div>
                 </div>
             @endif
+
+            {{-- --------------------WHATSAPP------------------- --}}
+            @if ($whatsapp || $tieneQr)
+                <div class="bloque-whatsapp">
+                    @if ($tieneQr)
+                        <img class="qr-whatsapp" src="{{ route('ajustes.qr') }}" alt="Código QR del grupo de WhatsApp">
+                    @endif
+                    <p>
+                        Únete al grupo de WhatsApp del movimiento{{ $tieneQr ? ': escanea el código' : '' }}
+                        @if ($whatsapp)
+                            <br><strong>{{ $whatsapp }}</strong>
+                        @endif
+                    </p>
+                </div>
+            @endif
         </section>
     @empty
         <div class="pagina pagina-vacia">

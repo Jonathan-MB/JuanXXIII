@@ -28,6 +28,7 @@ class Inscripcion extends Model
         'padrino_parroquia',
         'acepta_datos',
         'declara_requisitos',
+        'confirmacion_enviada',
         'silla',
         'llegada_en',
         'persona_id',
@@ -36,10 +37,11 @@ class Inscripcion extends Model
     ];
 
     protected $casts = [
-        'tiene_padrino'      => 'boolean',
-        'acepta_datos'       => 'boolean',
-        'declara_requisitos' => 'boolean',
-        'llegada_en'         => 'datetime',
+        'tiene_padrino'        => 'boolean',
+        'acepta_datos'         => 'boolean',
+        'declara_requisitos'   => 'boolean',
+        'llegada_en'           => 'datetime',
+        'confirmacion_enviada' => 'datetime',
     ];
 
     // Cómo se le muestra cada estado a la persona que usa el panel

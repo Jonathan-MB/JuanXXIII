@@ -9,7 +9,7 @@ class Persona extends Model
 {
 
     // Tallas de camiseta, en el orden en que se cuentan e imprimen
-    public const TALLAS = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+    public const TALLAS = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', '4XL', '5XL'];
 
     protected $fillable = [
         'nombres',
@@ -51,11 +51,13 @@ class Persona extends Model
 
 
 
-    //  Quien ya terminó un retiro no puede volver a inscribirse.
+    //  Quien ya terminó un retiro (aquí o antes de usar la aplicación)
+    // no puede volver a inscribirse.
     // Quien no asistió o abandonó sí puede.
     public function yaHizoRetiro(): bool
     {
-        return $this->inscripciones()->where('estado', Inscripcion::TERMINO)->exists();
+        return $this->inscripciones()->where('estado', Inscripcion::TERMINO)->exists()
+            || RetiristaAnterior::where('cedula', $this->cedula)->exists();
     }
 
 

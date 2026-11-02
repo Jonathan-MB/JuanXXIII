@@ -10,6 +10,12 @@ class Equipo extends Model
     protected $fillable = [
         'nombre',
         'cantidad_personas',
+        'participa_santisimo',
+    ];
+
+    protected $casts = [
+        'cantidad_personas'   => 'integer',
+        'participa_santisimo' => 'boolean',
     ];
 
 

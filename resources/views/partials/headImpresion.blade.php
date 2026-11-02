@@ -1,3 +1,5 @@
+{{-- Dentro de una carpeta del rectorado, la página (y la barra) la pone la carpeta --}}
+@unless ($enCarpeta ?? false)
 <!DOCTYPE html>
 <html lang="es">
 
@@ -19,3 +21,4 @@
             <a class="barra-boton" href="{{ $volver ?? route('impresiones.index') }}">{{ $volverTexto ?? 'Volver a impresiones' }}</a>
         </div>
     </div>
+@endunless

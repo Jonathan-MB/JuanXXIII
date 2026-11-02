@@ -69,6 +69,24 @@
             'descripcion' => 'Carpeta del rector(a), dos copias: franjas de una hora durante las charlas, con espacio para escribir el catequista.',
         ],
         [
+            'ruta'        => 'impresiones.carpeta',
+            'parametros'  => ['cargo' => 'rector'],
+            'nombre'      => 'Carpeta del rector(a) completa',
+            'descripcion' => 'Todo junto en una sola impresión: charlistas, rotación en sala, catequistas por mesa, informe del rector(a), problemáticas y acta de la ofrenda.',
+        ],
+        [
+            'ruta'        => 'impresiones.carpeta',
+            'parametros'  => ['cargo' => 'vicerrector'],
+            'nombre'      => 'Carpeta del vicerrector(a) completa',
+            'descripcion' => 'Todo junto en una sola impresión: charlistas, informe del vicerrector(a) y evaluación de equipos.',
+        ],
+        [
+            'ruta'        => 'impresiones.carpeta',
+            'parametros'  => ['cargo' => 'dirigente'],
+            'nombre'      => 'Carpeta del dirigente completa',
+            'descripcion' => 'Todo junto en una sola impresión: charlistas, informe del dirigente responsable y evaluación de charlas.',
+        ],
+        [
             'ruta'        => 'impresiones.informe',
             'parametros'  => ['formato' => 'dirigente'],
             'nombre'      => 'Informe del dirigente responsable',
@@ -103,6 +121,12 @@
             'parametros'  => ['formato' => 'ofrenda'],
             'nombre'      => 'Acta de entrega de la ofrenda',
             'descripcion' => 'Arqueo de billetes y monedas con el rectorado ya escrito, para entregar la ofrenda al tesorero(a) con las firmas.',
+        ],
+        [
+            'ruta'        => 'impresiones.informe',
+            'parametros'  => ['formato' => 'charlas'],
+            'nombre'      => 'Evaluación de charlas',
+            'descripcion' => 'Una hoja por charla con el charlista ya escrito: horario, reto, previsto, doctrina, los temas que debe tocar para marcar SI / NO y la calificación.',
         ],
     ];
 @endphp

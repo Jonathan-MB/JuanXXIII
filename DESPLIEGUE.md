@@ -96,6 +96,23 @@ QUEUE_CONNECTION=sync
 
 `APP_DEBUG=false` es obligatorio: con `true`, cualquier error le mostraría al visitante datos internos.
 
+### Correo de confirmación
+
+Para que salga el correo de confirmación de cupo, primero hay que crear una cuenta de correo del dominio en hPanel (**Correos**), por ejemplo `retiros@TU-DOMINIO`. Después se agregan estas líneas al `.env`, con esa cuenta y su contraseña:
+
+```
+MAIL_MAILER=smtp
+MAIL_SCHEME=smtps
+MAIL_HOST=smtp.hostinger.com
+MAIL_PORT=465
+MAIL_USERNAME=retiros@TU-DOMINIO
+MAIL_PASSWORD=la-contraseña-del-correo
+MAIL_FROM_ADDRESS=retiros@TU-DOMINIO
+MAIL_FROM_NAME="Retiros Juan XXIII"
+```
+
+Mientras `MAIL_MAILER` siga en `log`, los correos no salen: solo quedan anotados en `storage/logs`. El texto del correo, y si se manda solo al inscribirse, se cambian en la app, en **Ajustes**.
+
 ## 6. Crear las tablas y la configuración inicial
 
 ```bash

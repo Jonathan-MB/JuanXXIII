@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AjusteController;
 use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\DesarrolloController;
+use App\Http\Controllers\DirectivoController;
 use App\Http\Controllers\ExportacionController;
 use App\Http\Controllers\HistorialController;
 use App\Http\Controllers\ImpresionController;
@@ -17,6 +19,7 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\RetiroController;
 use App\Http\Controllers\SantisimoController;
+use App\Http\Controllers\SantisimoRepartoController;
 use App\Http\Controllers\UsuarioController;
 use App\Models\Rol;
 use Illuminate\Support\Facades\Route;
@@ -83,6 +86,16 @@ Route::middleware('auth')->group(function () {
         ->middleware('rol:' . Rol::ADMINISTRACION . ',' . Rol::SECRETARIA);
 
 
+    //  Directivos: la lista de inscritos y el desarrollo del retiro, solo
+    // para consultar. Administración y Secretaría también ven el desarrollo.
+    Route::get('/directivos', [DirectivoController::class, 'index'])
+        ->middleware('rol:' . Rol::ADMINISTRACION . ',' . Rol::DIRECTIVOS)
+        ->name('directivos.index');
+    Route::get('/desarrollo', [DesarrolloController::class, 'index'])
+        ->middleware('rol:' . Rol::ADMINISTRACION . ',' . Rol::SECRETARIA . ',' . Rol::DIRECTIVOS)
+        ->name('desarrollo.index');
+
+
     /*
 |--------------------------------------------------------------------------
 | Solo Administración: crear y editar cuentas
@@ -108,6 +121,8 @@ Route::middleware('auth')->group(function () {
             ->only(['edit', 'update']);
         Route::patch('/inscritos/{inscripcion}/estado', [InscritoController::class, 'cambiarEstado'])
             ->name('inscritos.estado');
+        Route::post('/inscritos/{inscripcion}/confirmacion', [InscritoController::class, 'enviarConfirmacion'])
+            ->name('inscritos.confirmacion');
 
         //  Las mesas se crean solas al escribir el puesto de cada persona,
         // o a mano aquí cuando hace falta una más.
@@ -124,10 +139,16 @@ Route::middleware('auth')->group(function () {
             ->only(['index', 'store', 'show', 'update', 'destroy']);
 
         Route::get('/historial', [HistorialController::class, 'index'])->name('historial.index');
+        Route::post('/historial/importar', [HistorialController::class, 'importar'])->name('historial.importar');
+
+        //  Enlace del grupo de WhatsApp y correo de confirmación
+        Route::get('/ajustes', [AjusteController::class, 'index'])->name('ajustes.index');
+        Route::put('/ajustes', [AjusteController::class, 'update'])->name('ajustes.update');
+        Route::get('/ajustes/correo-de-prueba', [AjusteController::class, 'vistaPrevia'])->name('ajustes.vistaPrevia');
+        Route::get('/ajustes/qr', [AjusteController::class, 'qr'])->name('ajustes.qr');
 
         //  Desarrollo del retiro (actividades y charlas por sexo): es para
         // el papeleo de Secretaría.
-        Route::get('/desarrollo', [DesarrolloController::class, 'index'])->name('desarrollo.index');
         Route::get('/desarrollo/editar', [DesarrolloController::class, 'editar'])->name('desarrollo.editar');
         Route::put('/desarrollo', [DesarrolloController::class, 'guardar'])->name('desarrollo.guardar');
         Route::post('/desarrollo/actividades', [DesarrolloController::class, 'agregar'])->name('desarrollo.agregar');
@@ -148,6 +169,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/santisimo/base/franjas', [SantisimoController::class, 'agregarBase'])->name('santisimo.agregarBase');
         Route::delete('/santisimo/base/franjas/{franja}', [SantisimoController::class, 'quitarBase'])->name('santisimo.quitarBase');
 
+        //  Reparto automático: tamaño de los equipos, horas fijas o
+        // prohibidas, y repartir la base o la copia del retiro.
+        Route::get('/santisimo/reparto', [SantisimoRepartoController::class, 'index'])->name('santisimo.reparto');
+        Route::put('/santisimo/reparto/equipos', [SantisimoRepartoController::class, 'guardarEquipos'])->name('santisimo.reparto.equipos');
+        Route::post('/santisimo/reparto/reglas', [SantisimoRepartoController::class, 'store'])->name('santisimo.reparto.store');
+        Route::delete('/santisimo/reparto/reglas/{regla}', [SantisimoRepartoController::class, 'destroy'])->name('santisimo.reparto.destroy');
+        Route::post('/santisimo/reparto', [SantisimoRepartoController::class, 'repartir'])->name('santisimo.reparto.repartir');
+
         Route::get('/impresiones', [ImpresionController::class, 'index'])->name('impresiones.index');
         Route::get('/impresiones/datos', [ImpresionController::class, 'datos'])->name('impresiones.datos');
         Route::put('/impresiones/rectorado', [ImpresionController::class, 'guardarRectorado'])->name('impresiones.rectorado');
@@ -167,6 +196,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/impresiones/flores', [ImpresionController::class, 'flores'])->name('impresiones.flores');
         Route::get('/impresiones/catequistas', [ImpresionController::class, 'catequistas'])->name('impresiones.catequistas');
         Route::get('/impresiones/informes/{formato}', [ImpresionController::class, 'informe'])->name('impresiones.informe');
+        Route::get('/impresiones/carpetas/{cargo}', [ImpresionController::class, 'carpeta'])->name('impresiones.carpeta');
     });
 
 

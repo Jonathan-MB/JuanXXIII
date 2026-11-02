@@ -6,6 +6,7 @@ use App\Http\Requests\GuardarFirmantesRequest;
 use App\Http\Requests\GuardarPerseveranciasRequest;
 use App\Http\Requests\GuardarRectoradoRequest;
 use App\Models\ActividadBase;
+use App\Models\Ajuste;
 use App\Models\Firmante;
 use App\Models\Inscripcion;
 use App\Models\Mesa;
@@ -16,6 +17,8 @@ use App\Models\Retiro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class ImpresionController extends Controller
 {
@@ -29,6 +32,24 @@ class ImpresionController extends Controller
         'equipos'       => 'Evaluación de equipos',
         'problematicas' => 'Problemáticas',
         'ofrenda'       => 'Acta de entrega de la ofrenda',
+        'charlas'       => 'Evaluación de charlas',
+    ];
+
+    //  Lo que lleva la carpeta de cada cargo, en orden. «charlistas» y
+    // «sala» salen del desarrollo; los demás son de aquí.
+    public const CARPETAS = [
+        'rector' => [
+            'nombre'     => 'Carpeta del rector(a)',
+            'documentos' => ['charlistas', 'sala', 'catequistas', 'rector', 'problematicas', 'ofrenda'],
+        ],
+        'vicerrector' => [
+            'nombre'     => 'Carpeta del vicerrector(a)',
+            'documentos' => ['charlistas', 'vicerrector', 'equipos'],
+        ],
+        'dirigente' => [
+            'nombre'     => 'Carpeta del dirigente responsable',
+            'documentos' => ['charlistas', 'dirigente', 'charlas'],
+        ],
     ];
 
     //  Los equipos de servicio tal como van en el informe del
@@ -198,6 +219,8 @@ class ImpresionController extends Controller
             'grupos'         => $this->porGrupoYMesa($retiro, $sexo),
             'rectorados'     => $retiro->rectorados()->orderBy('orden')->get()->groupBy('sexo'),
             'perseverancias' => Perseverancia::orderBy('orden')->get(),
+            'whatsapp'       => Ajuste::valor(Ajuste::WHATSAPP),
+            'tieneQr'        => (bool) Ajuste::valor(Ajuste::WHATSAPP_QR),
             'titulo'         => 'Directorio',
         ]);
     }
@@ -369,7 +392,7 @@ class ImpresionController extends Controller
             ->when($sexo, fn ($sexos) => $sexos->filter(fn ($grupo) => $grupo === $sexo))
             ->mapWithKeys(fn ($grupo) => [$grupo => [
                 'rectorado' => $rectorados->get($grupo, collect()),
-                'charlas'   => $formato === 'dirigente' ? $this->charlasDe($retiro, $grupo) : collect(),
+                'charlas'   => in_array($formato, ['dirigente', 'charlas']) ? $this->charlasDe($retiro, $grupo) : collect(),
                 'mesas'     => $formato === 'rector' ? $retiro->mesas()->where('sexo', $grupo)->orderBy('numero')->get() : collect(),
             ]]);
 
@@ -383,25 +406,84 @@ class ImpresionController extends Controller
 
 
 
-    //  Los nombres de las charlas en el orden del retiro, sin repetir
-    // (algunas se parten en dos bloques en el desarrollo).
+    //  Toda la carpeta de un cargo en una sola impresión: cada documento
+    // se arma igual que suelto y aquí solo se juntan, con una sola barra.
+    // Si el desarrollo no está preparado, sus hojas se saltan y se avisa.
+    public function carpeta(Request $request, string $cargo)
+    {
+        abort_unless(array_key_exists($cargo, self::CARPETAS), 404);
+
+        $retiro    = $this->retiroOFallar();
+        $carpeta   = self::CARPETAS[$cargo];
+        $partes    = [];
+        $faltantes = [];
+
+        foreach ($carpeta['documentos'] as $documento) {
+            $vista = match ($documento) {
+                'charlistas', 'sala' => app(DesarrolloController::class)->imprimir(Request::create('/', 'GET', ['formato' => $documento, 'sexo' => $request->sexo])),
+                'catequistas'        => $this->catequistas($request),
+                default              => $this->informe($request, $documento),
+            };
+
+            if (! $vista instanceof View) {
+                $faltantes[] = $documento === 'sala' ? 'la rotación en sala' : 'la lista de charlistas';
+                continue;
+            }
+
+            $partes[] = $vista->with('enCarpeta', true)->render();
+        }
+
+        return view('impresiones.carpeta', [
+            'retiro'    => $retiro,
+            'partes'    => $partes,
+            'faltantes' => $faltantes,
+            'titulo'    => $carpeta['nombre'] . ($request->sexo === 'mujeres' ? ' · Mujeres' : ($request->sexo === 'hombres' ? ' · Hombres' : '')),
+        ]);
+    }
+
+
+
+    //  Las charlas en el orden del retiro, sin repetir (algunas se parten
+    // en dos bloques en el desarrollo), con su charlista y los temas que
+    // debe tocar según la evaluación de charlas.
     private function charlasDe(Retiro $retiro, string $sexo): Collection
     {
         $charlas = $retiro->actividades()
             ->where('sexo', $sexo)
             ->where('es_charla', true)
             ->orderBy('inicio')
-            ->pluck('nombre');
+            ->get();
 
         if ($charlas->isEmpty()) {
             $charlas = ActividadBase::where('sexo', $sexo)
                 ->where('es_charla', true)
                 ->get()
-                ->sortBy(fn ($actividad) => $actividad->dia_relativo . $actividad->orden)
-                ->pluck('nombre');
+                ->sortBy(fn ($actividad) => $actividad->dia_relativo . $actividad->orden);
         }
 
-        return $charlas->unique()->values();
+        return $charlas->unique('nombre')->values()->map(fn ($charla) => [
+            'nombre'    => $charla->nombre,
+            'charlista' => $charla->charlista,
+            'temas'     => $this->temasDe($charla->nombre),
+        ]);
+    }
+
+
+
+    //  "SER HOMBRE / CASTIDAD MATRIMONIAL" -> los temas de "SER HOMBRE".
+    // Se compara sin tildes ni signos de pregunta y gana la clave más
+    // larga con la que empiece el nombre; si ninguna, no hay temas.
+    private function temasDe(string $charla): array
+    {
+        $nombre = trim(Str::upper(Str::ascii(str_replace(['¿', '?'], '', $charla))));
+
+        $clave = collect(config('evaluacion_charlas'))
+            ->keys()
+            ->filter(fn ($clave) => str_starts_with($nombre, $clave))
+            ->sortByDesc(fn ($clave) => strlen($clave))
+            ->first();
+
+        return $clave ? config('evaluacion_charlas.' . $clave) : [];
     }
 
 
