@@ -297,14 +297,28 @@ textarea:focus-visible {
     min-height: calc(100vh - 62px);
 }
 
+/*  El título de cada grupo va separado por una línea y en dorado,
+   para que no se confunda con las opciones que tiene debajo */
 .menu-grupo {
-    margin-top: 14px;
-    padding: 0 12px 4px;
-    font-size: 11px;
-    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 12px 12px 4px;
+    border-top: 1px solid #dde2ec;
+    font-size: 10.5px;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #5b6479;
+    letter-spacing: 0.1em;
+    color: #8a6d00;
+}
+
+.menu-grupo::before {
+    content: "";
+    width: 3px;
+    height: 12px;
+    border-radius: 2px;
+    background: #e3c400;
 }
 
 .menu-enlace {

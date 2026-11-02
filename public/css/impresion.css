@@ -376,6 +376,7 @@ p {
 .numero-directorio {
     font-weight: 700;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .tabla-rectorado {

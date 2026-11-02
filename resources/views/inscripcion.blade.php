@@ -93,7 +93,7 @@
                     <div class="linea-inscripcion">
                         <div class="elemento-formulario">
                             <label class="titulo-elemento" for="cedula">Número de cédula</label>
-                            <input type="text" name="cedula" id="cedula" maxlength="20" inputmode="numeric" value="{{ old('cedula') }}" required>
+                            <input type="text" name="cedula" id="cedula" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ old('cedula') }}" required>
                         </div>
                         <div class="elemento-formulario">
                             <label class="titulo-elemento" for="fechaNacimiento">Fecha de nacimiento</label>
@@ -108,7 +108,7 @@
                         </div>
                         <div class="elemento-formulario">
                             <label class="titulo-elemento" for="celular">Celular</label>
-                            <input type="tel" name="celular" id="celular" maxlength="20" autocomplete="tel" value="{{ old('celular') }}" required>
+                            <input type="tel" inputmode="numeric" data-solo-numeros name="celular" id="celular" maxlength="20" autocomplete="tel" value="{{ old('celular') }}" required>
                         </div>
                     </div>
 
@@ -199,11 +199,11 @@
                             <div class="linea-inscripcion linea-tres">
                                 <div class="elemento-formulario">
                                     <label class="titulo-elemento" for="contacto{{ $i }}Celular">Celular</label>
-                                    <input type="tel" name="contactosEmergencia[{{ $i }}][celular]" id="contacto{{ $i }}Celular" maxlength="20" value="{{ $contactos[$i]['celular'] ?? '' }}" required>
+                                    <input type="tel" inputmode="numeric" data-solo-numeros name="contactosEmergencia[{{ $i }}][celular]" id="contacto{{ $i }}Celular" maxlength="20" value="{{ $contactos[$i]['celular'] ?? '' }}" required>
                                 </div>
                                 <div class="elemento-formulario">
                                     <label class="titulo-elemento" for="contacto{{ $i }}Fijo">Teléfono fijo <small>(opcional)</small></label>
-                                    <input type="tel" name="contactosEmergencia[{{ $i }}][telefonoFijo]" id="contacto{{ $i }}Fijo" maxlength="20" value="{{ $contactos[$i]['telefonoFijo'] ?? '' }}">
+                                    <input type="tel" inputmode="numeric" data-solo-numeros name="contactosEmergencia[{{ $i }}][telefonoFijo]" id="contacto{{ $i }}Fijo" maxlength="20" value="{{ $contactos[$i]['telefonoFijo'] ?? '' }}">
                                 </div>
                                 <div class="elemento-formulario">
                                     <label class="titulo-elemento" for="contacto{{ $i }}Correo">Correo <small>(opcional)</small></label>
@@ -265,7 +265,7 @@
                             </div>
                             <div class="elemento-formulario">
                                 <label class="titulo-elemento" for="padrinoTelefono">Celular del padrino <small>(opcional)</small></label>
-                                <input type="tel" name="padrinoTelefono" id="padrinoTelefono" maxlength="20" value="{{ old('padrinoTelefono') }}">
+                                <input type="tel" inputmode="numeric" data-solo-numeros name="padrinoTelefono" id="padrinoTelefono" maxlength="20" value="{{ old('padrinoTelefono') }}">
                             </div>
                         </div>
                         <div class="linea-inscripcion">

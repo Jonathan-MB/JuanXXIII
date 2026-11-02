@@ -20,7 +20,7 @@ class CorregirDatosRequest extends FormRequest
         return [
             'nombres'   => ['required', 'string', 'max:60'],
             'apellidos' => ['required', 'string', 'max:60'],
-            'cedula'    => ['required', 'string', 'min:4', 'max:20', 'regex:/^[A-Z0-9]+$/', Rule::unique('personas', 'cedula')->ignore($this->route('inscripcion')->persona_id)],
+            'cedula'    => ['required', 'string', 'min:4', 'max:20', 'regex:/^[0-9]+$/', Rule::unique('personas', 'cedula')->ignore($this->route('inscripcion')->persona_id)],
         ];
     }
 
@@ -43,7 +43,7 @@ class CorregirDatosRequest extends FormRequest
             'nombres.required'   => 'Escribe los nombres.',
             'apellidos.required' => 'Escribe los apellidos.',
             'cedula.required'    => 'Escribe la cédula.',
-            'cedula.regex'       => 'La cédula solo puede tener números y letras.',
+            'cedula.regex'       => 'La cédula solo puede tener números.',
             'cedula.unique'      => 'Esa cédula ya pertenece a otra persona registrada.',
         ];
     }

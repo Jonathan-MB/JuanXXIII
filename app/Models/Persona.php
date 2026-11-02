@@ -42,11 +42,23 @@ class Persona extends Model
 
 
     //  "1.130.456.221", "1130456221" y "1130 456 221" son la misma
-    // cédula. Se quitan puntos, espacios y guiones, pero se dejan las
-    // letras porque los pasaportes y cédulas de extranjería las llevan.
+    // cédula. Se quitan puntos, espacios y guiones; si queda una letra,
+    // la validación la rechaza (la cédula es solo números).
     public static function normalizarCedula(?string $cedula): string
     {
-        return strtoupper(preg_replace('/[\s.\-]/', '', (string) $cedula));
+        return preg_replace('/[\s.\-]/', '', (string) $cedula);
+    }
+
+
+
+    //  Celulares y teléfonos se guardan solo con dígitos: "315 572-4732"
+    // queda "3155724732". Las letras se dejan para que la validación las
+    // rechace en vez de borrarlas sin avisar.
+    public static function normalizarTelefono(?string $telefono): ?string
+    {
+        $limpio = preg_replace('/[\s.\-()]/', '', (string) $telefono);
+
+        return $limpio === '' ? null : $limpio;
     }
 
 

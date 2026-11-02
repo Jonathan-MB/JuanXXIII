@@ -22,7 +22,7 @@ class UpdateInscritoRequest extends StoreInscripcionRequest
             ->all();
 
         $personaId        = $this->route('inscripcion')->persona_id;
-        $reglas['cedula'] = ['required', 'string', 'min:4', 'max:20', 'regex:/^[A-Z0-9]+$/', Rule::unique('personas', 'cedula')->ignore($personaId)];
+        $reglas['cedula'] = ['required', 'string', 'min:4', 'max:20', 'regex:/^[0-9]+$/', Rule::unique('personas', 'cedula')->ignore($personaId)];
 
         return $reglas;
     }

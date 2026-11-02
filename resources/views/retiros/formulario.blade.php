@@ -125,7 +125,7 @@
                 @foreach ($contactos as $i => $contacto)
                     <div class="fila-dinamica">
                         <input type="text" name="contactosInformes[{{ $i }}][nombre]" value="{{ $contacto['nombre'] ?? '' }}" aria-label="Nombre" placeholder="Nombre">
-                        <input type="text" name="contactosInformes[{{ $i }}][celular]" value="{{ $contacto['celular'] ?? '' }}" aria-label="Celular" placeholder="Celular">
+                        <input type="tel" inputmode="numeric" data-solo-numeros name="contactosInformes[{{ $i }}][celular]" value="{{ $contacto['celular'] ?? '' }}" aria-label="Celular" placeholder="Celular">
                         <button type="button" class="boton-quitar" aria-label="Quitar este contacto">Quitar</button>
                     </div>
                 @endforeach
@@ -158,7 +158,7 @@
     <template id="plantilla-contacto">
         <div class="fila-dinamica">
             <input type="text" data-campo="nombre" aria-label="Nombre" placeholder="Nombre">
-            <input type="text" data-campo="celular" aria-label="Celular" placeholder="Celular">
+            <input type="tel" inputmode="numeric" data-solo-numeros data-campo="celular" aria-label="Celular" placeholder="Celular">
             <button type="button" class="boton-quitar" aria-label="Quitar este contacto">Quitar</button>
         </div>
     </template>

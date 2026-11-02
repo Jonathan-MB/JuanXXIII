@@ -9,7 +9,48 @@ class FuncionesSecretariaSeeder extends Seeder
 {
     public const RESPONSABLE = 'Secretaría';
 
+    //  La sección o impresión que necesita cada tarea (clave de
+    // TareaCronograma::ENLACES), buscada por el comienzo del texto.
+    public const ENLACES = [
+        'Preparar las carpetas del rectorado'                 => 'impresiones',
+        'Montar las salas'                                    => 'archivosLetreros',
+        'Separar las dinámicas'                               => 'documentos',
+        'Hacer la lista de integrantes de cada equipo'        => 'santisimo',
+        'Enviar a sala la dinámica'                           => 'documentos',
+        'Imprimir la lista de invitados (Correcciones)'       => 'imprimirCorrecciones',
+        'Decorar los sobres de manila'                        => 'imprimirSobres',
+        'Verificar y ubicar la rotación al Santísimo'         => 'imprimirSantisimo',
+        'Enviar las listas de correcciones'                   => 'imprimirCorrecciones',
+        'Pasar las correcciones a la app'                     => 'inscritos',
+        'Entregar al dirigente de Librería'                   => 'imprimirCamisetas',
+        'Marcar los sobres de manila'                         => 'imprimirSobres',
+        'Recoger los materiales, hacer el inventario'         => 'imprimirInventario',
+    ];
+
+
+
     public function run(): void
+    {
+        $this->crearTareas();
+        $this->ponerEnlaces();
+    }
+
+
+
+    //  Solo llena el enlace de las tareas que no tienen uno: si alguien lo
+    // cambió o lo quitó desde Cronograma, se respeta.
+    private function ponerEnlaces(): void
+    {
+        foreach (self::ENLACES as $comienzo => $enlace) {
+            TareaCronograma::whereNull('enlace')
+                ->where('descripcion', 'like', $comienzo . '%')
+                ->update(['enlace' => $enlace]);
+        }
+    }
+
+
+
+    private function crearTareas(): void
     {
         //  Se editan desde Cronograma: si ya están cargadas no se toca nada,
         // para no revivir una tarea que se quitó o se cambió al actualizar

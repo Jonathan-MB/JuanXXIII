@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Persona;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GuardarRectoradoRequest extends FormRequest
@@ -21,7 +22,7 @@ class GuardarRectoradoRequest extends FormRequest
             'cargos.*.cargo'    => ['required', 'string', 'max:40'],
             'cargos.*.nombre'   => ['required', 'string', 'max:100'],
             'cargos.*.ciudad'   => ['nullable', 'string', 'max:60'],
-            'cargos.*.telefono' => ['nullable', 'string', 'max:20'],
+            'cargos.*.telefono' => ['nullable', 'string', 'max:20', 'regex:/^[0-9]+$/'],
         ];
     }
 
@@ -33,6 +34,7 @@ class GuardarRectoradoRequest extends FormRequest
         $this->merge([
             'cargos' => collect($this->cargos ?? [])
                 ->filter(fn ($fila) => filled($fila['nombre'] ?? null))
+                ->map(fn ($fila) => array_merge($fila, ['telefono' => Persona::normalizarTelefono($fila['telefono'] ?? null)]))
                 ->values()
                 ->all(),
         ]);
@@ -44,7 +46,8 @@ class GuardarRectoradoRequest extends FormRequest
     {
         return [
             'cargos.*.nombre.max'   => 'Un nombre del rectorado es demasiado largo.',
-            'cargos.*.telefono.max' => 'Un teléfono del rectorado es demasiado largo.',
+            'cargos.*.telefono.max'   => 'Un teléfono del rectorado es demasiado largo.',
+            'cargos.*.telefono.regex' => 'Los teléfonos del rectorado solo pueden tener números.',
         ];
     }
 }

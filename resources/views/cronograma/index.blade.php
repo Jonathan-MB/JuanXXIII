@@ -13,7 +13,7 @@
 
     <a class="enlace-volver" href="{{ route('panel') }}#cronograma">← Volver al inicio</a>
     <h1 class="vista-titulo">Lista de tareas del retiro</h1>
-    <p class="texto-ayuda texto-ayuda-arriba">Es la misma para todos los retiros. En el inicio cada tarea se marca como hecha y se pone en rojo cuando falta 1 hora o menos sin marcarse.</p>
+    <p class="texto-ayuda texto-ayuda-arriba">Es la misma para todos los retiros. En el inicio cada tarea se marca como hecha y se pone en rojo cuando falta 1 hora o menos sin marcarse. Con el enlace, la tarea trae un botón que lleva a la sección o a la impresión que necesita.</p>
     @include('partials.mensaje')
 
     {{-- --------------------NUEVA TAREA------------------- --}}
@@ -38,6 +38,10 @@
         <div class="elemento-formulario">
             <label class="titulo-elemento" for="responsableNueva">Responsable <small>(opcional)</small></label>
             <input type="text" name="responsable" id="responsableNueva" maxlength="60" list="equipos-responsables" value="{{ old('responsable') }}">
+        </div>
+        <div class="elemento-formulario">
+            <label class="titulo-elemento" for="enlaceNueva">Enlace <small>(opcional)</small></label>
+            @include('cronograma.enlace', ['id' => 'enlaceNueva', 'actual' => old('enlace')])
         </div>
         <button type="submit" class="boton-amarillo">+ Agregar tarea</button>
     </form>
@@ -69,6 +73,7 @@
                             <input type="time" name="hora" value="{{ substr($tarea->hora, 0, 5) }}" aria-label="Hora" required>
                             <input type="text" name="descripcion" class="campo-descripcion" maxlength="200" value="{{ $tarea->descripcion }}" aria-label="Qué hay que hacer" required>
                             <input type="text" name="responsable" maxlength="60" list="equipos-responsables" value="{{ $tarea->responsable }}" aria-label="Responsable" placeholder="Responsable">
+                            @include('cronograma.enlace', ['actual' => $tarea->enlace])
                             <button type="submit" class="boton-secundario">Guardar</button>
                         </form>
                         <form method="POST" action="{{ route('cronograma.destroy', $tarea) }}" class="formulario-confirmar" data-confirmar="¿Quitar «{{ $tarea->descripcion }}» de la lista? Se quita para todos los retiros.">

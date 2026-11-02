@@ -188,6 +188,22 @@
     color: #5b6479;
 }
 
+.enlace-tarea {
+    display: inline-block;
+    margin: 4px 0 2px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: #1c2f5e;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.enlace-tarea:hover {
+    background: #13224a;
+}
+
 .tarea-pendiente {
     border-left-color: #c9d1e3;
 }

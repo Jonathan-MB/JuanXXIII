@@ -56,6 +56,9 @@
         @php
             $total  = $cronograma->flatten()->count();
             $hechas = $cronograma->flatten()->where('estado', 'hecha')->count();
+
+            // Directivos ve la lista, pero no entra a las secciones ni a las impresiones
+            $puedeIr = auth()->user()->tieneRol(\App\Models\Rol::ADMINISTRACION, \App\Models\Rol::SECRETARIA);
         @endphp
 
         {{-- --------------------CRONOGRAMA Y CHECKLIST------------------- --}}
@@ -91,6 +94,9 @@
                                     <span class="hora-tarea">{{ $fila->limite->format('g:i a') }}</span>
                                     <div class="texto-tarea">
                                         <p>{{ $fila->tarea->descripcion }}</p>
+                                        @if ($puedeIr && ($destino = $fila->tarea->destino()))
+                                            <a class="enlace-tarea" href="{{ $destino->url }}" {!! $destino->otraPestana ? 'target="_blank" rel="noopener"' : '' !!}>{{ $destino->texto }} →</a>
+                                        @endif
                                         <p class="detalle-tarea">
                                             {{ $fila->tarea->responsable ? 'Responsable: ' . $fila->tarea->responsable : '' }}
                                             @if ($fila->hecha)

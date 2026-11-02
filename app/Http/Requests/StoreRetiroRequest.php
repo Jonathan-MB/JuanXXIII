@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Persona;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRetiroRequest extends FormRequest
@@ -38,7 +39,7 @@ class StoreRetiroRequest extends FormRequest
 
             'contactos_informes'           => ['array'],
             'contactos_informes.*.nombre'  => ['required', 'string', 'max:60'],
-            'contactos_informes.*.celular' => ['required', 'string', 'max:20'],
+            'contactos_informes.*.celular' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
         ];
     }
 
@@ -59,7 +60,9 @@ class StoreRetiroRequest extends FormRequest
             'fecha_limite_pago'      => $this->fechaLimitePago,
             'inscripciones_abiertas' => $this->boolean('inscripcionesAbiertas'),
             'cuentas_pago'           => $this->filasLlenas($this->cuentasPago, ['numero', 'titular']),
-            'contactos_informes'     => $this->filasLlenas($this->contactosInformes, ['nombre', 'celular']),
+            'contactos_informes'     => collect($this->filasLlenas($this->contactosInformes, ['nombre', 'celular']))
+                ->map(fn ($fila) => array_merge($fila, ['celular' => Persona::normalizarTelefono($fila['celular'] ?? null)]))
+                ->all(),
         ]);
     }
 
@@ -88,6 +91,7 @@ class StoreRetiroRequest extends FormRequest
             'cuentas_pago.*.titular.required'       => 'Cada cuenta de pago necesita el titular.',
             'contactos_informes.*.nombre.required'  => 'Cada contacto necesita el nombre.',
             'contactos_informes.*.celular.required' => 'Cada contacto necesita el celular.',
+            'contactos_informes.*.celular.regex'    => 'El celular de un contacto solo puede tener números.',
         ];
     }
 

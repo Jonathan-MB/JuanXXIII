@@ -39,7 +39,7 @@
                                     </td>
                                     <td><input type="text" name="cargos[{{ $i }}][nombre]" maxlength="100" value="{{ $fila?->nombre }}" aria-label="Nombre del {{ $cargo }}"></td>
                                     <td><input type="text" name="cargos[{{ $i }}][ciudad]" maxlength="60" value="{{ $fila?->ciudad }}" aria-label="Ciudad del {{ $cargo }}"></td>
-                                    <td><input type="tel" name="cargos[{{ $i }}][telefono]" maxlength="20" value="{{ $fila?->telefono }}" aria-label="Teléfono del {{ $cargo }}"></td>
+                                    <td><input type="tel" inputmode="numeric" data-solo-numeros name="cargos[{{ $i }}][telefono]" maxlength="20" value="{{ $fila?->telefono }}" aria-label="Teléfono del {{ $cargo }}"></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -67,7 +67,7 @@
                         <tr>
                             <td><input type="text" name="firmantes[{{ $i }}][nombre]" maxlength="100" value="{{ $firmantes[$i]->nombre ?? '' }}" aria-label="Nombre de la firma {{ $i + 1 }}"></td>
                             <td><input type="text" name="firmantes[{{ $i }}][cargo]" maxlength="100" value="{{ $firmantes[$i]->cargo ?? '' }}" aria-label="Cargo de la firma {{ $i + 1 }}"></td>
-                            <td><input type="tel" name="firmantes[{{ $i }}][celular]" maxlength="20" value="{{ $firmantes[$i]->celular ?? '' }}" aria-label="Celular de la firma {{ $i + 1 }}"></td>
+                            <td><input type="tel" inputmode="numeric" data-solo-numeros name="firmantes[{{ $i }}][celular]" maxlength="20" value="{{ $firmantes[$i]->celular ?? '' }}" aria-label="Celular de la firma {{ $i + 1 }}"></td>
                         </tr>
                     @endforeach
                 </tbody>

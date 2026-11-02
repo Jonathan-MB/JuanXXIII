@@ -164,7 +164,7 @@
                                                 @method('PATCH')
                                                 <input type="text" name="nombres" maxlength="60" value="{{ $persona->nombres }}" aria-label="Nombres" placeholder="Nombres" required>
                                                 <input type="text" name="apellidos" maxlength="60" value="{{ $persona->apellidos }}" aria-label="Apellidos" placeholder="Apellidos" required>
-                                                <input type="text" name="cedula" maxlength="20" value="{{ $persona->cedula }}" aria-label="Cédula" placeholder="Cédula" required>
+                                                <input type="text" name="cedula" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $persona->cedula }}" aria-label="Cédula" placeholder="Cédula" required>
                                                 <button type="submit" class="boton-secundario">Guardar</button>
                                             </form>
                                         </details>

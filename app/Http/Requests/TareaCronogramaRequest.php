@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\TareaCronograma;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TareaCronogramaRequest extends FormRequest
 {
@@ -20,6 +22,7 @@ class TareaCronogramaRequest extends FormRequest
             'hora'         => ['required', 'date_format:H:i'],
             'descripcion'  => ['required', 'string', 'max:200'],
             'responsable'  => ['nullable', 'string', 'max:60'],
+            'enlace'       => ['nullable', Rule::in(array_keys(TareaCronograma::ENLACES))],
         ];
     }
 
@@ -30,6 +33,7 @@ class TareaCronogramaRequest extends FormRequest
         $this->merge([
             'dia_relativo' => $this->diaRelativo,
             'hora'         => substr((string) $this->hora, 0, 5),
+            'enlace'       => $this->enlace ?: null,
         ]);
     }
 
@@ -41,6 +45,7 @@ class TareaCronogramaRequest extends FormRequest
             'dia_relativo.between' => 'El día va desde 14 días antes hasta el domingo.',
             'hora.date_format'     => 'La hora no es válida.',
             'descripcion.required' => 'Escribe qué hay que hacer.',
+            'enlace.in'            => 'El enlace elegido no existe.',
         ];
     }
 }
