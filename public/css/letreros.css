@@ -1,0 +1,28 @@
+/* ============ GALERÍA DE LETREROS ============ */
+
+/*  La hoja de verdad (26,34 × 19,9 cm = 996 × 752 px) dentro de un
+   recuadro pequeño: letreros.js calcula la escala según el ancho */
+.miniatura-letrero {
+    position: relative;
+    display: block;
+    aspect-ratio: 996 / 752;
+    overflow: hidden;
+    border: 1px solid #dde2ec;
+    border-radius: 8px;
+    background: #f4f6fb;
+}
+
+.miniatura-letrero iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 996px;
+    height: 752px;
+    border: 0;
+    transform-origin: top left;
+    pointer-events: none;
+}
+
+.miniatura-letrero:hover {
+    border-color: #1c2f5e;
+}

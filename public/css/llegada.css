@@ -434,6 +434,19 @@
     background: #ffffff;
 }
 
+.datos-catequista {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.datos-catequista input {
+    min-width: 0;
+    padding: 6px 8px;
+    font-size: 13px;
+}
+
 .cabecera-config-mesa {
     display: flex;
     justify-content: space-between;

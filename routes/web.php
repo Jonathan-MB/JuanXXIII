@@ -13,6 +13,7 @@ use App\Http\Controllers\InicioController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\InscritoController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\LetreroController;
 use App\Http\Controllers\LlegadaController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\PagoController;
@@ -177,6 +178,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/santisimo/reparto/reglas/{regla}', [SantisimoRepartoController::class, 'destroy'])->name('santisimo.reparto.destroy');
         Route::post('/santisimo/reparto', [SantisimoRepartoController::class, 'repartir'])->name('santisimo.reparto.repartir');
 
+        //  Letreros para la pared, con vista previa antes de imprimir
+        Route::get('/letreros', [LetreroController::class, 'index'])->name('letreros.index');
+        Route::get('/letreros/{clave}', [LetreroController::class, 'show'])->name('letreros.show');
+
         Route::get('/impresiones', [ImpresionController::class, 'index'])->name('impresiones.index');
         Route::get('/impresiones/datos', [ImpresionController::class, 'datos'])->name('impresiones.datos');
         Route::put('/impresiones/rectorado', [ImpresionController::class, 'guardarRectorado'])->name('impresiones.rectorado');
@@ -192,7 +197,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/impresiones/camisetas', [ImpresionController::class, 'camisetas'])->name('impresiones.camisetas');
         Route::get('/impresiones/sobres', [ImpresionController::class, 'sobres'])->name('impresiones.sobres');
         Route::get('/impresiones/llamadas', [ImpresionController::class, 'llamadas'])->name('impresiones.llamadas');
-        Route::get('/impresiones/previstos', [ImpresionController::class, 'previstos'])->name('impresiones.previstos');
+        Route::get('/impresiones/familiares', [ImpresionController::class, 'familiares'])->name('impresiones.familiares');
+        Route::get('/impresiones/puertas', [ImpresionController::class, 'puertas'])->name('impresiones.puertas');
         Route::get('/impresiones/flores', [ImpresionController::class, 'flores'])->name('impresiones.flores');
         Route::get('/impresiones/catequistas', [ImpresionController::class, 'catequistas'])->name('impresiones.catequistas');
         Route::get('/impresiones/informes/{formato}', [ImpresionController::class, 'informe'])->name('impresiones.informe');
@@ -213,6 +219,7 @@ Route::middleware('auth')->group(function () {
             ->name('inscritos.comprobante');
 
         Route::get('/pagos', [PagoController::class, 'index'])->name('pagos.index');
+        Route::get('/pagos/imprimir', [PagoController::class, 'imprimir'])->name('pagos.imprimir');
 
         // Descargas para Excel: respaldo de inscritos y de pagos del retiro actual
         Route::get('/exportar/inscritos', [ExportacionController::class, 'inscritos'])->name('exportar.inscritos');

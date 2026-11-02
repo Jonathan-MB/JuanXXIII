@@ -26,7 +26,8 @@
                             <td>{{ $inscrito->persona->cedula }}</td>
                             <td class="columna-edad">{{ (int) $inscrito->persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</td>
                             <td>{{ $inscrito->tiene_padrino ? $inscrito->padrino_nombre : '' }}</td>
-                            <td class="columna-check"><span class="casilla-papel">{{ $inscrito->llegada_en ? '✓' : '' }}</span></td>
+                            {{-- Vacía siempre: la llegada se marca a mano en la hoja --}}
+                            <td class="columna-check"><span class="casilla-papel"></span></td>
                         </tr>
                     @endforeach
                 </tbody>

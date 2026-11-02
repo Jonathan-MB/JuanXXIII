@@ -14,6 +14,10 @@ class Ajuste extends Model
     public const CORREO_TEXTO      = 'correo_confirmacion_texto';
     public const CORREO_AUTOMATICO = 'correo_confirmacion_automatico';
 
+    //  El letrero de Nequi. Vacíos: se usa la cuenta Nequi del retiro
+    public const NEQUI_NUMERO      = 'letrero_nequi_numero';
+    public const NEQUI_TITULAR     = 'letrero_nequi_titular';
+
     //  Lo que se usa mientras nadie lo haya cambiado. En el texto, lo que
     // va entre llaves se reemplaza con los datos de cada persona.
     public const POR_DEFECTO = [

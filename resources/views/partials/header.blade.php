@@ -53,7 +53,12 @@
             @if ($verTodo)
                 <p class="menu-grupo">Archivos</p>
                 @foreach (\App\Models\Archivo::CATEGORIAS as $claveMenu => $etiquetaMenu)
-                    <a class="menu-enlace {{ request()->routeIs('archivos.*') && request('categoria', 'documentos') === $claveMenu ? 'menu-activo' : '' }}" href="{{ route('archivos.index', ['categoria' => $claveMenu]) }}">{{ $etiquetaMenu }}</a>
+                    {{-- Letreros lleva a la galería con vista previa; sus archivos originales se abren desde allí --}}
+                    @if ($claveMenu === 'letreros')
+                        <a class="menu-enlace {{ request()->routeIs('letreros.*') || (request()->routeIs('archivos.*') && request('categoria') === 'letreros') ? 'menu-activo' : '' }}" href="{{ route('letreros.index') }}">{{ $etiquetaMenu }}</a>
+                    @else
+                        <a class="menu-enlace {{ request()->routeIs('archivos.*') && request('categoria', 'documentos') === $claveMenu ? 'menu-activo' : '' }}" href="{{ route('archivos.index', ['categoria' => $claveMenu]) }}">{{ $etiquetaMenu }}</a>
+                    @endif
                 @endforeach
             @endif
 

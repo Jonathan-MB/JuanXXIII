@@ -75,10 +75,21 @@
                         <div class="elemento-formulario">
                             <label class="titulo-elemento" for="ct{{ $mesa->id }}">CT · Catequista titular</label>
                             <input type="text" name="catequistaTitular" id="ct{{ $mesa->id }}" maxlength="100" value="{{ $mesa->catequista_titular }}">
+                            {{-- Para el directorio --}}
+                            <div class="datos-catequista">
+                                <input type="tel" inputmode="numeric" data-solo-numeros name="titularCelular" maxlength="20" value="{{ $mesa->titular_celular }}" placeholder="Celular" aria-label="Celular del CT de la mesa {{ $mesa->numero }}">
+                                <input type="text" name="titularCiudad" maxlength="60" value="{{ $mesa->titular_ciudad }}" placeholder="Ciudad" aria-label="Ciudad del CT de la mesa {{ $mesa->numero }}">
+                                <input type="text" name="titularBarrio" maxlength="60" value="{{ $mesa->titular_barrio }}" placeholder="Barrio" aria-label="Barrio del CT de la mesa {{ $mesa->numero }}">
+                            </div>
                         </div>
                         <div class="elemento-formulario">
                             <label class="titulo-elemento" for="ca{{ $mesa->id }}">CA · Catequista auxiliar</label>
                             <input type="text" name="catequistaAuxiliar" id="ca{{ $mesa->id }}" maxlength="100" value="{{ $mesa->catequista_auxiliar }}">
+                            <div class="datos-catequista">
+                                <input type="tel" inputmode="numeric" data-solo-numeros name="auxiliarCelular" maxlength="20" value="{{ $mesa->auxiliar_celular }}" placeholder="Celular" aria-label="Celular del CA de la mesa {{ $mesa->numero }}">
+                                <input type="text" name="auxiliarCiudad" maxlength="60" value="{{ $mesa->auxiliar_ciudad }}" placeholder="Ciudad" aria-label="Ciudad del CA de la mesa {{ $mesa->numero }}">
+                                <input type="text" name="auxiliarBarrio" maxlength="60" value="{{ $mesa->auxiliar_barrio }}" placeholder="Barrio" aria-label="Barrio del CA de la mesa {{ $mesa->numero }}">
+                            </div>
                         </div>
                         <div class="elemento-formulario">
                             <label class="titulo-elemento" for="sillas{{ $mesa->id }}">Sillas</label>
@@ -92,15 +103,16 @@
                             @endif
                         </div>
                     </form>
-
-                    @if ($mesa->inscripciones_count === 0)
-                        <form id="quitar-mesa-{{ $mesa->id }}" method="POST" action="{{ route('mesas.destroy', $mesa) }}" class="formulario-confirmar" data-confirmar="¿Quitar la mesa {{ $mesa->numero }}? Está vacía.">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                    @endif
                 @endforeach
             </div>
+
+            {{-- Fuera de la rejilla: dentro, cada formulario vacío ocupaba una casilla y dejaba huecos --}}
+            @foreach ($mesas->where('inscripciones_count', 0) as $mesa)
+                <form id="quitar-mesa-{{ $mesa->id }}" method="POST" action="{{ route('mesas.destroy', $mesa) }}" class="formulario-confirmar" data-confirmar="¿Quitar la mesa {{ $mesa->numero }}? Está vacía.">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            @endforeach
         @endif
     @endif
 

@@ -19,7 +19,13 @@ class Mesa extends Model
         'nombre',
         'cantidad_sillas',
         'catequista_titular',
+        'titular_celular',
+        'titular_ciudad',
+        'titular_barrio',
         'catequista_auxiliar',
+        'auxiliar_celular',
+        'auxiliar_ciudad',
+        'auxiliar_barrio',
         'retiro_id',
     ];
 

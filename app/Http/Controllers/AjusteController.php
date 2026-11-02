@@ -14,13 +14,14 @@ class AjusteController extends Controller
 {
     public function index()
     {
-        $claves = [Ajuste::WHATSAPP, Ajuste::CORREO_ASUNTO, Ajuste::CORREO_TEXTO, Ajuste::CORREO_AUTOMATICO];
+        $claves = [Ajuste::WHATSAPP, Ajuste::CORREO_ASUNTO, Ajuste::CORREO_TEXTO, Ajuste::CORREO_AUTOMATICO, Ajuste::NEQUI_NUMERO, Ajuste::NEQUI_TITULAR];
 
         return view('ajustes.index', [
             'ajustes'      => collect($claves)->mapWithKeys(fn ($clave) => [$clave => Ajuste::valor($clave)]),
             'tieneQr'      => $this->rutaQr() !== null,
             'hayEjemplo'   => (bool) $this->inscripcionDeEjemplo(),
             'correoActivo' => config('mail.default') !== 'log',
+            'cuentaNequi'  => LetreroController::cuentaNequi(),
         ]);
     }
 

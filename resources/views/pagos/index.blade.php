@@ -1,6 +1,7 @@
 @include('partials.head')
 
 <link rel="stylesheet" href="{{ recurso('css/inscritos.css') }}">
+<link rel="stylesheet" href="{{ recurso('css/pagos.css') }}">
 <title>Pagos · Juan XXIII</title>
 
 @include('partials.header')
@@ -11,7 +12,10 @@
     @else
         <div class="cabecera-vista">
             <h1 class="vista-titulo">Pagos · {{ $retiro->nombre }}</h1>
-            <a class="boton-secundario" href="{{ route('exportar.pagos') }}">Descargar pagos para Excel</a>
+            <div class="acciones-cabecera">
+                <a class="boton-azul" href="{{ route('pagos.imprimir') }}" target="_blank" rel="noopener">Ver e imprimir lista de pagos</a>
+                <a class="boton-secundario" href="{{ route('exportar.pagos') }}">Descargar para Excel</a>
+            </div>
         </div>
         @include('partials.mensaje')
 
@@ -41,8 +45,9 @@
         @if ($inscritos->isEmpty())
             <p class="texto-vacio">No hay inscritos {{ $busqueda !== '' || $pago ? 'con esos filtros' : 'todavía' }}.</p>
         @else
-            <div class="contenedor-tabla">
-                <table class="tabla-general">
+            {{-- Con alto propio y títulos fijos: si no cabe a lo ancho, la barra para moverse a los lados queda a la vista --}}
+            <div class="contenedor-tabla contenedor-pagos">
+                <table class="tabla-general tabla-pagos">
                     <thead>
                         <tr>
                             <th>Nombre</th>

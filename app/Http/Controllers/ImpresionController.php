@@ -174,7 +174,8 @@ class ImpresionController extends Controller
 
 
     //  La carta al presbítero, una por página, solo para quienes
-    // llegaron o terminaron: quien abandonó o no asistió no recibe carta.
+    // llegaron o terminaron y tienen puesto: quien abandonó, no asistió o
+    // no tiene mesa y silla no recibe carta.
     public function carta(Request $request)
     {
         $retiro = $this->retiroOFallar();
@@ -182,6 +183,7 @@ class ImpresionController extends Controller
 
         $inscritos = $this->inscritos($retiro, $sexo)
             ->whereIn('estado', [Inscripcion::LLEGO, Inscripcion::TERMINO])
+            ->whereNotNull('mesa_id')
             ->values();
 
         return view('impresiones.carta', [
@@ -299,7 +301,9 @@ class ImpresionController extends Controller
         $retiro = $this->retiroOFallar();
         $sexo   = $this->sexoPedido($request);
 
+        // Solo quienes tienen puesto: los demás no están en el retiro
         $conteos = $this->inscritos($retiro, $sexo)
+            ->whereNotNull('mesa_id')
             ->groupBy(fn ($inscrito) => $inscrito->persona->sexo)
             ->map(function ($delGrupo) {
                 $porTalla = $delGrupo->countBy(fn ($inscrito) => $inscrito->persona->talla_camiseta);
@@ -319,17 +323,36 @@ class ImpresionController extends Controller
 
 
 
-    //  Hoja de entrega de previstos (formato de Secretaría): por mesa,
-    // con casillas para lo que recibe cada persona.
-    public function previstos(Request $request)
+    //  Listado de invitados para las puertas: por grupo, mesa y silla,
+    // con ciudad, barrio y padrino. Letra grande para leerlo de pie;
+    // puede ocupar varias hojas.
+    public function puertas(Request $request)
     {
         $retiro = $this->retiroOFallar();
         $sexo   = $this->sexoPedido($request);
 
-        return view('impresiones.previstos', [
+        return view('impresiones.puertas', [
             'retiro' => $retiro,
             'grupos' => $this->porGrupoYMesa($retiro, $sexo),
-            'titulo' => 'Entrega de previstos',
+            'titulo' => 'Listado de invitados para puertas',
+        ]);
+    }
+
+
+
+    //  Lista para familiares (horizontal): por grupo y por mesa, con
+    // espacio para anotar si el invitado vino con otro invitado (de qué
+    // mesa, silla y grupo), con quién se junta en la sorpresa final, si
+    // llegó su familia y si necesita acompañamiento.
+    public function familiares(Request $request)
+    {
+        $retiro = $this->retiroOFallar();
+        $sexo   = $this->sexoPedido($request);
+
+        return view('impresiones.familiares', [
+            'retiro' => $retiro,
+            'grupos' => $this->porGrupoYMesa($retiro, $sexo),
+            'titulo' => 'Lista para familiares',
         ]);
     }
 
@@ -506,7 +529,7 @@ class ImpresionController extends Controller
 
 
     //  Rótulos para marcar los sobres de "Ayudas de Dios": uno por
-    // persona, en orden de mesa y silla, para recortar y pegar.
+    // persona con puesto, en orden de mesa y silla, para recortar y pegar.
     public function sobres(Request $request)
     {
         $retiro = $this->retiroOFallar();
@@ -514,7 +537,7 @@ class ImpresionController extends Controller
 
         return view('impresiones.sobres', [
             'retiro' => $retiro,
-            'grupos' => $this->inscritos($retiro, $sexo)->groupBy(fn ($inscrito) => $inscrito->persona->sexo),
+            'grupos' => $this->inscritos($retiro, $sexo)->whereNotNull('mesa_id')->groupBy(fn ($inscrito) => $inscrito->persona->sexo),
             'titulo' => 'Rótulos para sobres',
         ]);
     }
@@ -645,7 +668,8 @@ class ImpresionController extends Controller
 
 
     //  [ 'Masculino' => [mesa => [inscritos]], 'Femenino' => … ] con las
-    // mesas en orden y los catequistas de cada una.
+    // mesas en orden y los catequistas de cada una. Quien no tiene mesa y
+    // silla no asistió al retiro, así que no sale en ninguna lista.
     private function porGrupoYMesa(Retiro $retiro, ?string $sexo): Collection
     {
         $mesas = $retiro->mesas()
@@ -657,12 +681,12 @@ class ImpresionController extends Controller
         return $this->inscritos($retiro, $sexo)
             ->groupBy(fn ($inscrito) => $inscrito->persona->sexo)
             ->map(fn ($delGrupo, $sexoGrupo) => [
-                'mesas'     => ($mesas[$sexoGrupo] ?? collect())->map(fn ($mesa) => [
+                'mesas' => ($mesas[$sexoGrupo] ?? collect())->map(fn ($mesa) => [
                     'mesa'      => $mesa,
                     'inscritos' => $delGrupo->where('mesa_id', $mesa->id)->values(),
                 ])->filter(fn ($fila) => $fila['inscritos']->isNotEmpty())->values(),
-                'sinPuesto' => $delGrupo->whereNull('mesa_id')->values(),
-            ]);
+            ])
+            ->filter(fn ($grupo) => $grupo['mesas']->isNotEmpty());
     }
 
 

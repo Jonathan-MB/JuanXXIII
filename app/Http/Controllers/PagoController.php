@@ -62,6 +62,37 @@ class PagoController extends Controller
 
 
 
+    //  Hoja de pagos para tesorería, para llenar a mano: por grupo y en
+    // orden alfabético, con lo pagado, lo que falta y dos casillas
+    // ("Terminó de pagar" y "No asistió"). Van todos los inscritos.
+    public function imprimir()
+    {
+        $retiro = Retiro::actual();
+
+        abort_unless($retiro, 404);
+
+        $grupos = Inscripcion::with(['persona', 'retiro'])
+            ->select('inscripcions.*')
+            ->withSum('pagos', 'valor')
+            ->where('retiro_id', $retiro->id)
+            ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
+            ->orderByRaw("personas.sexo = 'Femenino'")
+            ->orderBy('personas.apellidos')
+            ->orderBy('personas.nombres')
+            ->get()
+            ->groupBy(fn ($inscrito) => $inscrito->persona->sexo);
+
+        return view('pagos.imprimir', [
+            'retiro'      => $retiro,
+            'grupos'      => $grupos,
+            'titulo'      => 'Lista de pagos',
+            'volver'      => route('pagos.index'),
+            'volverTexto' => 'Volver a pagos',
+        ]);
+    }
+
+
+
     public function store(StorePagoRequest $request, Inscripcion $inscripcion)
     {
         $data = $request->validated();

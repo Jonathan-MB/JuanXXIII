@@ -16,11 +16,7 @@
                             <p class="rotulo-titulo">Ayudas de Dios</p>
                             <p class="rotulo-nombre">{{ $inscrito->persona->nombre_completo }}</p>
                             <p class="rotulo-puesto">
-                                @if ($inscrito->mesa)
-                                    Mesa {{ $inscrito->mesa->numero }} · Silla {{ $inscrito->silla }}
-                                @else
-                                    Sin mesa asignada
-                                @endif
+                                Mesa {{ $inscrito->mesa->numero }} · Silla {{ $inscrito->silla }}
                             </p>
                             <p class="rotulo-retiro">Retiro N.º {{ $numero }} {{ $grupo }}</p>
                         </div>

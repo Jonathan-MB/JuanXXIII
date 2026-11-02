@@ -38,6 +38,20 @@
             <p class="texto-ayuda">El enlace y el QR salen en el directorio, al pie de cada hoja. Lo que se deje vacío no sale. Una imagen nueva reemplaza la anterior.</p>
         </fieldset>
 
+        {{-- --------------------LETRERO DE NEQUI------------------- --}}
+        <fieldset class="bloque-formulario">
+            <legend>Letrero de Nequi</legend>
+            <div class="elemento-formulario">
+                <label class="titulo-elemento" for="nequiNumero">Número de Nequi</label>
+                <input type="tel" inputmode="numeric" data-solo-numeros name="nequiNumero" id="nequiNumero" maxlength="20" value="{{ old('nequiNumero', $ajustes[Ajuste::NEQUI_NUMERO]) }}" placeholder="{{ $cuentaNequi?->numero ?? 'Ej.: 3155724732' }}">
+            </div>
+            <div class="elemento-formulario">
+                <label class="titulo-elemento" for="nequiTitular">A nombre de</label>
+                <input type="text" name="nequiTitular" id="nequiTitular" maxlength="100" value="{{ old('nequiTitular', $ajustes[Ajuste::NEQUI_TITULAR]) }}" placeholder="{{ $cuentaNequi?->titular ?? 'Quien recibe el pago' }}">
+            </div>
+            <p class="texto-ayuda">Salen en los letreros de pago de Librería, Cafetería y Floristería. Si se dejan vacíos, se usa la cuenta Nequi del retiro{{ $cuentaNequi ? ' (' . $cuentaNequi->numero . ' · ' . $cuentaNequi->titular . ')' : '' }}.</p>
+        </fieldset>
+
         {{-- --------------------CORREO------------------- --}}
         <fieldset class="bloque-formulario">
             <legend>Correo de confirmación de cupo</legend>

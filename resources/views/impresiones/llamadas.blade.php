@@ -4,10 +4,6 @@
         @php
             $numero = $retiro->numeroPara($sexo);
             $filas  = $grupo['mesas']->map(fn ($fila) => ['titulo' => 'Mesa ' . $fila['mesa']->numero . ($fila['mesa']->nombre ? ' · ' . $fila['mesa']->nombre : ''), 'inscritos' => $fila['inscritos']]);
-
-            if ($grupo['sinPuesto']->isNotEmpty()) {
-                $filas->push(['titulo' => 'Sin mesa ni silla', 'inscritos' => $grupo['sinPuesto']]);
-            }
         @endphp
         <section class="pagina">
             @include('partials.membrete', ['subtitulo' => 'Llamadas familiares · Retiro N.º ' . $numero . ' ' . ($sexo === 'Femenino' ? 'Mujeres' : 'Hombres') . ' · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year])

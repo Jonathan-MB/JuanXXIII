@@ -1,105 +1,139 @@
 @include('partials.headImpresion')
 
+    {{-- Solo en pantalla: directorio.js dice aquí si cada hoja cabe en carta o necesita oficio --}}
+    <div class="aviso-carpeta aviso-papel" id="aviso-papel">
+        <p>Acomodando el directorio en una sola hoja…</p>
+    </div>
+
     @forelse ($grupos as $sexo => $grupo)
         @php
             $numero = $sexo === 'Femenino' ? $retiro->numero_mujeres : $retiro->numero_hombres;
+            $nombre = $sexo === 'Femenino' ? 'Mujeres' : 'Hombres';
         @endphp
-        <section class="pagina directorio">
-            @include('partials.membrete')
+        {{--  Todo el grupo en UNA hoja: directorio.js achica la letra y, si
+             hace falta, pasa a papel oficio --}}
+        <section class="pagina hoja-directorio papel-carta" data-grupo="{{ $nombre }}">
+            <div class="contenido-directorio">
+                <header class="cabecera-directorio">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo del Movimiento Juan XXIII">
+                    <div>
+                        <p class="dato-negrita">Movimiento de Retiros Parroquiales Juan XXIII · Arquidiócesis de Cali</p>
+                        <p>Directorio · {{ $retiro->dias_texto }} de {{ $retiro->fecha_inicio->year }} · {{ $retiro->lugar }}</p>
+                    </div>
+                    <p class="grupo-directorio">Retiro {{ $numero }}<br>{{ $nombre }}</p>
+                </header>
 
-            <div class="datos-directorio">
-                <p>{{ $retiro->dias_texto }} de {{ $retiro->fecha_inicio->year }} · {{ $retiro->lugar }}</p>
-                <p class="numero-directorio">Retiro N.º {{ $numero }} · {{ $sexo === 'Femenino' ? 'Mujeres' : 'Hombres' }}</p>
-            </div>
-
-            {{-- --------------------RECTORADO------------------- --}}
-            <table class="tabla-impresion tabla-rectorado">
-                <thead>
-                    <tr><th>Rectorado</th><th>Nombres y apellidos</th><th>Ciudad</th><th>Teléfono</th></tr>
-                </thead>
-                <tbody>
-                    @forelse ($rectorados[$sexo] ?? [] as $cargo)
-                        <tr>
-                            <td class="dato-negrita">{{ $cargo->cargo }}</td>
-                            <td>{{ $cargo->nombre }}</td>
-                            <td>{{ $cargo->ciudad }}</td>
-                            <td>{{ $cargo->telefono }}</td>
-                        </tr>
-                    @empty
-                        <tr><td colspan="4">Rectorado sin registrar.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
-
-            {{-- --------------------MESAS------------------- --}}
-            @foreach ($grupo['mesas'] as $fila)
-                <table class="tabla-impresion bloque-mesa">
-                    <caption>Mesa {{ $fila['mesa']->numero }}{{ $fila['mesa']->nombre ? ' · ' . $fila['mesa']->nombre : '' }}</caption>
+                {{-- --------------------RECTORADO------------------- --}}
+                <table class="tabla-directorio tabla-rectorado-directorio">
                     <thead>
-                        <tr>
-                            <th class="columna-silla">Silla</th>
-                            <th>Nombres y apellidos</th>
-                            <th>Dirección</th>
-                            <th>Teléfono</th>
-                            <th>Fecha nac.</th>
-                        </tr>
+                        <tr><th>Rectorado</th><th>Nombres y apellidos</th><th>Ciudad / barrio</th><th>Teléfono</th></tr>
                     </thead>
                     <tbody>
-                        <tr class="fila-catequista"><td>CT</td><td colspan="4">{{ $fila['mesa']->catequista_titular }}</td></tr>
-                        <tr class="fila-catequista"><td>CA</td><td colspan="4">{{ $fila['mesa']->catequista_auxiliar }}</td></tr>
-                        @foreach ($fila['inscritos'] as $inscrito)
+                        @forelse ($rectorados[$sexo] ?? [] as $cargo)
                             <tr>
-                                <td class="columna-silla">{{ $inscrito->silla }}</td>
-                                <td>{{ $inscrito->persona->nombre_completo }}</td>
-                                <td>{{ $inscrito->persona->ciudad }} / {{ $inscrito->persona->barrio }}</td>
-                                <td>{{ $inscrito->persona->celular }}</td>
-                                <td>{{ $inscrito->persona->fecha_nacimiento->format('d/m/Y') }}</td>
+                                <td class="dato-negrita">{{ $cargo->cargo }}</td>
+                                <td>{{ $cargo->nombre }}</td>
+                                <td>{{ $cargo->ciudad }}</td>
+                                <td>{{ $cargo->telefono }}</td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr><td colspan="4">Rectorado sin registrar.</td></tr>
+                        @endforelse
                     </tbody>
                 </table>
-            @endforeach
 
-            @include('impresiones.sinPuesto', ['sinPuesto' => $grupo['sinPuesto']])
+                {{-- --------------------MESAS------------------- --}}
+                {{-- Cada mesa a todo el ancho; los títulos van una sola vez arriba --}}
+                <table class="tabla-directorio tabla-titulos-directorio">
+                    <colgroup>
+                        <col class="col-mesa"><col class="col-silla"><col><col class="col-barrio"><col class="col-ciudad"><col class="col-telefono">
+                    </colgroup>
+                    <thead>
+                        <tr><th>Mesa</th><th>Silla</th><th>Nombre</th><th>Barrio</th><th>Ciudad</th><th>Teléfono</th></tr>
+                    </thead>
+                </table>
+                @foreach ($grupo['mesas'] as $fila)
+                    @php
+                        $mesa = $fila['mesa'];
+                    @endphp
+                    <table class="tabla-directorio tabla-mesa-directorio">
+                        <colgroup>
+                            <col class="col-mesa"><col class="col-silla"><col><col class="col-barrio"><col class="col-ciudad"><col class="col-telefono">
+                        </colgroup>
+                        <tbody>
+                            <tr class="fila-catequista">
+                                <td class="celda-mesa" rowspan="{{ $fila['inscritos']->count() + 2 }}">
+                                    <span class="numero-mesa-directorio">{{ $mesa->numero }}</span>
+                                    @if ($mesa->nombre)
+                                        <span class="nombre-mesa-directorio">{{ $mesa->nombre }}</span>
+                                    @endif
+                                </td>
+                                <td>CT</td>
+                                <td>{{ $mesa->catequista_titular }}</td>
+                                <td>{{ $mesa->titular_barrio }}</td>
+                                <td>{{ $mesa->titular_ciudad }}</td>
+                                <td>{{ $mesa->titular_celular }}</td>
+                            </tr>
+                            <tr class="fila-catequista">
+                                <td>CA</td>
+                                <td>{{ $mesa->catequista_auxiliar }}</td>
+                                <td>{{ $mesa->auxiliar_barrio }}</td>
+                                <td>{{ $mesa->auxiliar_ciudad }}</td>
+                                <td>{{ $mesa->auxiliar_celular }}</td>
+                            </tr>
+                            @foreach ($fila['inscritos'] as $inscrito)
+                                <tr>
+                                    <td>{{ $inscrito->silla }}</td>
+                                    <td>{{ $inscrito->persona->nombre_completo }}</td>
+                                    <td>{{ $inscrito->persona->barrio }}</td>
+                                    <td>{{ $inscrito->persona->ciudad }}</td>
+                                    <td>{{ $inscrito->persona->celular }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endforeach
 
-            {{-- --------------------PERSEVERANCIAS------------------- --}}
-            @if ($perseverancias->isNotEmpty())
-                <div class="bloque-perseverancias">
-                    <p class="titulo-perseverancias">Hermano retirista, persevera y fórmate. Asiste a:</p>
-                    <div class="rejilla-perseverancias">
-                        @foreach ($perseverancias as $perseverancia)
-                            <div class="perseverancia">
-                                <p class="perseverancia-tipo">{{ $perseverancia->tipo }}</p>
-                                <p class="dato-negrita">{{ $perseverancia->dia }} · {{ $perseverancia->hora }}</p>
-                                <p>{{ $perseverancia->parroquia }}</p>
-                                @if ($perseverancia->direccion)
-                                    <p class="perseverancia-direccion">{{ $perseverancia->direccion }}</p>
-                                @endif
-                            </div>
-                        @endforeach
+                {{-- --------------------PERSEVERANCIAS------------------- --}}
+                @if ($perseverancias->isNotEmpty())
+                    <div class="bloque-perseverancias">
+                        <p class="titulo-perseverancias">Hermano retirista, persevera y fórmate. Asiste a:</p>
+                        <div class="rejilla-perseverancias">
+                            @foreach ($perseverancias as $perseverancia)
+                                <div class="perseverancia">
+                                    <p class="perseverancia-tipo">{{ $perseverancia->tipo }}</p>
+                                    <p class="dato-negrita">{{ $perseverancia->dia }} · {{ $perseverancia->hora }}</p>
+                                    <p>{{ $perseverancia->parroquia }}</p>
+                                    @if ($perseverancia->direccion)
+                                        <p class="perseverancia-direccion">{{ $perseverancia->direccion }}</p>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-            @endif
+                @endif
 
-            {{-- --------------------WHATSAPP------------------- --}}
-            @if ($whatsapp || $tieneQr)
-                <div class="bloque-whatsapp">
-                    @if ($tieneQr)
-                        <img class="qr-whatsapp" src="{{ route('ajustes.qr') }}" alt="Código QR del grupo de WhatsApp">
-                    @endif
-                    <p>
-                        Únete al grupo de WhatsApp del movimiento{{ $tieneQr ? ': escanea el código' : '' }}
-                        @if ($whatsapp)
-                            <br><strong>{{ $whatsapp }}</strong>
+                {{-- --------------------WHATSAPP------------------- --}}
+                @if ($whatsapp || $tieneQr)
+                    <div class="bloque-whatsapp">
+                        @if ($tieneQr)
+                            <img class="qr-whatsapp" src="{{ route('ajustes.qr') }}" alt="Código QR del grupo de WhatsApp">
                         @endif
-                    </p>
-                </div>
-            @endif
+                        <p>
+                            Únete al grupo de WhatsApp del movimiento{{ $tieneQr ? ': escanea el código' : '' }}
+                            @if ($whatsapp)
+                                <br><strong>{{ $whatsapp }}</strong>
+                            @endif
+                        </p>
+                    </div>
+                @endif
+            </div>
         </section>
     @empty
         <div class="pagina pagina-vacia">
-            <p>No hay inscritos en este grupo.</p>
+            <p>Todavía nadie tiene mesa y silla en este grupo.</p>
         </div>
     @endforelse
 
+<script src="{{ recurso('js/directorio.js') }}"></script>
 @include('partials.footerImpresion')

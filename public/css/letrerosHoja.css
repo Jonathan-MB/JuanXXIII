@@ -1,0 +1,306 @@
+/* ============ LETREROS PARA LA PARED ============
+   Hoja carta horizontal con marco azul y una línea dorada, el dibujo a
+   la izquierda y el texto grande a la derecha. Azul y dorado del
+   movimiento; rojo solo en lo prohibido. */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap');
+
+@page letreroPared {
+    size: letter landscape;
+    margin: 0.8cm;
+}
+
+@page etiquetas {
+    size: letter;
+    margin: 0.8cm;
+}
+
+.letrero-pared {
+    page: letreroPared;
+    position: relative;
+    display: grid;
+    grid-template-columns: 8.5cm minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.6cm 1cm;
+    height: 19.9cm;
+    padding: 1.2cm 1.4cm 0.6cm;
+    border: 0.35cm solid #1c2f5e;
+    border-radius: 0.6cm;
+    box-shadow: inset 0 0 0 0.15cm #ffffff, inset 0 0 0 0.3cm #e3c400;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    color: #1c2f5e;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.icono-grande {
+    width: 8.5cm;
+    height: 8.5cm;
+}
+
+.texto-letrero {
+    text-align: center;
+}
+
+/* Sin dibujo (pasos de "Abre la caja"): el texto ocupa todo el ancho */
+.letrero-centrado .texto-letrero:first-child {
+    grid-column: 1 / -1;
+}
+
+.antetitulo-letrero {
+    font-size: 30pt;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #8a6d00;
+}
+
+.titulo-letrero {
+    font-size: 58pt;
+    font-weight: 900;
+    line-height: 1.02;
+    text-transform: uppercase;
+    overflow-wrap: break-word;
+}
+
+.titulo-gigante {
+    font-size: 96pt;
+}
+
+.subtitulo-letrero {
+    margin-top: 0.5cm;
+    font-size: 24pt;
+    font-weight: 700;
+    color: #333333;
+}
+
+.nota-letrero {
+    display: inline-block;
+    margin-top: 0.6cm;
+    padding: 0.15cm 0.6cm;
+    border-radius: 99px;
+    background: #e3c400;
+    font-size: 18pt;
+    font-weight: 800;
+    color: #1c2f5e;
+}
+
+.retiro-letrero {
+    margin-top: 0.2cm;
+    font-size: 26pt;
+    font-weight: 800;
+    color: #8a6d00;
+}
+
+/* ----------Ayudas de Dios: dos recuadros-------------- */
+.recuadros-letrero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5cm;
+    margin-top: 0.6cm;
+    text-align: left;
+}
+
+.recuadro-letrero {
+    padding: 0.4cm 0.5cm;
+    border: 0.08cm solid #1c2f5e;
+    border-radius: 0.3cm;
+    font-size: 17pt;
+    font-weight: 600;
+    color: #333333;
+}
+
+.titulo-recuadro {
+    margin-bottom: 0.15cm;
+    font-size: 15pt;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #1c2f5e;
+}
+
+.dato-grande {
+    font-size: 22pt;
+    font-weight: 900;
+    color: #1c2f5e;
+}
+
+.recuadro-aviso {
+    border-color: #c62828;
+    background: #fdecea;
+}
+
+.recuadro-aviso .titulo-recuadro {
+    color: #c62828;
+}
+
+/* ----------Nequi-------------- */
+.titulo-nequi {
+    font-size: 80pt;
+    text-transform: none;
+}
+
+.numero-cuenta {
+    margin-top: 0.3cm;
+    font-size: 54pt;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.linea-escribir {
+    width: 12cm;
+    margin: 0.6cm auto 0;
+    border-bottom: 0.08cm solid #1c2f5e;
+}
+
+/* ----------Prohibido: el título en rojo-------------- */
+.letrero-prohibido .titulo-letrero,
+.palabra-roja {
+    color: #c62828;
+}
+
+/* Título azul con solo una palabra en rojo ("NO arroje…") */
+.letrero-prohibido .titulo-azul {
+    color: #1c2f5e;
+}
+
+/* ----------Santísimo: marco dorado-------------- */
+.letrero-dorado {
+    border-color: #8a6d00;
+    box-shadow: inset 0 0 0 0.15cm #ffffff, inset 0 0 0 0.3cm #e3c400;
+}
+
+/* ----------Pie con el logo-------------- */
+.pie-letrero {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4cm;
+    padding-top: 0.3cm;
+    border-top: 0.05cm solid #e3c400;
+    font-size: 13pt;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.pie-letrero img {
+    width: 1.4cm;
+    height: 1.4cm;
+    object-fit: contain;
+}
+
+/* ----------Etiquetas de mesa: hoja vertical para recortar-------------- */
+.hoja-etiquetas {
+    page: etiquetas;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    height: 26.3cm;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.etiqueta-mesa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #999999;
+    text-align: center;
+}
+
+.etiqueta-numero {
+    font-size: 26pt;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.etiqueta-grupo {
+    margin-top: 0.1cm;
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.etiqueta-hombres {
+    color: #1c2f5e;
+}
+
+.etiqueta-mujeres {
+    color: #8a2346;
+}
+
+/* ----------En pantalla: la hoja de su tamaño real-------------- */
+@media screen {
+
+    /* Lo que queda dentro del margen de 0,8 cm: igual a la hoja impresa */
+    .pagina.letrero-pared {
+        width: 26.34cm;
+        max-width: none;
+        height: 19.9cm;
+        min-height: 0;
+        margin: 20px auto;
+        background: #ffffff;
+    }
+
+    .pagina.hoja-etiquetas {
+        height: 27.94cm;
+        padding: 0.8cm;
+    }
+
+    .miniatura .pagina.letrero-pared,
+    .miniatura .pagina.hoja-etiquetas {
+        margin: 0;
+    }
+}
+
+/* Nequi: que el pago diga en qué equipo fue la compra */
+.aviso-descripcion {
+    margin-top: 0.5cm;
+    padding: 0.25cm 0.5cm;
+    border: 0.06cm solid #e3c400;
+    border-radius: 0.3cm;
+    background: #fff8d1;
+    font-size: 16pt;
+    font-weight: 600;
+    color: #333333;
+}
+
+.aviso-descripcion strong {
+    font-weight: 900;
+    color: #1c2f5e;
+    text-transform: uppercase;
+}
+
+/* Ayudas de Dios: cada carta que no se recibe en su propia viñeta */
+.lista-no-recibe {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lista-no-recibe li {
+    position: relative;
+    padding-left: 0.8cm;
+    font-size: 15pt;
+    line-height: 1.2;
+}
+
+.lista-no-recibe li + li {
+    margin-top: 0.25cm;
+}
+
+.lista-no-recibe li::before {
+    content: "✕";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 900;
+    color: #c62828;
+}

@@ -1,0 +1,28 @@
+/* ============ PAGOS ============ */
+
+/*  La lista puede ser larga: la tabla tiene su propio alto, así la barra
+   para moverse a los lados no queda escondida al final de la página */
+.contenedor-pagos {
+    max-height: 72vh;
+    overflow: auto;
+}
+
+.tabla-pagos thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Más compacta para que quepa a lo ancho en una pantalla normal */
+.tabla-pagos {
+    font-size: 13px;
+}
+
+.tabla-pagos th,
+.tabla-pagos td {
+    padding: 8px 8px;
+}
+
+.tabla-pagos td {
+    vertical-align: top;
+}

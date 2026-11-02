@@ -325,7 +325,7 @@ p {
 /* ----------Hojas de mesa en blanco-------------- */
 .mesa-en-blanco {
     break-inside: avoid;
-    margin-bottom: 1cm;
+    margin-bottom: 0.8cm;
 }
 
 .cabecera-mesa-blanco {
@@ -351,73 +351,254 @@ p {
     font-weight: 700;
 }
 
+.tabla-en-blanco {
+    font-size: 8.5pt;
+}
+
 .tabla-en-blanco td {
-    height: 0.95cm;
+    height: 0.8cm;
 }
 
 .columna-cedula {
-    width: 3.6cm;
+    width: 3cm;
+}
+
+.columna-fecha {
+    width: 2.4cm;
 }
 
 .columna-telefono {
-    width: 3.2cm;
+    width: 2.8cm;
+}
+
+.columna-padrino {
+    width: 4.2cm;
 }
 
 
-/* ----------Directorio-------------- */
-.datos-directorio {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 12px;
-    font-size: 11pt;
+/* ----------Directorio: todo el grupo en una sola hoja--------------
+   directorio.js pone el tamaño de letra en .contenido-directorio y todo
+   lo de adentro va en em, para que se achique parejo. */
+@page directorio-carta {
+    size: letter;
+    margin: 1cm;
 }
 
-.numero-directorio {
-    font-weight: 700;
+@page directorio-oficio {
+    size: 8.5in 13in;
+    margin: 1cm;
+}
+
+.hoja-directorio.papel-carta {
+    page: directorio-carta;
+}
+
+.hoja-directorio.papel-oficio {
+    page: directorio-oficio;
+}
+
+@media screen {
+
+    /* Ancho fijo de la hoja: si se encoge en una pantalla pequeña, la
+       medida de directorio.js no serviría para el papel */
+    .hoja-directorio {
+        max-width: none;
+        overflow: hidden;
+        padding: 1cm;
+    }
+
+    .hoja-directorio.papel-carta {
+        height: 27.94cm;
+    }
+
+    .hoja-directorio.papel-oficio {
+        height: 33.02cm;
+    }
+}
+
+.contenido-directorio {
+    font-size: 9pt;
+    line-height: 1.05;
+}
+
+.cabecera-directorio {
+    display: grid;
+    grid-template-columns: 3.2em 1fr auto;
+    align-items: center;
+    gap: 0.8em;
+    margin-bottom: 0.6em;
+    padding-bottom: 0.4em;
+    border-bottom: 2px solid #111111;
+}
+
+.cabecera-directorio img {
+    width: 3.2em;
+    height: 3.2em;
+    object-fit: contain;
+}
+
+.grupo-directorio {
+    padding: 0.2em 0.7em;
+    border: 2px solid #111111;
+    border-radius: 0.4em;
+    font-size: 1.25em;
+    font-weight: 800;
+    line-height: 1.1;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.tabla-directorio {
+    width: 100%;
+    margin-bottom: 0.5em;
+    border-collapse: collapse;
+    table-layout: fixed;
+    break-inside: avoid;
+}
+
+/* Un dato largo baja de renglón en vez de cortarse: el directorio no
+   puede perder letras de un nombre o un barrio */
+.tabla-directorio th,
+.tabla-directorio td {
+    padding: 0.03em 0.35em;
+    border: 1px solid #777777;
+    text-align: left;
+    overflow-wrap: break-word;
+}
+
+.tabla-directorio td:nth-child(1),
+.tabla-directorio td:last-child {
+    white-space: nowrap;
+}
+
+
+.tabla-directorio th {
+    background: #e6e6e6;
+    font-size: 0.75em;
     text-transform: uppercase;
     white-space: nowrap;
 }
 
-.tabla-rectorado {
-    margin-bottom: 18px;
+.tabla-directorio .fila-catequista td {
+    background: #f3f3f3;
+    font-weight: 700;
 }
 
+.tabla-rectorado-directorio {
+    table-layout: auto;
+}
+
+.col-mesa {
+    width: 4.2em;
+}
+
+.col-silla {
+    width: 2.8em;
+}
+
+.col-barrio {
+    width: 20%;
+}
+
+.col-ciudad {
+    width: 15%;
+}
+
+.col-telefono {
+    width: 6.6em;
+}
+
+.tabla-directorio .celda-mesa {
+    background: #ffffff;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    white-space: normal;
+}
+
+.numero-mesa-directorio {
+    display: block;
+    font-size: 1.6em;
+    font-weight: 800;
+}
+
+.nombre-mesa-directorio {
+    display: block;
+    font-size: 0.8em;
+}
+
+/* Cada mesa es una tabla a todo el ancho, pegada a la anterior; la línea
+   gruesa de arriba separa una mesa de otra */
+.tabla-titulos-directorio,
+.tabla-mesa-directorio {
+    margin-bottom: 0;
+}
+
+.tabla-mesa-directorio {
+    margin-top: -1px;
+    border-top: 2px solid #111111;
+}
+
+/* ----------Perseverancias: en color, para que se vean--------------
+   Azul y dorado del movimiento; se imprimen con su color */
 .bloque-perseverancias {
-    margin-top: 10px;
+    margin-top: 0.6em;
     break-inside: avoid;
+    border: 2px solid #1c2f5e;
+    border-radius: 0.4em;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 }
 
 .titulo-perseverancias {
-    padding: 4px 8px;
-    border: 1px solid #555555;
-    font-weight: 700;
+    padding: 0.3em 0.6em;
+    background: #1c2f5e;
+    color: #ffd400;
+    font-size: 1.1em;
+    font-weight: 800;
+    letter-spacing: 0.04em;
     text-align: center;
     text-transform: uppercase;
 }
 
 .rejilla-perseverancias {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border-left: 1px solid #555555;
-    border-top: 0;
-    font-size: 8.5pt;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.3em;
+    padding: 0.35em;
+    background: #fff8d1;
+    font-size: 0.85em;
 }
 
 .perseverancia {
-    padding: 5px 6px;
-    border-right: 1px solid #555555;
-    border-bottom: 1px solid #555555;
+    padding: 0.25em 0.4em;
+    border-left: 0.3em solid #e3c400;
+    border-radius: 0.2em;
+    background: #ffffff;
 }
 
 .perseverancia-tipo {
-    font-size: 7.5pt;
-    font-weight: 700;
+    color: #1c2f5e;
+    font-size: 0.85em;
+    font-weight: 800;
     text-transform: uppercase;
 }
 
 .perseverancia-direccion {
     color: #444444;
+}
+
+.hoja-directorio .bloque-whatsapp {
+    gap: 1em;
+    margin-top: 0.4em;
+    padding: 0.3em 0.6em;
+    font-size: 1em;
+}
+
+.hoja-directorio .qr-whatsapp {
+    width: 6em;
+    height: 6em;
 }
 
 
@@ -747,28 +928,6 @@ p {
         min-height: 21.59cm;
         padding: 1.2cm;
     }
-}
-
-
-/* ----------Entrega de previstos-------------- */
-.tabla-previstos {
-    font-size: 8.5pt;
-}
-
-.tabla-previstos .columna-entrega {
-    width: 9%;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.tabla-previstos th.columna-entrega {
-    font-size: 7pt;
-}
-
-.tabla-previstos .casilla-papel {
-    width: 0.35cm;
-    height: 0.35cm;
-    vertical-align: middle;
 }
 
 
@@ -1193,4 +1352,274 @@ p.preguntas-charla {
     width: 2.6cm;
     height: 2.6cm;
     object-fit: contain;
+}
+
+
+/* ----------Camisetas: el grupo bien visible-------------- */
+.banda-grupo {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+    padding: 8px 16px;
+    border: 3px solid #111111;
+    border-radius: 8px;
+    font-size: 26pt;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.banda-grupo span {
+    font-size: 13pt;
+    letter-spacing: 0;
+}
+
+/* El grupo también en cada mesa, por si las hojas se separan */
+.grupo-caption {
+    float: right;
+    font-size: 8pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+
+/* ----------Lista para familiares: horizontal, para llenar a lapicero-------------- */
+@page horizontal {
+    size: letter landscape;
+    margin: 1cm;
+}
+
+.pagina-horizontal {
+    page: horizontal;
+}
+
+@media screen {
+
+    .pagina.pagina-horizontal {
+        width: 27.94cm;
+        max-width: none;
+        min-height: 21.59cm;
+        padding: 1cm;
+    }
+}
+
+.cabecera-familiares {
+    display: grid;
+    grid-template-columns: 1.4cm 1fr auto;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 9.5pt;
+}
+
+.cabecera-familiares img {
+    width: 1.4cm;
+    height: 1.4cm;
+    object-fit: contain;
+}
+
+.cabecera-familiares .banda-grupo {
+    gap: 14px;
+    margin: 0;
+    padding: 4px 14px;
+    font-size: 18pt;
+}
+
+.cabecera-familiares .banda-grupo span {
+    font-size: 10pt;
+}
+
+.tabla-familiares {
+    table-layout: fixed;
+    font-size: 10pt;
+}
+
+.tabla-familiares th {
+    font-size: 8pt;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Renglones altos: se llenan a mano */
+.tabla-familiares td {
+    height: 0.9cm;
+}
+
+.tabla-familiares .titulo-agrupado {
+    background: #d6d6d6;
+}
+
+/* Cada mesa entera en la misma hoja, separada de la siguiente */
+.bloque-familiares {
+    break-inside: avoid;
+    border-top: 2.5px solid #111111;
+}
+
+.celda-mesa-familiares {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tabla-familiares .centrado {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.col-mesa-familiares {
+    width: 1.6cm;
+}
+
+.col-silla-familiares {
+    width: 1.3cm;
+}
+
+.col-marcar {
+    width: 3.4cm;
+}
+
+.col-escribir {
+    width: 2.6cm;
+}
+
+.opcion-papel {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 9pt;
+    font-weight: 700;
+}
+
+.opcion-papel + .opcion-papel {
+    margin-left: 10px;
+}
+
+.opcion-papel .casilla-papel {
+    width: 0.5cm;
+    height: 0.5cm;
+}
+
+
+/* ----------Miniatura: la hoja sola, para la vista previa de la galería-------------- */
+@media screen {
+
+    .miniatura {
+        background: #ffffff;
+    }
+
+    .miniatura .barra-impresion {
+        display: none;
+    }
+
+    .miniatura .pagina {
+        margin: 0;
+        box-shadow: none;
+    }
+
+    .miniatura .pagina + .pagina {
+        display: none;
+    }
+}
+
+
+/* ----------Lista de pagos (tesorería): para marcar a mano-------------- */
+.tabla-pagos-papel {
+    font-size: 9pt;
+}
+
+.tabla-pagos-papel td {
+    height: 0.75cm;
+}
+
+.tabla-pagos-papel .columna-valor {
+    width: 2.3cm;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.tabla-pagos-papel .columna-check {
+    width: 2cm;
+    text-align: center;
+}
+
+.tabla-pagos-papel th.columna-check {
+    font-size: 7.5pt;
+}
+
+.tabla-pagos-papel .dato-sin-salto {
+    white-space: nowrap;
+}
+
+.tabla-pagos-papel .columna-nombre {
+    width: 30%;
+}
+
+
+/* ----------Listado de invitados para puertas: letra grande-------------- */
+.tabla-puertas {
+    table-layout: fixed;
+    font-size: 12pt;
+}
+
+.tabla-puertas th {
+    font-size: 9.5pt;
+}
+
+.tabla-puertas td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    vertical-align: middle;
+}
+
+/* Cada mesa entera en la misma hoja, separada de la siguiente */
+.bloque-puertas {
+    break-inside: avoid;
+    border-top: 3px solid #111111;
+}
+
+.col-mesa-puertas {
+    width: 1.7cm;
+}
+
+.col-silla-puertas {
+    width: 1.3cm;
+}
+
+.col-ciudad-puertas {
+    width: 3.6cm;
+}
+
+.col-barrio-puertas {
+    width: 4.4cm;
+}
+
+.col-padrino-puertas {
+    width: 6cm;
+}
+
+.celda-mesa-puertas {
+    text-align: center;
+}
+
+.numero-mesa-puertas {
+    display: block;
+    font-size: 22pt;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.nombre-mesa-puertas {
+    display: block;
+    margin-top: 2px;
+    font-size: 8pt;
+}
+
+.tabla-puertas .silla-puertas {
+    font-size: 13pt;
+    font-weight: 700;
+    text-align: center;
+}
+
+.tabla-puertas .nombre-puertas {
+    font-weight: 700;
 }
