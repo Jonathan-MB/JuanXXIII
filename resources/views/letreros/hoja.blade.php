@@ -110,6 +110,22 @@
             </section>
             @break
 
+        {{-- --------------------SOLO HOMBRES / SOLO MUJERES y BEBIDAS: una hoja por grupo------------------- --}}
+        @case('soloGrupo')
+        @case('bebidas')
+            @foreach (['Hombres' => ['hombre', '#1c2f5e'], 'Mujeres' => ['mujer', '#8a2346']] as $nombreGrupo => [$figura, $colorGrupo])
+                <section class="pagina letrero-pared letrero-{{ mb_strtolower($nombreGrupo) }}">
+                    @include('letreros.icono', ['icono' => $clave === 'bebidas' ? 'bebida' : $figura, 'color' => $colorGrupo, 'clase' => 'icono-grande'])
+                    <div class="texto-letrero">
+                        {{-- El grupo es lo que más importa: va grande; "Solo" o "Bebidas para", pequeño encima --}}
+                        <p class="antetitulo-letrero antetitulo-grupo">{{ $clave === 'bebidas' ? 'Bebidas para' : 'Solo' }}</p>
+                        <p class="titulo-letrero titulo-gigante">{{ $nombreGrupo }}</p>
+                    </div>
+                    @include('letreros.pie')
+                </section>
+            @endforeach
+            @break
+
         {{-- --------------------BASURA------------------- --}}
         @case('basura')
             <section class="pagina letrero-pared">

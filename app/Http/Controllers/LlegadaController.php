@@ -21,8 +21,7 @@ class LlegadaController extends Controller
             return view('llegada.index', ['retiro' => null]);
         }
 
-        $sexo     = $request->sexo === 'mujeres' ? 'Femenino' : 'Masculino';
-        $busqueda = trim((string) $request->busqueda);
+        $sexo = $request->sexo === 'mujeres' ? 'Femenino' : 'Masculino';
 
         $mesas = $retiro->mesas()
             ->where('sexo', $sexo)
@@ -30,7 +29,8 @@ class LlegadaController extends Controller
             ->orderBy('numero')
             ->get();
 
-        // Los de este grupo que siguen en la lista (no los que no asistieron)
+        //  Los de este grupo que siguen en la lista (no los que no asistieron).
+        // La búsqueda se hace en la misma página, mientras se escribe.
         $grupo = Inscripcion::with(['persona', 'retiro', 'mesa'])
             ->select('inscripcions.*')
             ->withSum('pagos', 'valor')
@@ -41,28 +41,16 @@ class LlegadaController extends Controller
             ->orderBy('personas.apellidos')
             ->get();
 
-        $encontrados = collect();
-
-        if ($busqueda !== '') {
-            $texto       = mb_strtolower($busqueda);
-            $cedula      = preg_replace('/[\s.\-]/', '', $busqueda);
-            $encontrados = $grupo->filter(function ($inscrito) use ($texto, $cedula) {
-                return str_contains(mb_strtolower($inscrito->persona->nombre_completo), $texto)
-                    || ($cedula !== '' && str_contains($inscrito->persona->cedula, strtoupper($cedula)));
-            })->take(8)->values();
-        }
-
         $llegaron  = $grupo->whereNotNull('llegada_en')->count();
-        $faltan    = $grupo->whereNull('llegada_en')->values();
-        $sinPuesto = $grupo->whereNull('mesa_id')->values();
+        $faltan    = $grupo->whereNull('llegada_en')->count();
+        $sinPuesto = $grupo->whereNull('mesa_id')->count();
 
         // Se manda como inscritosGrupo: en la vista, $grupo es "hombres" o "mujeres"
         return view('llegada.index', array_merge(
-            compact('retiro', 'sexo', 'busqueda', 'mesas', 'encontrados', 'llegaron', 'faltan', 'sinPuesto'),
+            compact('retiro', 'sexo', 'mesas', 'llegaron', 'faltan', 'sinPuesto'),
             ['inscritosGrupo' => $grupo]
         ));
     }
-
 
 
     //  Solo marca que llegó. El puesto NO se da por orden de llegada:
@@ -167,25 +155,32 @@ class LlegadaController extends Controller
 
 
 
-    //  Corrección rápida desde la lista de puestos: cuando la persona
-    // escribió mal su nombre o su cédula en la hoja de la mesa.
+    //  Corrección rápida desde la lista de invitados: los datos que cada
+    // persona escribe en la hoja de su mesa (y su padrino de retiro).
     public function corregirDatos(CorregirDatosRequest $request, Inscripcion $inscripcion)
     {
         $persona = $inscripcion->persona;
+        $padrino = $request->validated('padrino');
 
         // Cargar datos sin guardar
-        $persona->fill($request->validated());
+        $persona->fill(collect($request->validated())->except('padrino')->all());
+        $inscripcion->fill([
+            'tiene_padrino'  => $padrino !== null,
+            'padrino_nombre' => $padrino,
+        ]);
 
         // No hubo cambios
-        if (! $persona->isDirty()) {
+        if (! $persona->isDirty() && ! $inscripcion->isDirty()) {
             return back()->with('mensajeAlerta', 'No se detectaron cambios');
         }
 
-        $persona->save();
+        DB::transaction(function () use ($persona, $inscripcion) {
+            $persona->save();
+            $inscripcion->save();
+        });
 
-        return back()->with('mensajeActualizado', 'Datos corregidos: ' . $persona->nombre_completo . ' · CC ' . $persona->cedula);
+        return back()->with('mensajeActualizado', 'Datos guardados: ' . $persona->nombre_completo . ' · CC ' . $persona->cedula);
     }
-
 
 
     // Por si se marcó la llegada de la persona equivocada. El puesto se conserva.

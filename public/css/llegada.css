@@ -31,94 +31,49 @@
     text-decoration: underline;
 }
 
-.contador-llegada {
-    font-size: 15px;
-    color: #5b6479;
-}
 
-.contador-llegada strong {
-    font-size: 22px;
-    color: #13224a;
-}
-
-
-/* ----------Estructura: búsqueda + mapa-------------- */
-.estructura-llegada {
+/* ----------Resumen: tres cifras grandes-------------- */
+.resumen-llegada {
     display: grid;
-    grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
-    gap: 20px;
-    align-items: start;
-}
-
-.columna-busqueda {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
+    margin-bottom: 20px;
 }
 
-.buscar-llegada {
-    display: flex;
-    gap: 8px;
-}
-
-.buscar-llegada .buscador {
-    flex: 1 1 auto;
-    min-width: 0;
-    min-height: 48px;
-    padding: 10px 12px;
-    border: 1px solid #c9d1e3;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 16px;
-    background: #ffffff;
-}
-
-.puesto-siguiente {
-    padding: 10px 14px;
-    border-radius: 10px;
-    background: #e6ebf6;
-    color: #1c2f5e;
-    font-size: 14px;
-}
-
-.tarjeta-llegada {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 14px 16px;
-    border: 2px solid #f4c20d;
+.cifra-llegada {
+    padding: 14px 18px;
+    border: 1px solid #dde2ec;
+    border-left-width: 6px;
     border-radius: 12px;
-    background: #fffbea;
+    background: #ffffff;
+    color: #5b6479;
+    font-size: 14px;
+    font-weight: 600;
 }
 
-.tarjeta-llego {
-    border-color: #b6dfc4;
-    background: #f1faf4;
-}
-
-.nombre-llegada {
-    font-size: 17px;
+.cifra-llegada .cifra-numero {
+    font-size: 30px;
     font-weight: 800;
+    line-height: 1.1;
     color: #13224a;
 }
 
-.detalle-llegada,
-.puesto-actual {
-    font-size: 14px;
+.cifra-llegada .cifra-numero small {
+    font-size: 16px;
+    font-weight: 600;
     color: #5b6479;
 }
 
-.puesto-actual strong {
-    color: #165c34;
+.cifra-llegaron {
+    border-left-color: #1f7a45;
 }
 
-.aviso-saldo {
-    padding: 8px 10px;
-    border-radius: 8px;
-    background: #fbe5e2;
-    color: #922b25;
-    font-size: 13px;
-    font-weight: 600;
+.cifra-faltan {
+    border-left-color: #f4c20d;
+}
+
+.cifra-sin-puesto {
+    border-left-color: #c0392b;
 }
 
 .formulario-puesto {
@@ -160,10 +115,17 @@
     margin: 0;
 }
 
+.aviso-saldo {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #922b25;
+}
 
-/* ----------Puestos de todo el grupo-------------- */
+
+/* ----------Invitados-------------- */
 .seccion-puestos {
-    margin-top: 28px;
+    margin-top: 8px;
 }
 
 .texto-ayuda-puestos {
@@ -185,10 +147,30 @@
     gap: 8px;
 }
 
-.buscador-puestos {
-    width: 100%;
-    min-height: 48px;
+/* Los cuatro pasos, numerados, para quien está en la puerta por primera vez */
+.pasos-llegada {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    margin: 0 0 14px;
+    padding: 10px 16px 10px 34px;
+    border-radius: 10px;
+    background: #e6ebf6;
+    color: #1c2f5e;
+    font-size: 14px;
+}
+
+.filtros-llegada {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 12px;
+}
+
+.buscador-puestos {
+    flex: 1 1 320px;
+    min-height: 48px;
     padding: 10px 12px;
     border: 1px solid #c9d1e3;
     border-radius: 10px;
@@ -196,42 +178,122 @@
     font-size: 16px;
 }
 
-.fila-puesto[hidden] {
-    display: none;
-}
-
-.corregir-datos > summary {
-    margin-top: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #5b6479;
-    cursor: pointer;
-}
-
-.formulario-corregir {
+.botones-filtro {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-top: 6px;
 }
 
-.formulario-corregir input {
-    flex: 1 1 120px;
-    min-height: 40px;
-    padding: 6px 8px;
+.boton-filtro {
+    min-height: 44px;
+    padding: 8px 14px;
     border: 1px solid #c9d1e3;
-    border-radius: 8px;
+    border-radius: 99px;
+    background: #ffffff;
+    color: #1c2f5e;
     font-family: inherit;
     font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-.formulario-corregir .boton-secundario {
-    min-height: 40px;
-    padding: 6px 12px;
+.boton-filtro-activo {
+    border-color: #1c2f5e;
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+/* La lista puede ser larga: alto propio y títulos fijos */
+.contenedor-llegada {
+    max-height: 75vh;
+    overflow: auto;
+}
+
+.tabla-puestos thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .tabla-puestos td {
     vertical-align: middle;
+}
+
+.fila-puesto[hidden],
+.fila-editar[hidden] {
+    display: none;
+}
+
+.fila-llego {
+    background: #f1faf4;
+}
+
+.boton-llego {
+    min-height: 44px;
+    padding: 8px 18px;
+}
+
+.boton-deshacer {
+    min-height: 28px;
+    font-size: 12px;
+}
+
+.boton-editar-datos {
+    display: block;
+    margin-top: 4px;
+    padding: 4px 10px;
+    border: 1px solid #c9d1e3;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #1c2f5e;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.boton-editar-datos[aria-expanded="true"] {
+    border-color: #1c2f5e;
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+/* ----------Editar datos: debajo de la persona, a todo el ancho-------------- */
+.fila-editar > td {
+    background: #fffbea;
+    border-bottom: 2px solid #f4c20d;
+}
+
+.formulario-corregir {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px 12px;
+    margin: 0;
+}
+
+.formulario-corregir label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #5b6479;
+}
+
+.formulario-corregir input {
+    min-height: 42px;
+    padding: 6px 10px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    color: #13224a;
+}
+
+.acciones-corregir {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
 }
 
 .boton-texto {
@@ -246,44 +308,19 @@
     cursor: pointer;
 }
 
-.faltan-llegar {
-    padding: 12px 16px;
-    border: 1px solid #dde2ec;
-    border-radius: 12px;
-    background: #ffffff;
+
+/* ----------Cómo van las mesas-------------- */
+.seccion-mapa {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 2px solid #dde2ec;
 }
 
-.faltan-llegar summary {
-    font-weight: 800;
+.nombre-silla {
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: #13224a;
-    cursor: pointer;
-    min-height: 32px;
-}
-
-.lista-faltan {
-    margin: 8px 0 0;
-    padding: 0;
-    list-style: none;
-    max-height: 420px;
-    overflow-y: auto;
-}
-
-.lista-faltan li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 6px 0;
-    border-bottom: 1px solid #eef0f5;
-    font-size: 14px;
-}
-
-.lista-faltan a {
-    color: #1b2237;
-}
-
-.lista-faltan form {
-    margin: 0;
+    font-weight: 600;
 }
 
 
@@ -347,14 +384,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.silla a {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #13224a;
-    font-weight: 600;
-    text-decoration: none;
 }
 
 .numero-silla {
@@ -471,9 +500,78 @@
 
 
 /* ----------Celular-------------- */
-@media (max-width: 900px) {
+@media (max-width: 760px) {
 
-    .estructura-llegada {
+    .resumen-llegada {
         grid-template-columns: 1fr;
+    }
+
+    /*  Cada persona en una tarjeta: así el botón Llegó y la mesa y la
+       silla quedan a la vista sin mover la tabla a los lados */
+    .contenedor-llegada {
+        max-height: none;
+        overflow: visible;
+        border: 0;
+        background: transparent;
+    }
+
+    .tabla-puestos thead {
+        display: none;
+    }
+
+    .tabla-puestos,
+    .tabla-puestos tbody {
+        display: block;
+    }
+
+    .tabla-puestos .fila-puesto {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px 10px;
+        margin-bottom: 10px;
+        padding: 12px;
+        border: 1px solid #dde2ec;
+        border-radius: 12px;
+        background: #ffffff;
+    }
+
+    .tabla-puestos .fila-llego {
+        background: #f1faf4;
+    }
+
+    .tabla-puestos .fila-puesto td {
+        padding: 0;
+        border: 0;
+    }
+
+    .tabla-puestos .fila-puesto td[data-titulo]::before {
+        content: attr(data-titulo);
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #8a92a6;
+    }
+
+    .tabla-puestos .celda-nombre,
+    .tabla-puestos .celda-llegada,
+    .tabla-puestos .celda-puesto {
+        grid-column: 1 / -1;
+    }
+
+    .tabla-puestos .celda-nombre .enlace-inscrito {
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .tabla-puestos .fila-editar:not([hidden]) {
+        display: block;
+        margin: -6px 0 10px;
+    }
+
+    .tabla-puestos .fila-editar > td {
+        display: block;
+        padding: 12px;
+        border-radius: 0 0 12px 12px;
     }
 }

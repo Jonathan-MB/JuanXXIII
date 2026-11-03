@@ -681,25 +681,162 @@ p {
 }
 
 
-/* ----------Rotación del Santísimo: el sábado tiene 48 franjas y debe caber en una hoja-------------- */
+/* ----------Rotación del Santísimo: un color por día y separadores de mañana, tarde y noche--------------
+   Sin fondos, para ahorrar tinta: el color va solo en los bordes y en
+   los títulos. El sábado tiene 48 franjas y debe caber en una hoja. */
+@page santisimo {
+    size: letter;
+    margin: 1cm 1.4cm;
+}
+
+.hoja-santisimo {
+    page: santisimo;
+    --color-dia: #1c2f5e;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+@media screen {
+
+    .pagina.hoja-santisimo {
+        padding: 1cm 1.4cm;
+    }
+}
+
+/* Viernes azul, sábado dorado oscuro (el claro no se ve en el papel), domingo vino */
+.dia-semana-5 {
+    --color-dia: #1c2f5e;
+}
+
+.dia-semana-6 {
+    --color-dia: #9a7b00;
+}
+
+.dia-semana-0 {
+    --color-dia: #8a2346;
+}
+
+.cabecera-santisimo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    font-size: 9pt;
+    text-align: center;
+}
+
+.cabecera-santisimo img {
+    width: 1.2cm;
+    height: 1.2cm;
+    object-fit: contain;
+}
+
+.cabecera-santisimo .dato-negrita {
+    font-size: 12pt;
+    text-transform: uppercase;
+}
+
+.banda-dia-santisimo {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 6px;
+    padding: 2px 12px;
+    border: 3px solid var(--color-dia);
+    border-radius: 8px;
+    color: var(--color-dia);
+}
+
+.nombre-dia-santisimo {
+    font-size: 22pt;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.fecha-dia-santisimo {
+    font-size: 13pt;
+    font-weight: 700;
+}
+
 .tabla-santisimo {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2.5px solid var(--color-dia);
     font-size: 8.5pt;
     line-height: 1.15;
+    text-align: center;
 }
 
 .tabla-santisimo th,
 .tabla-santisimo td {
     padding: 1px 6px;
+    border: 1px solid #b5b5b5;
+    text-align: center;
+}
+
+.tabla-santisimo th {
+    border-bottom: 2px solid var(--color-dia);
+    color: var(--color-dia);
+    font-size: 8pt;
+    text-transform: uppercase;
 }
 
 .tabla-santisimo .columna-hora {
-    width: 34%;
-    white-space: nowrap;
+    width: 30%;
 }
 
-.tabla-santisimo .fila-todos td {
+.tabla-santisimo .columna-equipo {
+    width: 32%;
+}
+
+.tabla-santisimo .equipo-santisimo {
     font-weight: 700;
-    background: #f1f1f1;
+}
+
+/* El separador de cada parte del día: líneas gruesas de color y su dibujo */
+.tabla-santisimo .fila-periodo td {
+    padding: 1px 6px;
+    border-top: 2.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    font-size: 9.5pt;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.icono-periodo {
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 4px;
+    vertical-align: -0.2em;
+}
+
+.periodo-madrugada .fila-periodo td {
+    color: #2b3555;
+}
+
+.periodo-manana .fila-periodo td {
+    color: #9a7b00;
+}
+
+.periodo-tarde .fila-periodo td {
+    color: #c0601a;
+}
+
+.periodo-noche .fila-periodo td {
+    color: #1c2f5e;
+}
+
+/*  TODOS: la franja de toda la casa resalta con letra vino y un fondo
+   rosado muy claro, que se nota pero casi no gasta tinta */
+.tabla-santisimo .fila-todos td {
+    background: #f8e9ef;
+    font-weight: 800;
+    color: #8a2346;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
 }
@@ -1556,13 +1693,53 @@ p.preguntas-charla {
 
 
 /* ----------Listado de invitados para puertas: letra grande-------------- */
+/* Cada mesa en su caja, con aire entre una y otra */
+.caja-mesa-puertas {
+    margin-bottom: 0.55cm;
+    border: 2.5px solid #111111;
+    border-radius: 8px;
+    overflow: hidden;
+    break-inside: avoid;
+}
+
+.titulo-caja-puertas {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 5px 12px;
+    background: #111111;
+    color: #ffffff;
+    font-size: 16pt;
+    font-weight: 800;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.titulo-caja-puertas span {
+    font-size: 11pt;
+    font-weight: 600;
+}
+
+.titulo-caja-puertas .grupo-caja-puertas {
+    margin-left: auto;
+    font-size: 9pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* La caja ya tiene borde: la tabla va pegada a sus lados */
+.caja-mesa-puertas .tabla-puertas {
+    margin: 0;
+    border-style: hidden;
+}
+
 .tabla-puertas {
     table-layout: fixed;
     font-size: 12pt;
 }
 
 .tabla-puertas th {
-    font-size: 9.5pt;
+    font-size: 9pt;
 }
 
 .tabla-puertas td {
@@ -1571,18 +1748,8 @@ p.preguntas-charla {
     vertical-align: middle;
 }
 
-/* Cada mesa entera en la misma hoja, separada de la siguiente */
-.bloque-puertas {
-    break-inside: avoid;
-    border-top: 3px solid #111111;
-}
-
-.col-mesa-puertas {
-    width: 1.7cm;
-}
-
 .col-silla-puertas {
-    width: 1.3cm;
+    width: 1.4cm;
 }
 
 .col-ciudad-puertas {
@@ -1595,23 +1762,6 @@ p.preguntas-charla {
 
 .col-padrino-puertas {
     width: 6cm;
-}
-
-.celda-mesa-puertas {
-    text-align: center;
-}
-
-.numero-mesa-puertas {
-    display: block;
-    font-size: 22pt;
-    font-weight: 800;
-    line-height: 1;
-}
-
-.nombre-mesa-puertas {
-    display: block;
-    margin-top: 2px;
-    font-size: 8pt;
 }
 
 .tabla-puertas .silla-puertas {

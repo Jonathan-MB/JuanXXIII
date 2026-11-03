@@ -25,7 +25,8 @@ class SantisimoController extends Controller
         $usuario = auth()->user();
 
         $miEquipo  = $usuario->equipo;
-        $misTurnos = $miEquipo ? $franjas->where('equipo_id', $miEquipo->id)->values() : collect();
+        // Las franjas de TODOS también le tocan a cada equipo
+        $misTurnos = $miEquipo ? $franjas->filter(fn ($franja) => $franja->todos || $franja->equipo_id === $miEquipo->id)->values() : collect();
         $proximo   = $misTurnos->first(fn ($franja) => $franja->fin->gt(now()));
         $ahora     = $franjas->first(fn ($franja) => now()->between($franja->inicio, $franja->fin));
 

@@ -12,10 +12,7 @@
         <h1 class="vista-titulo">Llegada y puestos</h1>
         <p class="texto-vacio">No hay un retiro próximo.</p>
     @else
-        <div class="cabecera-vista">
-            <h1 class="vista-titulo">Llegada y puestos · {{ $grupo === 'mujeres' ? 'Mujeres · Retiro ' . $retiro->numero_mujeres : 'Hombres · Retiro ' . $retiro->numero_hombres }}</h1>
-            <p class="contador-llegada"><strong>{{ $llegaron }}</strong> de {{ $inscritosGrupo->count() }} llegaron · <strong>{{ $sinPuesto->count() }}</strong> sin puesto</p>
-        </div>
+        <h1 class="vista-titulo">Llegada y puestos · {{ $grupo === 'mujeres' ? 'Mujeres · Retiro ' . $retiro->numero_mujeres : 'Hombres · Retiro ' . $retiro->numero_hombres }}</h1>
 
         <nav class="pestanas-llegada" aria-label="Grupos">
             <a class="pestana {{ $grupo === 'hombres' ? 'pestana-activa' : '' }}" href="{{ route('llegada.index', ['sexo' => 'hombres']) }}">Hombres</a>
@@ -25,72 +22,127 @@
 
         @include('partials.mensaje')
 
-        <div class="estructura-llegada">
+        {{-- --------------------RESUMEN------------------- --}}
+        <section class="resumen-llegada">
+            <div class="cifra-llegada cifra-llegaron"><p class="cifra-numero">{{ $llegaron }} <small>de {{ $inscritosGrupo->count() }}</small></p><p>llegaron</p></div>
+            <div class="cifra-llegada cifra-faltan"><p class="cifra-numero">{{ $faltan }}</p><p>faltan por llegar</p></div>
+            <div class="cifra-llegada cifra-sin-puesto"><p class="cifra-numero">{{ $sinPuesto }}</p><p>sin mesa y silla</p></div>
+        </section>
 
-            {{-- --------------------BUSCAR Y MARCAR LLEGADA------------------- --}}
-            <section class="columna-busqueda">
-                <form class="buscar-llegada" method="GET" action="{{ route('llegada.index') }}">
-                    <input type="hidden" name="sexo" value="{{ $grupo }}">
-                    <input class="buscador" type="search" name="busqueda" value="{{ $busqueda }}" placeholder="Cédula o nombre…" aria-label="Cédula o nombre" autofocus>
-                    <button type="submit" class="boton-azul">Buscar</button>
-                </form>
+        {{-- --------------------INVITADOS------------------- --}}
+        <section class="seccion-puestos">
+            <div class="cabecera-puestos">
+                <h2 class="subtitulo-vista">Invitados</h2>
+                <div class="botones-imprimir-llegada">
+                    <a class="boton-secundario" href="{{ route('impresiones.llegada', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir lista de llegada</a>
+                    <a class="boton-secundario" href="{{ route('impresiones.mesasEnBlanco', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir hojas de mesa en blanco</a>
+                </div>
+            </div>
 
-                @if ($busqueda !== '' && $encontrados->isEmpty())
-                    <p class="texto-vacio">Nadie de {{ $grupo }} coincide con "{{ $busqueda }}". Revisa la pestaña del otro grupo o la lista de inscritos.</p>
-                @endif
+            <ol class="pasos-llegada">
+                <li>Busca a la persona por su nombre o su cédula.</li>
+                <li>Cuando llegue, oprime <strong>Llegó</strong>.</li>
+                <li>Escribe su <strong>mesa</strong> y su <strong>silla</strong> y oprime <strong>Guardar</strong>.</li>
+                <li>Si un dato está mal, oprime <strong>Editar datos</strong>.</li>
+            </ol>
 
-                @foreach ($encontrados as $inscrito)
-                    <article class="tarjeta-llegada {{ $inscrito->llegada_en ? 'tarjeta-llego' : '' }}">
-                        <p class="nombre-llegada">{{ $inscrito->persona->nombre_completo }}</p>
-                        <p class="detalle-llegada">CC {{ $inscrito->persona->cedula }} · @include('partials.chipPago', ['inscrito' => $inscrito])</p>
+            @if ($inscritosGrupo->isEmpty())
+                <p class="texto-vacio">No hay inscritos en este grupo.</p>
+            @else
+                <div class="filtros-llegada">
+                    <input class="buscador buscador-puestos" type="search" id="buscar-puesto" placeholder="Buscar por nombre, cédula o padrino…" aria-label="Buscar invitado" autofocus>
+                    <div class="botones-filtro" role="group" aria-label="Mostrar">
+                        <button type="button" class="boton-filtro boton-filtro-activo" data-filtro="todos">Todos</button>
+                        <button type="button" class="boton-filtro" data-filtro="faltan">Faltan por llegar</button>
+                        <button type="button" class="boton-filtro" data-filtro="sin-puesto">Sin mesa y silla</button>
+                    </div>
+                </div>
+                <p class="texto-vacio" id="puestos-sin-resultados" hidden>Nadie coincide con la búsqueda.</p>
 
-                        @if ($inscrito->llegada_en)
-                            <p class="puesto-actual">Llegó a las {{ $inscrito->llegada_en->format('g:i a') }}</p>
-                        @else
-                            @if ($inscrito->estado_pago !== 'completo')
-                                <p class="aviso-saldo">Le falta pagar {{ '$' . number_format($inscrito->saldo, 0, ',', '.') }}. Avísale a tesorería.</p>
-                            @endif
-                            <form method="POST" action="{{ route('llegada.marcar', $inscrito) }}" class="formulario-un-clic">
-                                @csrf
-                                <button type="submit" class="boton-amarillo boton-ancho">Marcar llegada</button>
-                            </form>
-                        @endif
+                <div class="contenedor-tabla contenedor-llegada">
+                    <table class="tabla-general tabla-puestos">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cédula</th>
+                                <th>Edad</th>
+                                <th>Padrino</th>
+                                <th>Llegada</th>
+                                <th>Mesa y silla</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Primero quienes faltan por llegar o no tienen puesto --}}
+                            @foreach ($inscritosGrupo->sortBy(fn ($inscrito) => [$inscrito->mesa_id ? 1 : 0, $inscrito->mesa?->numero, $inscrito->silla]) as $inscrito)
+                                @php
+                                    $persona = $inscrito->persona;
+                                @endphp
+                                <tr class="fila-puesto {{ $inscrito->llegada_en ? 'fila-llego' : '' }}"
+                                    data-buscar="{{ mb_strtolower($persona->nombre_completo . ' ' . $persona->cedula . ' ' . $inscrito->padrino_nombre) }}"
+                                    data-llego="{{ $inscrito->llegada_en ? 1 : 0 }}"
+                                    data-puesto="{{ $inscrito->mesa_id ? 1 : 0 }}">
+                                    <td class="celda-nombre">
+                                        <a class="enlace-inscrito" href="{{ route('inscritos.show', $inscrito) }}">{{ $persona->apellidos }}, {{ $persona->nombres }}</a>
+                                        <button type="button" class="boton-editar-datos" data-editar="editar-{{ $inscrito->id }}" aria-expanded="false">Editar datos</button>
+                                    </td>
+                                    <td class="dato-sin-salto" data-titulo="Cédula">{{ $persona->cedula }}</td>
+                                    <td data-titulo="Edad">{{ (int) $persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</td>
+                                    <td data-titulo="Padrino">{{ $inscrito->tiene_padrino ? $inscrito->padrino_nombre : '—' }}</td>
+                                    <td class="celda-llegada">
+                                        @if ($inscrito->llegada_en)
+                                            <span class="chip chip-verde">Llegó {{ $inscrito->llegada_en->format('g:i a') }}</span>
+                                            <form method="POST" action="{{ route('llegada.deshacer', $inscrito) }}" class="formulario-confirmar" data-confirmar="¿Deshacer la llegada de {{ $persona->nombres }}? Su puesto se conserva.">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="boton-texto boton-deshacer">Deshacer</button>
+                                            </form>
+                                        @else
+                                            <form method="POST" action="{{ route('llegada.marcar', $inscrito) }}" class="formulario-un-clic">
+                                                @csrf
+                                                <button type="submit" class="boton-amarillo boton-llego">Llegó</button>
+                                            </form>
+                                            @if ($inscrito->estado_pago !== 'completo')
+                                                <p class="aviso-saldo">Le falta {{ '$' . number_format($inscrito->saldo, 0, ',', '.') }}</p>
+                                            @endif
+                                        @endif
+                                    </td>
+                                    <td class="celda-puesto">@include('llegada.puesto', ['inscrito' => $inscrito])</td>
+                                </tr>
 
-                        @include('llegada.puesto', ['inscrito' => $inscrito])
-
-                        @if ($inscrito->llegada_en)
-                            <form method="POST" action="{{ route('llegada.deshacer', $inscrito) }}" class="formulario-confirmar" data-confirmar="¿Deshacer la llegada de {{ $inscrito->persona->nombres }}? Su puesto se conserva.">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="boton-texto">Deshacer llegada</button>
-                            </form>
-                        @endif
-                    </article>
-                @endforeach
-
-                {{-- --------------------FALTAN POR LLEGAR------------------- --}}
-                <details class="faltan-llegar" {{ $busqueda === '' ? 'open' : '' }}>
-                    <summary>Faltan por llegar ({{ $faltan->count() }})</summary>
-                    @if ($faltan->isEmpty())
-                        <p class="texto-vacio">Ya llegaron todos.</p>
-                    @else
-                        <ul class="lista-faltan">
-                            @foreach ($faltan as $inscrito)
-                                <li>
-                                    <a href="{{ route('llegada.index', ['sexo' => $grupo, 'busqueda' => $inscrito->persona->cedula]) }}">{{ $inscrito->persona->apellidos }}, {{ $inscrito->persona->nombres }}</a>
-                                    <form method="POST" action="{{ route('llegada.marcar', $inscrito) }}" class="formulario-un-clic">
-                                        @csrf
-                                        <button type="submit" class="boton-texto">Llegó</button>
-                                    </form>
-                                </li>
+                                {{-- Se abre con "Editar datos": los mismos datos de la hoja de mesa --}}
+                                <tr class="fila-editar" id="editar-{{ $inscrito->id }}" hidden>
+                                    <td colspan="6">
+                                        <form class="formulario-corregir" method="POST" action="{{ route('llegada.datos', $inscrito) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <label>Nombres<input type="text" name="nombres" maxlength="60" value="{{ $persona->nombres }}" required></label>
+                                            <label>Apellidos<input type="text" name="apellidos" maxlength="60" value="{{ $persona->apellidos }}" required></label>
+                                            <label>Cédula<input type="text" name="cedula" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $persona->cedula }}" required></label>
+                                            <label>Fecha de nacimiento<input type="date" name="fechaNacimiento" value="{{ $persona->fecha_nacimiento->format('Y-m-d') }}" required></label>
+                                            <label>Celular<input type="tel" name="celular" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $persona->celular }}" required></label>
+                                            <label>Ciudad<input type="text" name="ciudad" maxlength="60" value="{{ $persona->ciudad }}" required></label>
+                                            <label>Barrio<input type="text" name="barrio" maxlength="60" value="{{ $persona->barrio }}" required></label>
+                                            <label>Padrino de retiro <small>(vacío = sin padrino)</small><input type="text" name="padrino" maxlength="100" value="{{ $inscrito->tiene_padrino ? $inscrito->padrino_nombre : '' }}"></label>
+                                            <div class="acciones-corregir">
+                                                <button type="submit" class="boton-azul">Guardar datos</button>
+                                                <button type="button" class="boton-texto" data-cerrar="editar-{{ $inscrito->id }}">Cancelar</button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
                             @endforeach
-                        </ul>
-                    @endif
-                </details>
-            </section>
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </section>
 
-            {{-- --------------------MAPA DE MESAS------------------- --}}
-            <section class="mapa-mesas" aria-label="Mesas y sillas">
+        {{-- --------------------CÓMO VAN LAS MESAS------------------- --}}
+        <section class="seccion-mapa">
+            <h2 class="subtitulo-vista">Cómo van las mesas</h2>
+            <p class="texto-ayuda texto-ayuda-puestos">Solo para mirar: en azul las sillas ocupadas y punteadas las libres. Para cambiar a alguien de puesto, búscalo arriba.</p>
+
+            <div class="mapa-mesas" aria-label="Mesas y sillas">
                 @forelse ($mesas as $mesa)
                     @php
                         $porSilla = $mesa->inscripciones->keyBy(fn ($inscrito) => (int) $inscrito->silla);
@@ -98,7 +150,7 @@
                     <article class="tarjeta-mesa">
                         <div class="cabecera-mesa">
                             <p class="numero-mesa">Mesa {{ $mesa->numero }}{{ $mesa->nombre ? ' · ' . $mesa->nombre : '' }}</p>
-                            <span class="ocupacion-mesa">{{ $porSilla->count() }} sentados</span>
+                            <span class="ocupacion-mesa">{{ $porSilla->count() }} de {{ $mesa->cantidad_sillas }}</span>
                         </div>
                         <p class="catequistas-mesa">CT {{ $mesa->catequista_titular ?: '—' }} · CA {{ $mesa->catequista_auxiliar ?: '—' }}</p>
                         <ol class="sillas-mesa">
@@ -106,10 +158,10 @@
                                 @if ($porSilla->has($silla))
                                     <li class="silla silla-ocupada" title="{{ $porSilla[$silla]->persona->nombre_completo }}">
                                         <span class="numero-silla">{{ $silla }}</span>
-                                        <a href="{{ route('inscritos.show', $porSilla[$silla]) }}">{{ \Illuminate\Support\Str::words($porSilla[$silla]->persona->nombres, 1, '') }} {{ mb_substr($porSilla[$silla]->persona->apellidos, 0, 1) }}.</a>
+                                        <span class="nombre-silla">{{ \Illuminate\Support\Str::words($porSilla[$silla]->persona->nombres, 1, '') }} {{ mb_substr($porSilla[$silla]->persona->apellidos, 0, 1) }}.</span>
                                     </li>
                                 @else
-                                    <li class="silla silla-libre"><span class="numero-silla">{{ $silla }}</span> vacía</li>
+                                    <li class="silla silla-libre"><span class="numero-silla">{{ $silla }}</span> libre</li>
                                 @endif
                             @endfor
                         </ol>
@@ -117,69 +169,7 @@
                 @empty
                     <p class="texto-vacio">Todavía no hay mesas. Aparecen solas cuando escribes la mesa y la silla de alguien.</p>
                 @endforelse
-            </section>
-        </div>
-
-        {{-- --------------------PUESTOS DE TODO EL GRUPO------------------- --}}
-        <section class="seccion-puestos">
-            <div class="cabecera-puestos">
-                <h2 class="subtitulo-vista">Puestos de todos ({{ $inscritosGrupo->count() }})</h2>
-                <div class="botones-imprimir-llegada">
-                    <a class="boton-secundario" href="{{ route('impresiones.llegada', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir lista de llegada</a>
-                    <a class="boton-secundario" href="{{ route('impresiones.mesasEnBlanco', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir hojas de mesa en blanco</a>
-                </div>
             </div>
-            <p class="texto-ayuda texto-ayuda-puestos">Escribe la mesa y la silla de cada persona y guarda. Los puestos son fijos: cambiar o quitar el de alguien no mueve a nadie más. Primero aparecen quienes no tienen puesto.</p>
-
-            @if ($inscritosGrupo->isEmpty())
-                <p class="texto-vacio">No hay inscritos en este grupo.</p>
-            @else
-                <input class="buscador buscador-puestos" type="search" id="buscar-puesto" placeholder="Buscar por nombre, apellido, cédula o padrino…" aria-label="Buscar en la lista de puestos">
-                <p class="texto-vacio" id="puestos-sin-resultados" hidden>Nadie coincide con la búsqueda.</p>
-
-                <div class="contenedor-tabla">
-                    <table class="tabla-general tabla-puestos">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Documento</th>
-                                <th>Edad</th>
-                                <th>Padrino</th>
-                                <th>Llegada</th>
-                                <th>Puesto (mesa · silla)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($inscritosGrupo->sortBy(fn ($inscrito) => [$inscrito->mesa_id ? 1 : 0, $inscrito->mesa?->numero, $inscrito->silla]) as $inscrito)
-                                @php
-                                    $persona = $inscrito->persona;
-                                @endphp
-                                <tr class="fila-puesto" data-buscar="{{ mb_strtolower($persona->nombre_completo . ' ' . $persona->cedula . ' ' . $inscrito->padrino_nombre) }}">
-                                    <td>
-                                        <a class="enlace-inscrito" href="{{ route('inscritos.show', $inscrito) }}">{{ $persona->apellidos }}, {{ $persona->nombres }}</a>
-                                        <details class="corregir-datos">
-                                            <summary>Corregir nombre o cédula</summary>
-                                            <form class="formulario-corregir" method="POST" action="{{ route('llegada.datos', $inscrito) }}">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="text" name="nombres" maxlength="60" value="{{ $persona->nombres }}" aria-label="Nombres" placeholder="Nombres" required>
-                                                <input type="text" name="apellidos" maxlength="60" value="{{ $persona->apellidos }}" aria-label="Apellidos" placeholder="Apellidos" required>
-                                                <input type="text" name="cedula" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $persona->cedula }}" aria-label="Cédula" placeholder="Cédula" required>
-                                                <button type="submit" class="boton-secundario">Guardar</button>
-                                            </form>
-                                        </details>
-                                    </td>
-                                    <td class="dato-sin-salto">{{ $persona->cedula }}</td>
-                                    <td>{{ (int) $persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</td>
-                                    <td>{{ $inscrito->tiene_padrino ? $inscrito->padrino_nombre : '—' }}</td>
-                                    <td>{{ $inscrito->llegada_en ? $inscrito->llegada_en->format('g:i a') : '—' }}</td>
-                                    <td>@include('llegada.puesto', ['inscrito' => $inscrito])</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
         </section>
     @endif
 

@@ -21,6 +21,8 @@ class LetreroController extends Controller
         'basura'            => ['Basura', 'Para las canecas de papeles, plásticos y empaques.'],
         'noPapeles'         => ['No arrojar papeles al inodoro', 'Para cada baño.'],
         'banoFueraServicio' => ['Baño fuera de servicio', 'Para la puerta del baño que no se puede usar.'],
+        'soloGrupo'         => ['Solo hombres / Solo mujeres', 'Dos hojas, sin número de mesa: para marcar baños, cuartos o zonas de cada grupo.'],
+        'bebidas'           => ['Bebidas para hombres / para mujeres', 'Dos hojas: una para la mesa de bebidas de los hombres y otra para la de las mujeres.'],
         'abreLaCaja'        => ['Abre la caja', 'Cinco hojas: el título, los pasos 1, 2 y 3, y «Lee por favor».'],
         'etiquetasMesa'     => ['Etiquetas de mesa', 'Una hoja de etiquetas pequeñas por mesa, para marcar sobres, cajas y paquetes.'],
     ];

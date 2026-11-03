@@ -11,6 +11,15 @@ class SantisimoFranja extends Model
     // Cada franja dura media hora
     public const MINUTOS = 30;
 
+    //  Partes del día, para que el horario marque bien dónde empieza la
+    // noche o la madrugada. clave => [nombre, desde la hora]
+    public const PERIODOS = [
+        'madrugada' => ['Madrugada', 0],
+        'manana'    => ['Mañana', 6],
+        'tarde'     => ['Tarde', 12],
+        'noche'     => ['Noche', 18],
+    ];
+
     protected $fillable = [
         'inicio',
         'todos',
@@ -36,6 +45,16 @@ class SantisimoFranja extends Model
     public function getActividadTextoAttribute(): string
     {
         return $this->actividad ?: 'Adoración';
+    }
+
+
+
+    // "madrugada", "manana", "tarde" o "noche", según la hora de inicio
+    public function getPeriodoAttribute(): string
+    {
+        $hora = (int) $this->inicio->format('G');
+
+        return collect(self::PERIODOS)->filter(fn ($periodo) => $hora >= $periodo[1])->keys()->last();
     }
 
 

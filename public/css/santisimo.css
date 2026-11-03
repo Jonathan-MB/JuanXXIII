@@ -94,17 +94,81 @@
 }
 
 
-/* ----------Horario para leer-------------- */
+/* ----------Horario para leer: un color por día y separadores de mañana, tarde y noche-------------- */
+.dia-santisimo {
+    --color-dia: #1c2f5e;
+    overflow: hidden;
+    border: 2px solid var(--color-dia);
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+/* Viernes azul, sábado dorado oscuro, domingo vino: solo en bordes y títulos */
+.dia-semana-6 {
+    --color-dia: #9a7b00;
+}
+
+.dia-semana-0 {
+    --color-dia: #8a2346;
+}
+
 .dia-santisimo + .dia-santisimo {
-    margin-top: 18px;
+    margin-top: 24px;
 }
 
 .titulo-dia-santisimo {
-    margin-bottom: 8px;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--color-dia);
+    color: var(--color-dia);
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.titulo-dia-santisimo span {
+    margin-right: 6px;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* El separador de cada parte del día, con su dibujo y su tono */
+.titulo-periodo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 12px;
     font-size: 13px;
     font-weight: 800;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
+}
+
+.icono-periodo {
+    width: 18px;
+    height: 18px;
+}
+
+.titulo-periodo {
+    border-top: 2px solid currentColor;
+    border-bottom: 1px solid currentColor;
+}
+
+.periodo-madrugada .titulo-periodo {
+    color: #2b3555;
+}
+
+.periodo-manana .titulo-periodo {
+    color: #9a7b00;
+}
+
+.periodo-tarde .titulo-periodo {
+    color: #c0601a;
+}
+
+.periodo-noche .titulo-periodo {
     color: #1c2f5e;
 }
 
@@ -112,34 +176,27 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    border: 1px solid #dde2ec;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #ffffff;
 }
 
+/* Hora, equipo y actividad en tres columnas, con el texto centrado */
 .franja {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr);
     align-items: center;
-    gap: 4px 12px;
-    padding: 10px 14px;
-    border-top: 1px solid #eef0f5;
+    gap: 4px 10px;
+    padding: 9px 12px;
+    border-top: 1px solid rgba(28, 47, 94, 0.08);
     font-size: 15px;
-}
-
-.franja:first-child {
-    border-top: 0;
+    text-align: center;
 }
 
 .franja-hora {
-    flex: 0 0 76px;
     font-weight: 700;
     color: #13224a;
+    white-space: nowrap;
 }
 
 .franja-quien {
-    flex: 1 1 120px;
     font-weight: 700;
 }
 
@@ -148,16 +205,39 @@
     color: #5b6479;
 }
 
+.franja .chip {
+    grid-column: 1 / -1;
+    justify-self: center;
+}
+
+/* TODOS: la franja de toda la casa resalta en cualquier parte del día */
 .franja-todos {
-    background: #f7f8fc;
+    background: #f8e9ef;
+}
+
+.franja-todos .franja-quien,
+.franja-todos .franja-actividad {
+    font-weight: 800;
+    color: #8a2346;
 }
 
 .franja-mia {
     background: #fdf3d3;
+    box-shadow: inset 0 0 0 2px #f4c20d;
 }
 
 .franja-mia .franja-quien {
     color: #7a5600;
+}
+
+/* TODOS también es de mi equipo, pero conserva su rosado para no confundirse */
+.franja-mia.franja-todos {
+    background: #f8e9ef;
+    box-shadow: inset 0 0 0 2px #d9a3b7;
+}
+
+.franja-mia.franja-todos .franja-quien {
+    color: #8a2346;
 }
 
 .franja-vacia .franja-quien {
@@ -170,7 +250,7 @@
 
 .franja-ahora {
     opacity: 1;
-    box-shadow: inset 4px 0 0 #f4c20d;
+    box-shadow: inset 6px 0 0 #f4c20d;
 }
 
 /* En la pestaña "Mi equipo" solo se ven sus franjas y los días que las tienen */
@@ -178,6 +258,7 @@
     display: none;
 }
 
+.solo-mias .grupo-periodo:not(:has(.franja-mia)),
 .solo-mias .dia-santisimo:not(:has(.franja-mia)) {
     display: none;
 }

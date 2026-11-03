@@ -58,40 +58,50 @@
         @endif
 
         <div class="horario-santisimo {{ $miEquipo && $misTurnos->isNotEmpty() ? 'solo-mias' : '' }}" id="horario-santisimo">
+            {{--  Cada día con su color (viernes azul, sábado dorado, domingo vino)
+                 y un separador en cada cambio de madrugada, mañana, tarde y noche --}}
             @foreach ($franjas->groupBy(fn ($franja) => $franja->inicio->toDateString()) as $delDia)
-                <section class="dia-santisimo">
-                    <h2 class="titulo-dia-santisimo">{{ ucfirst($delDia->first()->inicio->locale('es')->translatedFormat('l j \d\e F')) }}</h2>
-                    <ul class="lista-franjas">
-                        @foreach ($delDia as $franja)
-                            @php
-                                $esMia   = $miEquipo && $franja->equipo_id === $miEquipo->id;
-                                $esAhora = $ahora && $ahora->id === $franja->id;
-                                $clases  = collect([
-                                    $esMia ? 'franja-mia' : '',
-                                    $esAhora ? 'franja-ahora' : '',
-                                    $franja->todos ? 'franja-todos' : '',
-                                    $franja->estaVacia() ? 'franja-vacia' : '',
-                                    $franja->fin->lt(now()) ? 'franja-pasada' : '',
-                                ])->filter()->implode(' ');
-                            @endphp
-                            <li class="franja {{ $clases }}" {{ $esAhora ? 'id=franja-ahora' : '' }}>
-                                <span class="franja-hora">{{ $franja->inicio->format('g:i a') }}</span>
-                                <span class="franja-quien">
-                                    @if ($franja->todos)
-                                        Todos
-                                    @elseif ($franja->equipo)
-                                        {{ $franja->equipo->nombre }}
-                                    @else
-                                        Sin asignar
-                                    @endif
-                                </span>
-                                <span class="franja-actividad">{{ $franja->actividad_texto }}</span>
-                                @if ($esAhora)
-                                    <span class="chip chip-amarillo">Ahora</span>
-                                @endif
-                            </li>
-                        @endforeach
-                    </ul>
+                @php
+                    $dia = $delDia->first()->inicio->locale('es');
+                @endphp
+                <section class="dia-santisimo dia-semana-{{ $dia->dayOfWeek }}">
+                    <h2 class="titulo-dia-santisimo"><span>{{ $dia->translatedFormat('l') }}</span> {{ $dia->translatedFormat('j \d\e F') }}</h2>
+                    @foreach ($delDia->groupBy('periodo') as $periodo => $delPeriodo)
+                        <div class="grupo-periodo periodo-{{ $periodo }}">
+                            <p class="titulo-periodo">@include('santisimo.periodo', ['periodo' => $periodo]) {{ \App\Models\SantisimoFranja::PERIODOS[$periodo][0] }}</p>
+                            <ul class="lista-franjas">
+                                @foreach ($delPeriodo as $franja)
+                                    @php
+                                        $esMia   = $miEquipo && ($franja->todos || $franja->equipo_id === $miEquipo->id);
+                                        $esAhora = $ahora && $ahora->id === $franja->id;
+                                        $clases  = collect([
+                                            $esMia ? 'franja-mia' : '',
+                                            $esAhora ? 'franja-ahora' : '',
+                                            $franja->todos ? 'franja-todos' : '',
+                                            $franja->estaVacia() ? 'franja-vacia' : '',
+                                            $franja->fin->lt(now()) ? 'franja-pasada' : '',
+                                        ])->filter()->implode(' ');
+                                    @endphp
+                                    <li class="franja {{ $clases }}" {{ $esAhora ? 'id=franja-ahora' : '' }}>
+                                        <span class="franja-hora">{{ $franja->inicio->format('g:i a') }}</span>
+                                        <span class="franja-quien">
+                                            @if ($franja->todos)
+                                                Todos
+                                            @elseif ($franja->equipo)
+                                                {{ $franja->equipo->nombre }}
+                                            @else
+                                                Sin asignar
+                                            @endif
+                                        </span>
+                                        <span class="franja-actividad">{{ $franja->actividad_texto }}</span>
+                                        @if ($esAhora)
+                                            <span class="chip chip-amarillo">Ahora</span>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endforeach
                 </section>
             @endforeach
         </div>

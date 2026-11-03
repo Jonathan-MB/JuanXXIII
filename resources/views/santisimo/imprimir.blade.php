@@ -1,26 +1,54 @@
+@php
+    use App\Models\SantisimoFranja;
+@endphp
 @include('partials.headImpresion')
 
+    {{--  Una hoja por día, cada día con su color (viernes azul, sábado
+         dorado, domingo vino). Dentro, un separador en cada cambio de
+         madrugada, mañana, tarde y noche, para no confundir las horas. --}}
     @foreach ($dias as $delDia)
-        <section class="pagina">
-            @include('partials.membrete', ['subtitulo' => 'Rotación del Santísimo · ' . ucfirst($delDia->first()->inicio->locale('es')->translatedFormat('l j \d\e F')) . ' · Retiro ' . $retiro->numero_mujeres . ' M - ' . $retiro->numero_hombres . ' H'])
+        @php
+            $dia = $delDia->first()->inicio->locale('es');
+        @endphp
+        <section class="pagina hoja-santisimo dia-semana-{{ $dia->dayOfWeek }}">
+            <header class="cabecera-santisimo">
+                <img src="{{ asset('img/logo.png') }}" alt="Logo del Movimiento Juan XXIII">
+                <div>
+                    <p class="dato-negrita">Rotación al Santísimo</p>
+                    <p>Movimiento de Retiros Parroquiales Juan XXIII · Retiro {{ $retiro->numero_mujeres }} M – {{ $retiro->numero_hombres }} H</p>
+                </div>
+            </header>
 
-            <table class="tabla-impresion tabla-santisimo">
+            <div class="banda-dia-santisimo">
+                <p class="nombre-dia-santisimo">{{ $dia->translatedFormat('l') }}</p>
+                <p class="fecha-dia-santisimo">{{ $dia->translatedFormat('j \d\e F') }}</p>
+            </div>
+
+            <table class="tabla-santisimo">
+                <colgroup>
+                    <col class="columna-hora"><col class="columna-equipo"><col>
+                </colgroup>
                 <thead>
                     <tr>
-                        <th class="columna-hora">Hora</th>
+                        <th>Hora</th>
                         <th>Equipo</th>
                         <th>Actividad</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($delDia as $franja)
-                        <tr class="{{ $franja->todos ? 'fila-todos' : '' }}">
-                            <td class="columna-hora">{{ $franja->inicio->format('g:i a') }} – {{ $franja->fin->format('g:i a') }}</td>
-                            <td>{{ $franja->todos ? 'TODOS' : ($franja->equipo?->nombre ?? '') }}</td>
-                            <td>{{ $franja->actividad_texto }}</td>
+                @foreach ($delDia->groupBy('periodo') as $periodo => $franjas)
+                    <tbody class="periodo-{{ $periodo }}">
+                        <tr class="fila-periodo">
+                            <td colspan="3">@include('santisimo.periodo', ['periodo' => $periodo]) {{ SantisimoFranja::PERIODOS[$periodo][0] }}</td>
                         </tr>
-                    @endforeach
-                </tbody>
+                        @foreach ($franjas as $franja)
+                            <tr class="{{ $franja->todos ? 'fila-todos' : '' }}">
+                                <td>{{ $franja->inicio->format('g:i') }} – {{ $franja->fin->format('g:i a') }}</td>
+                                <td class="equipo-santisimo">{{ $franja->todos ? 'TODOS' : ($franja->equipo?->nombre ?? '') }}</td>
+                                <td>{{ $franja->actividad_texto }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                @endforeach
             </table>
         </section>
     @endforeach
