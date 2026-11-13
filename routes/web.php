@@ -18,6 +18,7 @@ use App\Http\Controllers\LlegadaController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\PanelController;
+use App\Http\Controllers\PerseveranciaController;
 use App\Http\Controllers\RetiroController;
 use App\Http\Controllers\SantisimoController;
 use App\Http\Controllers\SantisimoRepartoController;
@@ -40,6 +41,9 @@ Route::get('/inscripcion/recibida', [InscripcionController::class, 'recibida'])-
 Route::get('/inscripcion/verificar-cedula/{cedula}', [InscripcionController::class, 'verificarCedula'])
     ->middleware('throttle:20,1')
     ->name('inscripcion.verificarCedula');
+
+// La foto de cada perseverancia, para el carrusel del inicio
+Route::get('/perseverancias/{perseverancia}/imagen', [PerseveranciaController::class, 'imagen'])->name('perseverancias.imagen');
 
 Route::middleware('guest')->group(function () {
     Route::view('/login', 'login')->name('login');
@@ -140,6 +144,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('archivos', ArchivoController::class)
             ->only(['index', 'store', 'show', 'update', 'destroy']);
 
+        Route::resource('perseverancias', PerseveranciaController::class)
+            ->parameters(['perseverancias' => 'perseverancia'])
+            ->except(['show']);
+
         Route::get('/historial', [HistorialController::class, 'index'])->name('historial.index');
         Route::post('/historial/importar', [HistorialController::class, 'importar'])->name('historial.importar');
 
@@ -187,7 +195,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/impresiones/datos', [ImpresionController::class, 'datos'])->name('impresiones.datos');
         Route::put('/impresiones/rectorado', [ImpresionController::class, 'guardarRectorado'])->name('impresiones.rectorado');
         Route::put('/impresiones/firmantes', [ImpresionController::class, 'guardarFirmantes'])->name('impresiones.firmantes');
-        Route::put('/impresiones/perseverancias', [ImpresionController::class, 'guardarPerseverancias'])->name('impresiones.perseverancias');
         Route::get('/impresiones/carta', [ImpresionController::class, 'carta'])->name('impresiones.carta');
         Route::get('/impresiones/correcciones', [ImpresionController::class, 'correcciones'])->name('impresiones.correcciones');
         Route::get('/impresiones/directorio', [ImpresionController::class, 'directorio'])->name('impresiones.directorio');

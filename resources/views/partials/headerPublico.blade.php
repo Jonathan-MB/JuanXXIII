@@ -13,12 +13,20 @@
 
         @php
             $enlaceRosario = \App\Models\Ajuste::valor(\App\Models\Ajuste::ROSARIO_ENLACE);
+
+            // La hora va en el botón para que nadie entre a otra hora
+            $horaRosario = collect([\App\Models\Ajuste::valor(\App\Models\Ajuste::ROSARIO_DIAS), \App\Models\Ajuste::valor(\App\Models\Ajuste::ROSARIO_HORA)])->filter()->implode(' · ');
         @endphp
         <nav class="header-publico-botones" aria-label="Accesos">
             @if ($enlaceRosario)
                 <a class="boton-rosario" href="{{ $enlaceRosario }}" target="_blank" rel="noopener">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="1.6"/><circle cx="17.2" cy="6.2" r="1.6"/><circle cx="19.4" cy="11.2" r="1.6"/><circle cx="6.8" cy="6.2" r="1.6"/><circle cx="4.6" cy="11.2" r="1.6"/><path d="M12 14v8M9 17h6"/></svg>
-                    Rosario en vivo
+                    <span class="texto-boton-rosario">
+                        Rosario en vivo
+                        @if ($horaRosario)
+                            <small>{{ $horaRosario }}</small>
+                        @endif
+                    </span>
                 </a>
             @endif
             <a class="boton-amarillo" href="{{ route('inscripcion') }}">Inscribirme al próximo retiro</a>

@@ -65,6 +65,7 @@
             <p class="menu-grupo">General</p>
             @if ($verTodo)
                 <a class="menu-enlace {{ request()->routeIs('retiros.*') ? 'menu-activo' : '' }}" href="{{ route('retiros.index') }}">Retiros</a>
+                <a class="menu-enlace {{ request()->routeIs('perseverancias.*') ? 'menu-activo' : '' }}" href="{{ route('perseverancias.index') }}">Perseverancias</a>
                 <a class="menu-enlace {{ request()->routeIs('historial.*') ? 'menu-activo' : '' }}" href="{{ route('historial.index') }}">Historial</a>
                 <a class="menu-enlace {{ request()->routeIs('ajustes.*') ? 'menu-activo' : '' }}" href="{{ route('ajustes.index') }}">Ajustes</a>
             @endif

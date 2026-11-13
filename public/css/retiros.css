@@ -61,6 +61,11 @@
 }
 
 .casilla-inscripciones input {
+    flex: none;
     width: 20px;
     height: 20px;
+}
+
+.casilla-inscripciones + .casilla-inscripciones {
+    margin-top: 10px;
 }

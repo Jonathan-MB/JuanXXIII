@@ -79,45 +79,12 @@
     </form>
 
     {{-- --------------------PERSEVERANCIAS------------------- --}}
-    <form class="bloque-formulario bloque-datos" id="perseverancias" method="POST" action="{{ route('impresiones.perseverancias') }}">
-        @csrf
-        @method('PUT')
+    <section class="bloque-formulario bloque-datos" id="perseverancias">
         <h2 class="titulo-bloque-datos">Perseverancias (pie del directorio)</h2>
-        <div class="contenedor-tabla">
-            <table class="tabla-general tabla-datos">
-                <thead>
-                    <tr><th>Tipo</th><th>Día</th><th>Hora</th><th>Parroquia o lugar</th><th>Dirección</th><th></th></tr>
-                </thead>
-                <tbody id="filas-perseverancias">
-                    @foreach ($perseverancias as $i => $perseverancia)
-                        <tr>
-                            <td><input type="text" name="perseverancias[{{ $i }}][tipo]" maxlength="40" value="{{ $perseverancia->tipo }}" aria-label="Tipo"></td>
-                            <td><input type="text" name="perseverancias[{{ $i }}][dia]" maxlength="30" value="{{ $perseverancia->dia }}" aria-label="Día"></td>
-                            <td><input type="text" name="perseverancias[{{ $i }}][hora]" maxlength="20" value="{{ $perseverancia->hora }}" aria-label="Hora"></td>
-                            <td><input type="text" name="perseverancias[{{ $i }}][parroquia]" maxlength="120" value="{{ $perseverancia->parroquia }}" aria-label="Parroquia"></td>
-                            <td><input type="text" name="perseverancias[{{ $i }}][direccion]" maxlength="120" value="{{ $perseverancia->direccion }}" aria-label="Dirección"></td>
-                            <td><button type="button" class="boton-texto boton-quitar-fila">Quitar</button></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <p class="texto-ayuda">Ahora tienen su propia sección, donde también se elige qué sale en el inicio.</p>
+        <div class="acciones-formulario">
+            <a class="boton-secundario" href="{{ route('perseverancias.index') }}">Ir a Perseverancias</a>
         </div>
-        <div class="acciones-formulario acciones-entre">
-            <button type="button" class="boton-secundario" id="agregar-perseverancia">+ Agregar perseverancia</button>
-            <button type="submit" class="boton-azul">Guardar perseverancias</button>
-        </div>
-    </form>
+    </section>
 
-    <template id="plantilla-perseverancia">
-        <tr>
-            <td><input type="text" data-campo="tipo" maxlength="40" value="Perseverancia" aria-label="Tipo"></td>
-            <td><input type="text" data-campo="dia" maxlength="30" aria-label="Día"></td>
-            <td><input type="text" data-campo="hora" maxlength="20" aria-label="Hora"></td>
-            <td><input type="text" data-campo="parroquia" maxlength="120" aria-label="Parroquia"></td>
-            <td><input type="text" data-campo="direccion" maxlength="120" aria-label="Dirección"></td>
-            <td><button type="button" class="boton-texto boton-quitar-fila">Quitar</button></td>
-        </tr>
-    </template>
-
-<script src="{{ recurso('js/impresiones.js') }}"></script>
 @include('partials.footerPanel')

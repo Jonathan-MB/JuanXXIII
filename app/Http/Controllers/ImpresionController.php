@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GuardarFirmantesRequest;
-use App\Http\Requests\GuardarPerseveranciasRequest;
 use App\Http\Requests\GuardarRectoradoRequest;
 use App\Models\ActividadBase;
 use App\Models\Ajuste;
@@ -106,7 +105,6 @@ class ImpresionController extends Controller
             'retiro'         => $retiro,
             'rectorados'     => $rectorados,
             'firmantes'      => Firmante::orderBy('orden')->get(),
-            'perseverancias' => Perseverancia::orderBy('orden')->get(),
         ]);
     }
 
@@ -152,23 +150,6 @@ class ImpresionController extends Controller
         });
 
         return redirect()->to(route('impresiones.datos') . '#firmantes')->with('mensajeActualizado', 'Firmas de la carta guardadas.');
-    }
-
-
-
-    public function guardarPerseverancias(GuardarPerseveranciasRequest $request)
-    {
-        $data = $request->validated();
-
-        DB::transaction(function () use ($data) {
-            Perseverancia::query()->delete();
-
-            foreach ($data['perseverancias'] as $orden => $perseverancia) {
-                Perseverancia::create($perseverancia + ['orden' => $orden + 1]);
-            }
-        });
-
-        return redirect()->to(route('impresiones.datos') . '#perseverancias')->with('mensajeActualizado', 'Perseverancias guardadas.');
     }
 
 
@@ -717,8 +698,7 @@ class ImpresionController extends Controller
     // El retiro que sigue a este, para la carta ("Nuestro próximo retiro…")
     private function proximoRetiro(Retiro $retiro): ?Retiro
     {
-        return Retiro::whereDate('fecha_inicio', '>', $retiro->fecha_fin)
-            ->orderBy('fecha_inicio')
-            ->first();
+        // El marcado como próximo en Retiros o, si no hay, el siguiente por fecha
+        return $retiro->siguiente();
     }
 }

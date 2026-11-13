@@ -1,0 +1,154 @@
+/* ----------Lista de perseverancias-------------- */
+.rejilla-perseverancias {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.tarjeta-perseverancia {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #dde2ec;
+    border-radius: 12px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.foto-perseverancia {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    height: 120px;
+    padding: 10px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Colores de reserva para las que no tienen foto */
+.fondo-0 { background-color: #1c2f5e; }
+.fondo-1 { background-color: #1f7a45; }
+.fondo-2 { background-color: #8a2346; }
+.fondo-3 { background-color: #9a7b00; }
+.fondo-4 { background-color: #3b2160; }
+.fondo-5 { background-color: #c0601a; }
+
+.orden-perseverancia {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ffffff;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.datos-perseverancia {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 14px 16px 6px;
+    font-size: 14px;
+    color: #3d4660;
+}
+
+.tipo-perseverancia {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #9a7b00;
+}
+
+.titulo-perseverancia {
+    font-size: 19px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.dia-perseverancia {
+    font-weight: 700;
+    color: #1c2f5e;
+}
+
+.direccion-perseverancia {
+    color: #5b6479;
+}
+
+.actividades-perseverancia {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    font-size: 13px;
+}
+
+.acciones-perseverancia {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px 14px;
+}
+
+.acciones-perseverancia .enlace-accion {
+    margin-right: auto;
+}
+
+.boton-quitar {
+    min-height: 44px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #f1bdb6;
+    background: #ffffff;
+    color: #922b25;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.boton-quitar:hover {
+    background: #fbe5e2;
+}
+
+
+/* ----------Formulario-------------- */
+.formulario-perseverancia {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 860px;
+}
+
+.foto-actual {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.foto-actual img {
+    width: 200px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.casilla-perseverancia {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: #13224a;
+}
+
+.casilla-perseverancia input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+}

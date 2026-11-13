@@ -73,6 +73,19 @@
     transform: scale(1.04);
 }
 
+.texto-boton-rosario {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    text-align: left;
+}
+
+.texto-boton-rosario small {
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
 .boton-rosario svg {
     width: 20px;
     height: 20px;
@@ -491,6 +504,312 @@
 }
 
 
+/* ----------Perseverancias: carrusel-------------- */
+.seccion-perseverancias,
+.seccion-mapa-perseverancias {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px max(16px, 3vw) 0;
+}
+
+.cabecera-carrusel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.botones-carrusel {
+    display: flex;
+    gap: 8px;
+}
+
+.boton-carrusel {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 2px solid #1c2f5e;
+    border-radius: 50%;
+    background: #ffffff;
+    font-family: inherit;
+    font-size: 24px;
+    line-height: 1;
+    color: #1c2f5e;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.boton-carrusel:hover {
+    background: #1c2f5e;
+    color: #ffffff;
+}
+
+.carrusel {
+    display: flex;
+    gap: 14px;
+    margin-top: 20px;
+    padding-bottom: 6px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+}
+
+.diapositiva {
+    flex: 0 0 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 3px;
+    min-height: 300px;
+    padding: 20px 18px;
+    border-radius: 14px;
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+    scroll-snap-align: start;
+}
+
+/* Sin foto: un degradado de color distinto para cada una */
+.diapositiva.fondo-0 { background-color: #1c2f5e; }
+.diapositiva.fondo-1 { background-color: #1f6b40; }
+.diapositiva.fondo-2 { background-color: #7a1f3f; }
+.diapositiva.fondo-3 { background-color: #6b5600; }
+.diapositiva.fondo-4 { background-color: #3b2160; }
+.diapositiva.fondo-5 { background-color: #8a4413; }
+
+.diapositiva:not([style]) {
+    background-image: radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.18), transparent 50%);
+}
+
+.diapositiva-tipo {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #f4c20d;
+}
+
+.diapositiva-titulo {
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.05;
+    text-transform: uppercase;
+}
+
+.diapositiva-parroquia {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e6ebf6;
+}
+
+.diapositiva-dia {
+    align-self: flex-start;
+    margin-top: 8px;
+    padding: 3px 12px;
+    border-radius: 99px;
+    background: #f4c20d;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #13224a;
+}
+
+.diapositiva-actividades {
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.diapositiva-actividades li + li {
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    padding-top: 3px;
+    margin-top: 3px;
+}
+
+.diapositiva-direccion {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #c9d3ea;
+}
+
+.diapositiva-enlace {
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #f4c20d;
+    text-decoration: none;
+}
+
+.diapositiva-credito {
+    margin-top: 6px;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.enlace-portada {
+    color: #f4c20d;
+    font-weight: 800;
+}
+
+
+/* ----------Perseverancias: mapa-------------- */
+.mapa-perseverancias {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.lista-mapa {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 380px;
+    margin: 0;
+    padding: 0 4px 0 0;
+    list-style: none;
+    overflow-y: auto;
+}
+
+.lugar-mapa {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid #dde2ec;
+    border-left: 4px solid #dde2ec;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.lugar-activo {
+    border-left-color: #f4c20d;
+    background: #f7f8fc;
+}
+
+.boton-lugar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    text-align: left;
+    color: #13224a;
+    cursor: pointer;
+}
+
+.boton-lugar strong {
+    font-size: 15px;
+}
+
+.boton-lugar span {
+    font-size: 12px;
+    color: #5b6479;
+}
+
+.enlace-como-llegar {
+    flex: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #1c2f5e;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.marco-mapa {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    height: 420px;
+    border: 0;
+    border-radius: 12px;
+    background: #e6ebf6;
+}
+
+.numero-lugar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #f4c20d;
+    font-size: 13px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+/* Pin del mapa: gota dorada con el número, como en la lista */
+.pin-perseverancia {
+    display: grid;
+    place-items: center;
+    border: 2px solid #13224a;
+    border-radius: 50% 50% 50% 0;
+    background: #f4c20d;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    transform: rotate(-45deg);
+}
+
+.pin-perseverancia span {
+    transform: rotate(45deg);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+/* Globo al tocar un punto */
+.leaflet-popup-content {
+    margin: 12px 14px;
+    font-family: 'Montserrat', sans-serif;
+    color: #13224a;
+}
+
+.leaflet-popup-content p {
+    margin: 0;
+}
+
+.globo-titulo {
+    font-size: 16px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.globo-parroquia,
+.globo-direccion {
+    font-size: 12px;
+    color: #5b6479;
+}
+
+.globo-dia {
+    margin-top: 6px !important;
+    font-weight: 800;
+    color: #9a7b00;
+}
+
+.globo-actividades {
+    margin: 4px 0 6px;
+    padding-left: 16px;
+    font-size: 12px;
+}
+
+.globo-enlace {
+    display: inline-block;
+    margin-top: 6px;
+    font-weight: 800;
+    color: #1c2f5e !important;
+}
+
+
 /* ----------Lema (colores del afiche de perseverancia)-------------- */
 .franja-lema {
     margin-top: 56px;
@@ -605,6 +924,23 @@
 
     .rosario-datos {
         justify-content: center;
+    }
+
+    .diapositiva {
+        flex-basis: 78%;
+        min-height: 260px;
+    }
+
+    .mapa-perseverancias {
+        grid-template-columns: 1fr;
+    }
+
+    .lista-mapa {
+        max-height: 230px;
+    }
+
+    .marco-mapa {
+        height: 300px;
     }
 
     .pie-informes {

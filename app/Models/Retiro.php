@@ -23,6 +23,8 @@ class Retiro extends Model
         'direccion',
         'ciudad',
         'inscripciones_abiertas',
+        'es_proximo',
+        'es_jovenes',
     ];
 
     protected $casts = [
@@ -31,7 +33,68 @@ class Retiro extends Model
         'fecha_limite_pago'      => 'date',
         'ofrenda'                => 'decimal:2',
         'inscripciones_abiertas' => 'boolean',
+        'es_proximo'             => 'boolean',
+        'es_jovenes'             => 'boolean',
     ];
+
+    //  Si a alguien se le quedan abiertas las inscripciones, se cierran
+    // solas estos días después de que termina el retiro
+    public const DIAS_PARA_CERRAR = 2;
+
+    // Para revisar los cierres una sola vez por visita
+    private static bool $alDia = false;
+
+
+
+    //  Cierra los retiros que terminaron hace DIAS_PARA_CERRAR días y
+    // siguen abiertos; si cerró alguno, abre el marcado como próximo. El
+    // próximo deja de serlo cuando empieza. Se llama al buscar el retiro
+    // actual o el abierto, así no hace falta una tarea programada.
+    public static function ponerAlDia(): void
+    {
+        if (self::$alDia) {
+            return;
+        }
+
+        self::$alDia = true;
+
+        $vencidos = self::where('inscripciones_abiertas', true)
+            ->whereDate('fecha_fin', '<=', now()->subDays(self::DIAS_PARA_CERRAR)->toDateString())
+            ->get();
+
+        foreach ($vencidos as $vencido) {
+            $vencido->update(['inscripciones_abiertas' => false]);
+            $vencido->abrirElProximo();
+        }
+
+        self::where('es_proximo', true)
+            ->whereDate('fecha_inicio', '<=', now()->toDateString())
+            ->update(['es_proximo' => false]);
+    }
+
+
+
+    //  Al cerrarse este retiro se abren las inscripciones del marcado
+    // como próximo, si es posterior y sigue cerrado
+    public function abrirElProximo(): void
+    {
+        self::where('es_proximo', true)
+            ->where('inscripciones_abiertas', false)
+            ->whereDate('fecha_inicio', '>', $this->fecha_inicio->toDateString())
+            ->update(['inscripciones_abiertas' => true]);
+    }
+
+
+
+    //  El que se anuncia en las cartas de este retiro: el marcado como
+    // próximo o, si no hay, el siguiente por fecha. Null si no hay ninguno.
+    public function siguiente(): ?self
+    {
+        $posteriores = self::whereDate('fecha_inicio', '>', $this->fecha_fin->toDateString());
+
+        return (clone $posteriores)->where('es_proximo', true)->first()
+            ?? $posteriores->orderBy('fecha_inicio')->first();
+    }
 
 
 
@@ -39,6 +102,8 @@ class Retiro extends Model
     // inscripciones que empiece primero. Si no hay ninguno, null.
     public static function proximoAbierto(): ?self
     {
+        self::ponerAlDia();
+
         return self::where('inscripciones_abiertas', true)
             ->whereDate('fecha_fin', '>=', now()->toDateString())
             ->orderBy('fecha_inicio')
@@ -52,6 +117,8 @@ class Retiro extends Model
     // esté o no abierto a inscripciones.
     public static function actual(): ?self
     {
+        self::ponerAlDia();
+
         return self::whereDate('fecha_fin', '>=', now()->toDateString())
             ->orderBy('fecha_inicio')
             ->first();

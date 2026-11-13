@@ -12,6 +12,8 @@ class RetiroController extends Controller
 
     public function index()
     {
+        Retiro::ponerAlDia();
+
         $retiros = Retiro::orderByDesc('fecha_inicio')->get();
 
         return view('retiros.index', compact('retiros'));
@@ -53,6 +55,7 @@ class RetiroController extends Controller
 
         DB::transaction(function () use ($data) {
             $retiro = Retiro::create($data);
+            $this->unicoProximo($retiro);
             $retiro->cuentasPago()->createMany($data['cuentas_pago'] ?? []);
             $retiro->contactosInformes()->createMany($data['contactos_informes'] ?? []);
         });
@@ -98,6 +101,12 @@ class RetiroController extends Controller
 
         DB::transaction(function () use ($retiro, $data, $cambianCuentas, $cambianContactos) {
             $retiro->save();
+            $this->unicoProximo($retiro);
+
+            //  Al cerrar las inscripciones de este retiro se abren las del próximo
+            if ($retiro->wasChanged('inscripciones_abiertas') && ! $retiro->inscripciones_abiertas) {
+                $retiro->abrirElProximo();
+            }
 
             if ($cambianCuentas) {
                 $retiro->cuentasPago()->delete();
@@ -111,5 +120,15 @@ class RetiroController extends Controller
         });
 
         return redirect()->route('retiros.index')->with('mensajeActualizado', 'Retiro actualizado.');
+    }
+
+
+
+    // Solo un retiro a la vez puede ser el próximo
+    private function unicoProximo(Retiro $retiro): void
+    {
+        if ($retiro->es_proximo) {
+            Retiro::where('id', '!=', $retiro->id)->where('es_proximo', true)->update(['es_proximo' => false]);
+        }
     }
 }

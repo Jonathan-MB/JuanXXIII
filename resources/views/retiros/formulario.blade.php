@@ -139,6 +139,16 @@
             <input type="checkbox" name="inscripcionesAbiertas" value="1" {{ old('inscripcionesAbiertas', $retiro->inscripciones_abiertas) ? 'checked' : '' }}>
             Abrir las inscripciones en la página pública
         </label>
+        <label class="casilla-inscripciones">
+            <input type="hidden" name="esProximo" value="0">
+            <input type="checkbox" name="esProximo" value="1" {{ old('esProximo', $retiro->es_proximo) ? 'checked' : '' }}>
+            Es el próximo retiro: sale en las cartas al presbítero y sus inscripciones se abren solas cuando se cierren las del retiro actual
+        </label>
+        <label class="casilla-inscripciones">
+            <input type="hidden" name="esJovenes" value="0">
+            <input type="checkbox" name="esJovenes" value="1" {{ old('esJovenes', $retiro->es_jovenes) ? 'checked' : '' }}>
+            Retiro de jóvenes
+        </label>
 
         <div class="acciones-formulario">
             <a class="boton-secundario" href="{{ route('retiros.index') }}">Cancelar</a>

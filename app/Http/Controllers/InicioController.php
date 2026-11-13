@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ajuste;
+use App\Models\Perseverancia;
 use App\Models\Retiro;
 
 class InicioController extends Controller
@@ -29,6 +30,9 @@ class InicioController extends Controller
                 : $pedidos,
         ] : null;
 
-        return view('inicio', compact('retiro', 'rosario'));
+        // El carrusel y el mapa de perseverancias
+        $perseverancias = Perseverancia::where('en_inicio', true)->orderBy('orden')->get();
+
+        return view('inicio', compact('retiro', 'rosario', 'perseverancias'));
     }
 }

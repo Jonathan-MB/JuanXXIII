@@ -1,6 +1,7 @@
 @include('partials.head')
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="{{ recurso('css/inicio.css') }}">
 <title>Retiros Juan XXIII</title>
 
@@ -25,7 +26,7 @@
                 <a class="boton-amarillo boton-grande" href="{{ route('inscripcion') }}">Inscribirme</a>
             @else
                 <p class="portada-fechas">Muy pronto anunciaremos el próximo retiro</p>
-                <p class="portada-lugar">Mientras tanto, te esperamos en las perseverancias.</p>
+                <p class="portada-lugar">Mientras tanto, te esperamos en las <a class="enlace-portada" href="#perseverancias">perseverancias</a>.</p>
             @endif
 
             <p class="portada-cita">“El Señor es mi pastor, nada me falta.” <span>(Sal 23)</span></p>
@@ -131,6 +132,95 @@
         </section>
     @endif
 
+    @if ($perseverancias->isNotEmpty())
+        @php
+            $conDireccion = $perseverancias->filter(fn ($perseverancia) => $perseverancia->direccion);
+        @endphp
+
+        {{-- --------------------PERSEVERANCIAS: CARRUSEL------------------- --}}
+        <section class="seccion-perseverancias" id="perseverancias">
+            <div class="cabecera-carrusel">
+                <div>
+                    <h2 class="titulo-seccion">Perseverancias</h2>
+                    <p class="texto-seccion">Con Cristo todo, sin Cristo nada. ¡Te esperamos!</p>
+                </div>
+                <div class="botones-carrusel">
+                    <button type="button" class="boton-carrusel" data-mover="-1" aria-label="Anterior">‹</button>
+                    <button type="button" class="boton-carrusel" data-mover="1" aria-label="Siguiente">›</button>
+                </div>
+            </div>
+
+            <div class="carrusel" id="carrusel-perseverancias" tabindex="0" aria-label="Perseverancias">
+                @foreach ($perseverancias as $perseverancia)
+                    <article class="diapositiva fondo-{{ $loop->index % 6 }}" @if ($perseverancia->imagen) style="background-image: linear-gradient(180deg, rgba(10, 18, 40, 0.25) 0%, rgba(10, 18, 40, 0.88) 62%), url('{{ route('perseverancias.imagen', $perseverancia) }}?v={{ $perseverancia->updated_at?->timestamp }}')" @endif>
+                        <p class="diapositiva-tipo">{{ $perseverancia->tipo }}</p>
+                        <h3 class="diapositiva-titulo">{{ $perseverancia->titulo }}</h3>
+                        @if ($perseverancia->sector)
+                            <p class="diapositiva-parroquia">{{ $perseverancia->parroquia }}</p>
+                        @endif
+                        <p class="diapositiva-dia">{{ $perseverancia->dia }}</p>
+                        <ul class="diapositiva-actividades">
+                            @forelse ($perseverancia->lista_actividades as $actividad)
+                                <li>{{ $actividad }}</li>
+                            @empty
+                                <li>{{ $perseverancia->hora }}</li>
+                            @endforelse
+                        </ul>
+                        @if ($perseverancia->direccion)
+                            <p class="diapositiva-direccion">{{ $perseverancia->direccion }}</p>
+                            <a class="diapositiva-enlace" href="https://www.google.com/maps/dir/?api=1&destination={{ urlencode($perseverancia->busqueda_mapa) }}" target="_blank" rel="noopener">Cómo llegar →</a>
+                        @endif
+                        @if ($perseverancia->imagen && $perseverancia->imagen_credito)
+                            <p class="diapositiva-credito">Imagen: {{ $perseverancia->imagen_credito }}</p>
+                        @endif
+                    </article>
+                @endforeach
+            </div>
+        </section>
+
+        @if ($conDireccion->isNotEmpty())
+            {{-- --------------------PERSEVERANCIAS: MAPA------------------- --}}
+            <section class="seccion-mapa-perseverancias">
+                <h2 class="titulo-seccion">¿Dónde quedan?</h2>
+                <p class="texto-seccion">Toca un punto o un nombre de la lista; con «Cómo llegar» se abre la ruta en Google Maps.</p>
+
+                @php
+                    //  Los puntos para el mapa: solo las que tienen coordenadas
+                    $puntos = $conDireccion->filter(fn ($perseverancia) => $perseverancia->coordenadas)->values()->map(fn ($perseverancia) => [
+                        'id'          => $perseverancia->id,
+                        'titulo'      => $perseverancia->titulo,
+                        'parroquia'   => $perseverancia->parroquia,
+                        'dia'         => $perseverancia->dia,
+                        'actividades' => $perseverancia->lista_actividades ?: [$perseverancia->hora],
+                        'direccion'   => $perseverancia->direccion,
+                        'latitud'     => $perseverancia->latitud,
+                        'longitud'    => $perseverancia->longitud,
+                        'llegar'      => 'https://www.google.com/maps/dir/?api=1&destination=' . urlencode($perseverancia->busqueda_mapa),
+                    ]);
+                @endphp
+
+                <div class="mapa-perseverancias">
+                    <ul class="lista-mapa">
+                        @foreach ($conDireccion as $perseverancia)
+                            <li class="lugar-mapa" data-lugar="{{ $perseverancia->id }}">
+                                @php
+                                    $numeroPunto = $puntos->search(fn ($punto) => $punto['id'] === $perseverancia->id);
+                                @endphp
+                                <span class="numero-lugar">{{ $numeroPunto !== false ? $numeroPunto + 1 : '·' }}</span>
+                                <button type="button" class="boton-lugar" data-punto="{{ $perseverancia->coordenadas ? $perseverancia->id : '' }}">
+                                    <strong>{{ $perseverancia->titulo }}</strong>
+                                    <span>{{ $perseverancia->dia }} · {{ $perseverancia->direccion }}</span>
+                                </button>
+                                <a class="enlace-como-llegar" href="https://www.google.com/maps/dir/?api=1&destination={{ urlencode($perseverancia->busqueda_mapa) }}" target="_blank" rel="noopener">Cómo llegar</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <div class="marco-mapa" id="mapa-perseverancias" role="region" aria-label="Mapa de las perseverancias" data-puntos='@json($puntos)'></div>
+                </div>
+            </section>
+        @endif
+    @endif
+
     {{-- --------------------LEMA------------------- --}}
     <section class="franja-lema">
         <p><span class="lema-verde">Con Cristo todo</span> sin Cristo nada</p>
@@ -154,4 +244,6 @@
         @endif
     </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{{ recurso('js/inicio.js') }}"></script>
 @include('partials.footer')

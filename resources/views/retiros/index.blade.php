@@ -29,7 +29,15 @@
                 <tbody>
                     @foreach ($retiros as $retiro)
                         <tr>
-                            <td class="dato-retiro-numero">{{ $retiro->numero_hombres }} H · {{ $retiro->numero_mujeres }} M</td>
+                            <td class="dato-retiro-numero">
+                                {{ $retiro->numero_hombres }} H · {{ $retiro->numero_mujeres }} M
+                                @if ($retiro->es_proximo)
+                                    <span class="chip chip-azul">Próximo</span>
+                                @endif
+                                @if ($retiro->es_jovenes)
+                                    <span class="chip chip-amarillo">Jóvenes</span>
+                                @endif
+                            </td>
                             <td>{{ $retiro->dias_texto }} de {{ $retiro->fecha_inicio->year }}</td>
                             <td>{{ $retiro->lugar }}</td>
                             <td>{{ $retiro->ofrenda_texto }}</td>
@@ -51,7 +59,7 @@
                 </tbody>
             </table>
         </div>
-        <p class="texto-ayuda">Haz clic en <em>Abiertas</em> o <em>Cerradas</em> para abrir o cerrar las inscripciones. La página pública muestra el próximo retiro con inscripciones abiertas.</p>
+        <p class="texto-ayuda">Haz clic en <em>Abiertas</em> o <em>Cerradas</em> para abrir o cerrar las inscripciones. La página pública muestra el próximo retiro con inscripciones abiertas. Si las inscripciones de un retiro quedan abiertas, se cierran solas {{ \App\Models\Retiro::DIAS_PARA_CERRAR }} días después de que termina; al cerrarse, se abren las del retiro marcado como <em>Próximo</em>, que es el que sale en las cartas al presbítero.</p>
     @endif
 
 @include('partials.footerPanel')

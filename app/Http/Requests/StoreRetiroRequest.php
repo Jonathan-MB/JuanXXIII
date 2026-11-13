@@ -31,6 +31,8 @@ class StoreRetiroRequest extends FormRequest
             'direccion'              => ['nullable', 'string', 'max:100'],
             'ciudad'                 => ['required', 'string', 'max:45'],
             'inscripciones_abiertas' => ['boolean'],
+            'es_proximo'             => ['boolean', 'declined_if:fecha_inicio_paso,true'],
+            'es_jovenes'             => ['boolean'],
 
             'cuentas_pago'             => ['array'],
             'cuentas_pago.*.entidad'   => ['required', 'string', 'max:45'],
@@ -59,7 +61,12 @@ class StoreRetiroRequest extends FormRequest
             'porcentaje_reserva'     => $this->porcentajeReserva,
             'fecha_limite_pago'      => $this->fechaLimitePago,
             'inscripciones_abiertas' => $this->boolean('inscripcionesAbiertas'),
-            'cuentas_pago'           => $this->filasLlenas($this->cuentasPago, ['numero', 'titular']),
+            'es_proximo'             => $this->boolean('esProximo'),
+
+            // Un retiro que ya empezó no puede ser el próximo
+            'fecha_inicio_paso'      => $this->fechaInicio && strtotime($this->fechaInicio) <= strtotime('today') ? 'true' : 'false',
+            'es_jovenes'             => $this->boolean('esJovenes'),
+            'cuentas_pago'          => $this->filasLlenas($this->cuentasPago, ['numero', 'titular']),
             'contactos_informes'     => collect($this->filasLlenas($this->contactosInformes, ['nombre', 'celular']))
                 ->map(fn ($fila) => array_merge($fila, ['celular' => Persona::normalizarTelefono($fila['celular'] ?? null)]))
                 ->all(),
@@ -71,6 +78,7 @@ class StoreRetiroRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'es_proximo.declined_if'                => 'Solo un retiro que todavía no empieza puede ser el próximo.',
             'numero_hombres.required'               => 'Escribe el número del retiro de hombres.',
             'numero_hombres.unique'                 => 'Ya existe un retiro con ese número de hombres.',
             'numero_mujeres.required'               => 'Escribe el número del retiro de mujeres.',
