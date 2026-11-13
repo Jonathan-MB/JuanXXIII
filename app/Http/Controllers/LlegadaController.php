@@ -45,9 +45,20 @@ class LlegadaController extends Controller
         $faltan    = $grupo->whereNull('llegada_en')->count();
         $sinPuesto = $grupo->whereNull('mesa_id')->count();
 
+        //  El último día aparece el botón para marcar que terminaron: cuántos
+        // de los dos grupos tienen puesto y todavía no están marcados
+        $esUltimoDia  = now()->gte($retiro->fecha_fin->copy()->startOfDay());
+        $porTerminar  = $esUltimoDia
+            ? $retiro->inscripciones()
+                ->whereNotNull('mesa_id')
+                ->whereNotNull('silla')
+                ->whereNotIn('estado', [...Inscripcion::ESTADOS_FUERA, Inscripcion::TERMINO])
+                ->count()
+            : 0;
+
         // Se manda como inscritosGrupo: en la vista, $grupo es "hombres" o "mujeres"
         return view('llegada.index', array_merge(
-            compact('retiro', 'sexo', 'mesas', 'llegaron', 'faltan', 'sinPuesto'),
+            compact('retiro', 'sexo', 'mesas', 'llegaron', 'faltan', 'sinPuesto', 'esUltimoDia', 'porTerminar'),
             ['inscritosGrupo' => $grupo]
         ));
     }
@@ -192,5 +203,31 @@ class LlegadaController extends Controller
         ]);
 
         return back()->with('mensajeActualizado', 'Se deshizo la llegada de ' . $inscripcion->persona->nombres . '.');
+    }
+
+
+
+    //  El último día: quien tiene mesa y silla terminó el retiro (de los
+    // dos grupos). Con eso recibe carta, entra al historial y ya no se
+    // puede volver a inscribir. Quien abandonó o no asistió no cuenta.
+    public function terminar()
+    {
+        $retiro = Retiro::actual();
+
+        if (! $retiro || now()->lt($retiro->fecha_fin->copy()->startOfDay())) {
+            return back()->with('error', 'Esto se hace el último día del retiro.');
+        }
+
+        $terminaron = $retiro->inscripciones()
+            ->whereNotNull('mesa_id')
+            ->whereNotNull('silla')
+            ->whereNotIn('estado', [...Inscripcion::ESTADOS_FUERA, Inscripcion::TERMINO])
+            ->update(['estado' => Inscripcion::TERMINO]);
+
+        if (! $terminaron) {
+            return back()->with('mensajeAlerta', 'No se detectaron cambios');
+        }
+
+        return back()->with('mensajeActualizado', $terminaron . ' ' . ($terminaron === 1 ? 'persona quedó' : 'personas quedaron') . ' como que terminaron el retiro.');
     }
 }

@@ -171,6 +171,22 @@
                 @endforelse
             </div>
         </section>
+
+        @if ($esUltimoDia)
+            {{-- --------------------AL TERMINAR EL RETIRO------------------- --}}
+            <section class="seccion-terminar">
+                <h2 class="subtitulo-vista">Al terminar el retiro</h2>
+                @if ($porTerminar > 0)
+                    <p class="texto-ayuda">Marca que terminaron el retiro las <strong>{{ $porTerminar }}</strong> personas que tienen mesa y silla (hombres y mujeres). Así reciben su carta, quedan en el historial y no se pueden volver a inscribir. Hazlo antes de imprimir las cartas.</p>
+                    <form method="POST" action="{{ route('llegada.terminar') }}" class="formulario-confirmar" data-confirmar="{{ $porTerminar }} personas quedarán como que terminaron el retiro. Quien abandonó debe estar marcado antes desde su ficha. ¿Continuar?">
+                        @csrf
+                        <button type="submit" class="boton-azul">Marcar que terminaron ({{ $porTerminar }})</button>
+                    </form>
+                @else
+                    <p class="texto-ayuda">Ya están marcados todos los que tienen mesa y silla.</p>
+                @endif
+            </section>
+        @endif
     @endif
 
 <script src="{{ recurso('js/llegada.js') }}"></script>

@@ -15,6 +15,7 @@ class TareaCronograma extends Model
     //  A dónde puede llevar una tarea: clave => [texto, ruta, parámetros].
     // Las que empiezan por "imprimir" se abren en otra pestaña.
     public const ENLACES = [
+        'retiros'                    => ['Ir a Retiros (abrir o cerrar inscripciones)', 'retiros.index', []],
         'inscritos'                  => ['Ir a Inscritos', 'inscritos.index', []],
         'pagos'                      => ['Ir a Pagos', 'pagos.index', []],
         'llegada'                    => ['Ir a Llegada', 'llegada.index', []],
@@ -27,7 +28,12 @@ class TareaCronograma extends Model
         'documentos'                 => ['Ir a Documentos', 'archivos.index', ['categoria' => 'documentos']],
         'archivosCharlas'            => ['Ir a Charlas (archivos)', 'archivos.index', ['categoria' => 'charlas']],
         'archivosLetreros'           => ['Ir a Letreros (archivos)', 'archivos.index', ['categoria' => 'letreros']],
+        'letreros'                   => ['Ir a Letreros (vista previa para imprimir)', 'letreros.index', []],
+        'imprimirPagos'              => ['Imprimir lista de pagos (quién debe)', 'pagos.imprimir', []],
         'imprimirLlegada'            => ['Imprimir lista de llegada', 'impresiones.llegada', []],
+        'imprimirLlamado'            => ['Imprimir lista de llamado', 'impresiones.llamado', []],
+        'imprimirLetrerosMesa'       => ['Imprimir letreros de número de mesa', 'impresiones.letrerosMesa', []],
+        'imprimirFlores'             => ['Imprimir tarjetas De / Para (flores)', 'impresiones.flores', ['papel' => 'carta']],
         'imprimirMesasEnBlanco'      => ['Imprimir hojas de mesa en blanco', 'impresiones.mesasEnBlanco', []],
         'imprimirCarta'              => ['Imprimir cartas al presbítero', 'impresiones.carta', []],
         'imprimirCorrecciones'       => ['Imprimir hoja de correcciones', 'impresiones.correcciones', []],

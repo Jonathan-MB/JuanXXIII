@@ -131,6 +131,7 @@ Route::middleware('auth')->group(function () {
             ->only(['index', 'store', 'update', 'destroy']);
 
         Route::get('/llegada', [LlegadaController::class, 'index'])->name('llegada.index');
+        Route::post('/llegada/terminar', [LlegadaController::class, 'terminar'])->name('llegada.terminar');
         Route::post('/llegada/{inscripcion}', [LlegadaController::class, 'marcar'])->name('llegada.marcar');
         Route::patch('/llegada/{inscripcion}/puesto', [LlegadaController::class, 'asignarPuesto'])->name('llegada.puesto');
         Route::patch('/llegada/{inscripcion}/deshacer', [LlegadaController::class, 'deshacer'])->name('llegada.deshacer');

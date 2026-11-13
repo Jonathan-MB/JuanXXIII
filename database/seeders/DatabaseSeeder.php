@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             SantisimoBaseSeeder::class,
             SantisimoReglaSeeder::class,
             ActividadBaseSeeder::class,
-            FuncionesSecretariaSeeder::class,
+            CronogramaSeeder::class,
         ]);
     }
 }

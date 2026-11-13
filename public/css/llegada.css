@@ -310,10 +310,16 @@
 
 
 /* ----------Cómo van las mesas-------------- */
-.seccion-mapa {
+.seccion-mapa,
+.seccion-terminar {
     margin-top: 32px;
     padding-top: 20px;
     border-top: 2px solid #dde2ec;
+}
+
+.seccion-terminar .texto-ayuda {
+    max-width: 70ch;
+    margin-bottom: 12px;
 }
 
 .nombre-silla {

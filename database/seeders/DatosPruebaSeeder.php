@@ -10,7 +10,6 @@ use App\Models\MovimientoInventario;
 use App\Models\Persona;
 use App\Models\Retiro;
 use App\Models\Rol;
-use App\Models\TareaCronograma;
 use App\Models\Usuario;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -63,7 +62,6 @@ class DatosPruebaSeeder extends Seeder
         $this->inscritos($actual, 'actual', 70, 70);
         $this->rectoradoMujeres($actual);
         $this->inventarios();
-        $this->tareasDeEjemplo();
 
         $this->command?->info('  Datos de prueba listos: cédulas 9901… (retiro pasado) y 9902… (retiro actual).');
     }
@@ -395,35 +393,6 @@ class DatosPruebaSeeder extends Seeder
                     'estado'      => mt_rand(1, 100) <= 10 ? $this->elegir(['Regular', 'Dañado']) : null,
                 ]);
             }
-        }
-    }
-
-
-
-    //  Tareas de ejemplo tomadas del "paso a paso" del retiro, mientras
-    // llega la lista real. Llevan "(prueba)" para reconocerlas.
-    private function tareasDeEjemplo(): void
-    {
-        $tareas = [
-            [-2, '18:00', 'Imprimir lista de llegada y hojas de mesa en blanco', 'Secretaría'],
-            [-1, '16:00', 'Confirmar pagos pendientes con los padrinos', 'Tesorería'],
-            [0,  '13:30', 'Llegada a la casa de retiro', 'Rectorado'],
-            [0,  '15:00', 'Reunión con catequistas', 'Rectorado'],
-            [0,  '17:00', 'Eucaristía de inicio', 'Rectorado'],
-            [0,  '19:15', 'Llamado de los invitados', 'Secretaría'],
-            [1,  '05:45', 'Exponer el Santísimo', 'Previstos'],
-            [1,  '12:00', 'Previsto del mediodía', 'Previstos'],
-            [1,  '15:00', 'Entregar listas de correcciones a cada sala', 'Secretaría'],
-            [2,  '05:30', 'Mañanitas', 'Coro'],
-            [2,  '09:00', 'Imprimir cartas al presbítero y directorio', 'Secretaría'],
-            [2,  '13:00', 'Eucaristía de clausura', 'Rectorado'],
-        ];
-
-        foreach ($tareas as [$dia, $hora, $descripcion, $responsable]) {
-            TareaCronograma::firstOrCreate(
-                ['descripcion' => $descripcion . ' (prueba)'],
-                ['dia_relativo' => $dia, 'hora' => $hora, 'responsable' => $responsable]
-            );
         }
     }
 

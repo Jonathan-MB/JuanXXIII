@@ -25,6 +25,9 @@ class Ajuste extends Model
     public const ROSARIO_HORA      = 'rosario_hora';
     public const ROSARIO_PEDIDOS   = 'rosario_pedidos';
 
+    //  Hasta qué versión de la lista de tareas se cargó (CronogramaSeeder)
+    public const CRONOGRAMA_VERSION = 'cronograma_version';
+
     //  Lo que se usa mientras nadie lo haya cambiado. En el texto, lo que
     // va entre llaves se reemplaza con los datos de cada persona.
     public const POR_DEFECTO = [
