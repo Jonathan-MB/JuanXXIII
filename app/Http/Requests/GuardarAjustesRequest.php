@@ -25,6 +25,10 @@ class GuardarAjustesRequest extends FormRequest
             'correo_confirmacion_automatico' => ['required', 'boolean'],
             'letrero_nequi_numero'           => ['nullable', 'string', 'max:20', 'regex:/^[0-9]+$/'],
             'letrero_nequi_titular'          => ['nullable', 'string', 'max:100'],
+            'rosario_enlace'                 => ['nullable', 'url:https', 'max:255'],
+            'rosario_dias'                   => ['nullable', 'string', 'max:60'],
+            'rosario_hora'                   => ['nullable', 'string', 'max:30'],
+            'rosario_pedidos'                => ['nullable', 'string', 'max:20', 'regex:/^[0-9]+$/'],
             'qr'                             => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
             'quitar_qr'                      => ['required', 'boolean'],
         ];
@@ -42,6 +46,13 @@ class GuardarAjustesRequest extends FormRequest
             'letrero_nequi_numero'           => Persona::normalizarTelefono($this->nequiNumero),
             'letrero_nequi_titular'          => trim((string) $this->nequiTitular) ?: null,
             'quitar_qr'                      => $this->boolean('quitarQr'),
+
+            //  Vacíos se guardan como "" y no como null: con null volvería
+            // el valor de fábrica y no habría cómo quitar el rosario
+            'rosario_enlace'                 => trim((string) $this->rosarioEnlace),
+            'rosario_dias'                   => trim((string) $this->rosarioDias),
+            'rosario_hora'                   => trim((string) $this->rosarioHora),
+            'rosario_pedidos'                => (string) Persona::normalizarTelefono($this->rosarioPedidos),
         ]);
     }
 
@@ -57,6 +68,8 @@ class GuardarAjustesRequest extends FormRequest
             'correo_confirmacion_texto.required'  => 'Escribe el texto del correo.',
             'correo_confirmacion_texto.max'       => 'El texto del correo puede tener máximo 3000 letras.',
             'letrero_nequi_numero.regex'          => 'El número de Nequi solo puede tener números.',
+            'rosario_enlace.url'                  => 'El enlace del rosario debe empezar por https:// (por ejemplo https://meet.google.com/...).',
+            'rosario_pedidos.regex'               => 'El celular de pedidos de oración solo puede tener números.',
             'qr.image'                            => 'El código QR debe ser una imagen.',
             'qr.mimes'                            => 'El código QR debe ser PNG, JPG o WEBP.',
             'qr.max'                              => 'La imagen del QR puede pesar máximo 2 MB.',

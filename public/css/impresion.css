@@ -322,6 +322,27 @@ p {
 }
 
 
+/* ----------Lista de llamado: el nombre grande, para leerlo en voz alta-------------- */
+.ayuda-llamado {
+    margin: 0 0 6px;
+    font-size: 9.5pt;
+}
+
+.tabla-llamado td {
+    padding: 6px;
+    vertical-align: middle;
+}
+
+.nombre-llamado {
+    font-size: 12.5pt;
+    font-weight: 700;
+}
+
+.renglon-a-mano td {
+    height: 0.85cm;
+}
+
+
 /* ----------Hojas de mesa en blanco-------------- */
 .mesa-en-blanco {
     break-inside: avoid;

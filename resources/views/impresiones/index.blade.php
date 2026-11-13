@@ -6,6 +6,11 @@
             'descripcion' => 'En orden alfabético: nombre, documento, edad, padrino y una casilla para marcar quién llegó.',
         ],
         [
+            'ruta'        => 'impresiones.llamado',
+            'nombre'      => 'Lista de llamado',
+            'descripcion' => 'La relación de invitados del rector(a): en orden alfabético y con el nombre grande, para llamar a cada uno a sala y marcar quién entró.',
+        ],
+        [
             'ruta'        => 'impresiones.mesasEnBlanco',
             'nombre'      => 'Hojas de mesa en blanco',
             'descripcion' => 'Dos mesas por hoja con los números de silla, para que cada persona escriba su nombre, cédula y celular.',

@@ -14,7 +14,10 @@ class AjusteController extends Controller
 {
     public function index()
     {
-        $claves = [Ajuste::WHATSAPP, Ajuste::CORREO_ASUNTO, Ajuste::CORREO_TEXTO, Ajuste::CORREO_AUTOMATICO, Ajuste::NEQUI_NUMERO, Ajuste::NEQUI_TITULAR];
+        $claves = [
+            Ajuste::WHATSAPP, Ajuste::CORREO_ASUNTO, Ajuste::CORREO_TEXTO, Ajuste::CORREO_AUTOMATICO, Ajuste::NEQUI_NUMERO, Ajuste::NEQUI_TITULAR,
+            Ajuste::ROSARIO_ENLACE, Ajuste::ROSARIO_DIAS, Ajuste::ROSARIO_HORA, Ajuste::ROSARIO_PEDIDOS,
+        ];
 
         return view('ajustes.index', [
             'ajustes'      => collect($claves)->mapWithKeys(fn ($clave) => [$clave => Ajuste::valor($clave)]),

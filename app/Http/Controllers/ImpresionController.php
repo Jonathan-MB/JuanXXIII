@@ -248,24 +248,28 @@ class ImpresionController extends Controller
     public function llegada(Request $request)
     {
         $retiro = $this->retiroOFallar();
-        $sexo   = $this->sexoPedido($request);
-
-        $grupos = Inscripcion::with('persona')
-            ->select('inscripcions.*')
-            ->where('inscripcions.retiro_id', $retiro->id)
-            ->whereNotIn('inscripcions.estado', Inscripcion::ESTADOS_FUERA)
-            ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
-            ->when($sexo, fn ($consulta) => $consulta->where('personas.sexo', $sexo))
-            ->orderByRaw("personas.sexo = 'Femenino'")
-            ->orderBy('personas.apellidos')
-            ->orderBy('personas.nombres')
-            ->get()
-            ->groupBy(fn ($inscrito) => $inscrito->persona->sexo);
 
         return view('impresiones.llegada', [
             'retiro' => $retiro,
-            'grupos' => $grupos,
+            'grupos' => $this->enOrdenAlfabetico($retiro, $this->sexoPedido($request)),
             'titulo' => 'Lista de llegada',
+        ]);
+    }
+
+
+
+    //  Lista de llamado ("relación de invitados" de la carpeta del
+    // rector(a)): con ella se llama a cada invitado a sala. Va antes de
+    // dar las mesas, así que salen todos los de la lista en orden
+    // alfabético; quien no llegó simplemente no responde.
+    public function llamado(Request $request)
+    {
+        $retiro = $this->retiroOFallar();
+
+        return view('impresiones.llamado', [
+            'retiro' => $retiro,
+            'grupos' => $this->enOrdenAlfabetico($retiro, $this->sexoPedido($request)),
+            'titulo' => 'Lista de llamado',
         ]);
     }
 
@@ -663,6 +667,25 @@ class ImpresionController extends Controller
             ->orderBy('inscripcions.silla')
             ->orderBy('personas.apellidos')
             ->get();
+    }
+
+
+
+    //  Quienes siguen en la lista, por grupo y por apellido, tengan o no
+    // puesto: para las listas de antes de dar las mesas (llegada y llamado).
+    private function enOrdenAlfabetico(Retiro $retiro, ?string $sexo): Collection
+    {
+        return Inscripcion::with('persona')
+            ->select('inscripcions.*')
+            ->where('inscripcions.retiro_id', $retiro->id)
+            ->whereNotIn('inscripcions.estado', Inscripcion::ESTADOS_FUERA)
+            ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
+            ->when($sexo, fn ($consulta) => $consulta->where('personas.sexo', $sexo))
+            ->orderByRaw("personas.sexo = 'Femenino'")
+            ->orderBy('personas.apellidos')
+            ->orderBy('personas.nombres')
+            ->get()
+            ->groupBy(fn ($inscrito) => $inscrito->persona->sexo);
     }
 
 

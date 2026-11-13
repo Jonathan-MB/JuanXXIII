@@ -38,6 +38,28 @@
             <p class="texto-ayuda">El enlace y el QR salen en el directorio, al pie de cada hoja. Lo que se deje vacío no sale. Una imagen nueva reemplaza la anterior.</p>
         </fieldset>
 
+        {{-- --------------------ROSARIO------------------- --}}
+        <fieldset class="bloque-formulario">
+            <legend>Rosario en la página pública</legend>
+            <div class="elemento-formulario">
+                <label class="titulo-elemento" for="rosarioEnlace">Enlace de Google Meet</label>
+                <input type="url" name="rosarioEnlace" id="rosarioEnlace" maxlength="255" placeholder="https://meet.google.com/..." value="{{ old('rosarioEnlace', $ajustes[Ajuste::ROSARIO_ENLACE]) }}">
+            </div>
+            <div class="elemento-formulario">
+                <label class="titulo-elemento" for="rosarioDias">Días</label>
+                <input type="text" name="rosarioDias" id="rosarioDias" maxlength="60" placeholder="Lunes a sábado" value="{{ old('rosarioDias', $ajustes[Ajuste::ROSARIO_DIAS]) }}">
+            </div>
+            <div class="elemento-formulario">
+                <label class="titulo-elemento" for="rosarioHora">Hora</label>
+                <input type="text" name="rosarioHora" id="rosarioHora" maxlength="30" placeholder="5:30 a. m." value="{{ old('rosarioHora', $ajustes[Ajuste::ROSARIO_HORA]) }}">
+            </div>
+            <div class="elemento-formulario">
+                <label class="titulo-elemento" for="rosarioPedidos">WhatsApp para pedidos de oración</label>
+                <input type="tel" inputmode="numeric" data-solo-numeros name="rosarioPedidos" id="rosarioPedidos" maxlength="20" placeholder="3136441569" value="{{ old('rosarioPedidos', $ajustes[Ajuste::ROSARIO_PEDIDOS]) }}">
+            </div>
+            <p class="texto-ayuda">Salen en el inicio: el botón «Rosario» arriba y la invitación con el horario abajo. Si borras el enlace, el rosario deja de salir.</p>
+        </fieldset>
+
         {{-- --------------------LETRERO DE NEQUI------------------- --}}
         <fieldset class="bloque-formulario">
             <legend>Letrero de Nequi</legend>

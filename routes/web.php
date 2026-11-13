@@ -192,6 +192,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/impresiones/directorio', [ImpresionController::class, 'directorio'])->name('impresiones.directorio');
         Route::get('/impresiones/ubicacion', [ImpresionController::class, 'ubicacion'])->name('impresiones.ubicacion');
         Route::get('/impresiones/llegada', [ImpresionController::class, 'llegada'])->name('impresiones.llegada');
+        Route::get('/impresiones/llamado', [ImpresionController::class, 'llamado'])->name('impresiones.llamado');
         Route::get('/impresiones/mesas-en-blanco', [ImpresionController::class, 'mesasEnBlanco'])->name('impresiones.mesasEnBlanco');
         Route::get('/impresiones/letreros-mesa', [ImpresionController::class, 'letrerosMesa'])->name('impresiones.letrerosMesa');
         Route::get('/impresiones/camisetas', [ImpresionController::class, 'camisetas'])->name('impresiones.camisetas');

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460" role="img" aria-label="La Virgen María con un rosario">
+  <defs>
+    <radialGradient id="luz" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff4cf" stop-opacity="0.95"/>
+      <stop offset="0.45" stop-color="#f6d77a" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#f6d77a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="manto" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9cdf2"/>
+      <stop offset="0.55" stop-color="#5f84cf"/>
+      <stop offset="1" stop-color="#2b4c9b"/>
+    </linearGradient>
+    <linearGradient id="tunica" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffdf8"/>
+      <stop offset="1" stop-color="#e9dfcd"/>
+    </linearGradient>
+    <linearGradient id="oro" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f9e39a"/>
+      <stop offset="1" stop-color="#c9962a"/>
+    </linearGradient>
+    <linearGradient id="desvanecer" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0.72" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <mask id="abajo" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="390">
+      <rect x="0" y="0" width="400" height="390" fill="url(#desvanecer)"/>
+    </mask>
+  </defs>
+
+  <!-- Resplandor y rayos detrás de la cabeza -->
+  <circle cx="200" cy="150" r="150" fill="url(#luz)"/>
+  <circle cx="200" cy="150" r="135" fill="none" stroke="#f6d77a" stroke-width="70" stroke-dasharray="2.4 21.16" opacity="0.32"/>
+  <circle cx="200" cy="150" r="64" fill="none" stroke="#f6d77a" stroke-width="3" opacity="0.9"/>
+  <circle cx="200" cy="150" r="57" fill="none" stroke="#fff4cf" stroke-width="1.2" opacity="0.7"/>
+
+  <g mask="url(#abajo)">
+  <!-- Manto -->
+  <path d="M200 92 C160 92 138 122 134 160 C130 205 118 250 92 300 C80 324 70 352 64 382 L336 382 C330 352 320 324 308 300 C282 250 270 205 266 160 C262 122 240 92 200 92 Z" fill="url(#manto)"/>
+  <!-- Velo blanco -->
+  <path d="M200 106 C176 106 162 128 161 156 C160 186 166 212 172 232 L228 232 C234 212 240 186 239 156 C238 128 224 106 200 106 Z" fill="#f8f4ec"/>
+  <!-- Rostro con los ojos cerrados -->
+  <ellipse cx="200" cy="160" rx="27" ry="34" fill="#f2d9bf"/>
+  <path d="M185 160 q6 4.5 12 0 M203 160 q6 4.5 12 0" fill="none" stroke="#8c6a50" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M195 181 q5 2.5 10 0" fill="none" stroke="#c4897a" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- Túnica con ribete dorado -->
+  <path d="M168 228 C176 240 188 248 200 248 C212 248 224 240 232 228 L264 382 L136 382 Z" fill="url(#tunica)"/>
+  <path d="M168 228 L136 382 M232 228 L264 382" stroke="url(#oro)" stroke-width="3.5" fill="none"/>
+  <path d="M184 238 Q200 254 216 238" stroke="#d6aa3a" stroke-width="2" fill="none"/>
+  <!-- Manos en oración -->
+  <path d="M200 266 C193 276 189 294 191 310 L209 310 C211 294 207 276 200 266 Z" fill="#f2d9bf" stroke="#d9b99a" stroke-width="1.2"/>
+  <path d="M200 270 V309" stroke="#d9b99a" stroke-width="1"/>
+
+  </g>
+
+  <!-- Rosario -->
+  <g fill="#b0263a" stroke="#6e1020" stroke-width="1.3"><circle cx="276.2" cy="371" r="7"/><circle cx="260.7" cy="373.9" r="5.4"/><circle cx="245.5" cy="374.6" r="5.4"/><circle cx="231.7" cy="373.3" r="5.4"/><circle cx="220" cy="369.9" r="5.4"/><circle cx="211" cy="364.6" r="5.4"/><circle cx="205.4" cy="357.8" r="5.4"/><circle cx="203.4" cy="349.9" r="5.4"/><circle cx="205.2" cy="341.2" r="5.4"/><circle cx="210.6" cy="332.4" r="7"/><circle cx="219.4" cy="323.9" r="5.4"/><circle cx="231" cy="316.2" r="5.4"/><circle cx="244.7" cy="309.8" r="5.4"/><circle cx="259.8" cy="305" r="5.4"/><circle cx="275.3" cy="302.1" r="5.4"/><circle cx="290.5" cy="301.4" r="5.4"/><circle cx="304.3" cy="302.7" r="5.4"/><circle cx="316" cy="306.1" r="5.4"/><circle cx="325" cy="311.4" r="7"/><circle cx="330.6" cy="318.2" r="5.4"/><circle cx="332.6" cy="326.1" r="5.4"/><circle cx="330.8" cy="334.8" r="5.4"/><circle cx="325.4" cy="343.6" r="5.4"/><circle cx="316.6" cy="352.1" r="5.4"/><circle cx="305" cy="359.8" r="5.4"/><circle cx="291.3" cy="366.2" r="5.4"/><circle cx="276" cy="384" r="4.8"/><circle cx="276" cy="398" r="6.2"/><circle cx="276" cy="411" r="4.8"/></g>
+  <g fill="url(#oro)" stroke="#8a6414" stroke-width="1.4">
+    <rect x="271" y="414" width="10" height="36" rx="2"/>
+    <rect x="261" y="423" width="30" height="10" rx="2"/>
+  </g>
+
+  <!-- Estrellas -->
+  <g fill="#ffffff" opacity="0.9"><path d="M58 59 L60.42 67.58 L69 70 L60.42 72.42 L58 81 L55.58 72.42 L47 70 L55.58 67.58 Z"/><path d="M352 46 L353.76 52.24 L360 54 L353.76 55.76 L352 62 L350.24 55.76 L344 54 L350.24 52.24 Z"/><path d="M330 184 L332.64 193.36 L342 196 L332.64 198.64 L330 208 L327.36 198.64 L318 196 L327.36 193.36 Z"/><path d="M70 239 L71.54 244.46 L77 246 L71.54 247.54 L70 253 L68.46 247.54 L63 246 L68.46 244.46 Z"/><path d="M36 145 L37.1 148.9 L41 150 L37.1 151.1 L36 155 L34.9 151.1 L31 150 L34.9 148.9 Z"/><path d="M372 115 L373.1 118.9 L377 120 L373.1 121.1 L372 125 L370.9 121.1 L367 120 L370.9 118.9 Z"/><path d="M120 36 L120.88 39.12 L124 40 L120.88 40.88 L120 44 L119.12 40.88 L116 40 L119.12 39.12 Z"/><path d="M250 26 L250.88 29.12 L254 30 L250.88 30.88 L250 34 L249.12 30.88 L246 30 L249.12 29.12 Z"/></g>
+</svg>

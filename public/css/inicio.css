@@ -52,6 +52,36 @@
     gap: 10px;
 }
 
+/* El rosario en vivo: dorado sobre el azul, distinto de inscribirse */
+.boton-rosario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 2px solid #f4c20d;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #f4c20d;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+.boton-rosario:hover {
+    transform: scale(1.04);
+}
+
+.boton-rosario svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+}
+
 
 /* ----------Portada-------------- */
 .portada {
@@ -59,8 +89,8 @@
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
     align-items: center;
-    gap: 32px;
-    padding: 56px max(16px, 6vw) 72px;
+    gap: 24px;
+    padding: 40px max(16px, 6vw) 60px;
     background: #1c2f5e;
     color: #ffffff;
     overflow: hidden;
@@ -96,7 +126,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
 }
 
 .portada-movimiento {
@@ -110,7 +140,7 @@
 .portada-titulo {
     display: flex;
     flex-direction: column;
-    font-size: clamp(44px, 8vw, 96px);
+    font-size: clamp(40px, 6vw, 72px);
     font-weight: 900;
     line-height: 0.95;
     text-transform: uppercase;
@@ -122,7 +152,7 @@
 }
 
 .portada-subtitulo {
-    font-size: clamp(16px, 2.2vw, 22px);
+    font-size: clamp(15px, 1.8vw, 19px);
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -132,7 +162,7 @@
     margin-top: 10px;
     padding-bottom: 6px;
     border-bottom: 3px dashed #f4c20d;
-    font-size: clamp(22px, 3.4vw, 34px);
+    font-size: clamp(20px, 2.6vw, 28px);
     font-weight: 800;
 }
 
@@ -155,7 +185,7 @@
 }
 
 .portada-cita {
-    margin-top: 18px;
+    margin-top: 8px;
     font-size: 14px;
     font-style: italic;
     color: #c9d3ea;
@@ -173,7 +203,7 @@
     display: grid;
     place-items: center;
     aspect-ratio: 1;
-    max-width: 420px;
+    max-width: 320px;
     width: 100%;
     justify-self: center;
 }
@@ -257,16 +287,15 @@
 
 
 /* ----------Secciones-------------- */
-.seccion-dias,
 .seccion-requisitos,
 .seccion-inscripcion {
     max-width: 1180px;
     margin: 0 auto;
-    padding: 64px max(16px, 3vw) 0;
+    padding: 48px max(16px, 3vw) 0;
 }
 
 .titulo-seccion {
-    font-size: clamp(24px, 3.4vw, 34px);
+    font-size: clamp(22px, 2.8vw, 30px);
     font-weight: 900;
     color: #13224a;
 }
@@ -278,25 +307,6 @@
     color: #5b6479;
 }
 
-.tarjetas-dias {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-    margin-top: 28px;
-}
-
-.tarjeta-dia {
-    padding: 24px;
-    border-radius: 12px;
-    background: #1c2f5e;
-    color: #ffffff;
-    transition: 0.4s;
-}
-
-.tarjeta-dia:hover {
-    transform: scale(1.02);
-}
-
 .tarjeta-dia-nombre {
     font-size: 12px;
     font-weight: 800;
@@ -305,17 +315,11 @@
     color: #f4c20d;
 }
 
-.tarjeta-dia h3 {
-    margin-top: 6px;
-    font-size: 22px;
-    font-weight: 800;
-}
-
 .lista-requisitos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 12px 28px;
-    margin: 24px 0 0;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px 20px;
+    margin: 20px 0 0;
     padding: 0;
     list-style: none;
 }
@@ -337,10 +341,160 @@
 }
 
 
+/* ----------Rosario (como el afiche: noche azul con estrellas y dorado)-------------- */
+.seccion-rosario {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px max(16px, 3vw) 0;
+}
+
+.tarjeta-rosario {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 16px 32px;
+    padding: 28px clamp(20px, 4vw, 48px) 44px;
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 18% 30%, rgba(246, 215, 122, 0.18), transparent 45%),
+        radial-gradient(1px 1px at 72% 18%, #ffffff, transparent),
+        radial-gradient(1px 1px at 88% 64%, #ffffff, transparent),
+        radial-gradient(1.5px 1.5px at 60% 86%, #ffffff, transparent),
+        radial-gradient(1px 1px at 94% 30%, #ffffff, transparent),
+        linear-gradient(160deg, #13224a 0%, #1c3a86 60%, #2b4c9b 100%);
+    color: #ffffff;
+    overflow: hidden;
+}
+
+/* Curva dorada abajo, como en el afiche */
+.tarjeta-rosario::after {
+    content: "";
+    position: absolute;
+    left: -10%;
+    right: -10%;
+    bottom: -84px;
+    height: 110px;
+    border-top: 3px solid #e3b84f;
+    border-radius: 50%;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.imagen-rosario {
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    justify-self: center;
+}
+
+.texto-rosario {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.rosario-invitacion {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
+.rosario-invitacion span {
+    color: #f4c20d;
+}
+
+.rosario-cita {
+    margin-top: 6px;
+    font-size: 17px;
+    font-weight: 500;
+    color: #dfe6f6;
+}
+
+.rosario-titulo {
+    font-family: 'Great Vibes', 'Segoe Script', cursive;
+    font-size: clamp(48px, 6vw, 72px);
+    font-weight: 400;
+    line-height: 1;
+    color: #e8c56a;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.rosario-subtitulo {
+    margin-top: -4px;
+    font-family: 'Great Vibes', 'Segoe Script', cursive;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+.rosario-datos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+    margin: 12px 0 14px;
+}
+
+.rosario-dato + .rosario-dato {
+    padding-left: 28px;
+    border-left: 2px solid #e3b84f;
+}
+
+.rosario-dato-titulo {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #c9d3ea;
+}
+
+.rosario-dias {
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.rosario-hora {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #e8c56a;
+}
+
+.rosario-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.rosario-whatsapp svg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: #4fd08a;
+    stroke-width: 1.8;
+    stroke-linejoin: round;
+}
+
+.rosario-nota {
+    font-size: 13px;
+    color: #c9d3ea;
+}
+
+
 /* ----------Lema (colores del afiche de perseverancia)-------------- */
 .franja-lema {
-    margin-top: 72px;
-    padding: 40px max(16px, 3vw);
+    margin-top: 56px;
+    padding: 28px max(16px, 3vw);
     text-align: center;
     background: linear-gradient(120deg, #3b2160 0%, #1c3d3a 55%, #1f7a45 100%);
     color: #ffffff;
@@ -416,6 +570,11 @@
         padding: 8px 12px;
     }
 
+    .header-publico-botones .boton-rosario {
+        flex-basis: 100%;
+        min-height: 38px;
+    }
+
     .portada {
         grid-template-columns: 1fr;
         padding-top: 36px;
@@ -423,11 +582,29 @@
 
     .portada-sello {
         order: -1;
-        max-width: 220px;
+        max-width: 150px;
     }
 
     .franja-datos {
         margin: -24px 16px 0;
+    }
+
+    .tarjeta-rosario {
+        grid-template-columns: 1fr;
+        padding-top: 20px;
+        text-align: center;
+    }
+
+    .imagen-rosario {
+        max-width: 200px;
+    }
+
+    .texto-rosario {
+        align-items: center;
+    }
+
+    .rosario-datos {
+        justify-content: center;
     }
 
     .pie-informes {
