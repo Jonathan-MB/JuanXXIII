@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Perseverancia;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class PerseveranciaSeeder extends Seeder
 {
