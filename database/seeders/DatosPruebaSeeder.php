@@ -17,12 +17,19 @@ use Illuminate\Support\Str;
 //  Datos inventados para probar la aplicación con volumen. No va en
 // DatabaseSeeder: se corre a propósito con
 //   php artisan db:seed --class=DatosPruebaSeeder
-// Todo lo que crea se reconoce fácil: cédulas que empiezan por 990 y
-// correos @demo.test. Se puede correr dos veces sin duplicar nada.
+// Todo lo que crea se reconoce fácil: cédulas que empiezan por 990,
+// correos @demo.test, retiros con «DATOS DE PRUEBA» en «qué incluye»,
+// catequistas y notas de inventario con «(prueba)». Se puede correr dos
+// veces sin duplicar nada, y se quita todo con
+//   php artisan datos-prueba:quitar
 class DatosPruebaSeeder extends Seeder
 {
 
     private const OFRENDA = 210000;
+
+    // Marcas para reconocer (y quitar) lo que crea este seeder
+    public const MARCA_RETIRO = "DATOS DE PRUEBA";
+    public const MARCA        = "(prueba)";
 
     private const NOMBRES_HOMBRE = ['Juan Carlos', 'Andrés', 'Jhon Jairo', 'Luis Fernando', 'Carlos Arturo', 'Diego', 'Jorge Iván', 'Óscar', 'William', 'Miguel Ángel', 'José Luis', 'Fabián', 'Hernán', 'Édgar', 'Jhonatan', 'Cristian', 'Sebastián', 'Mauricio', 'Wilson', 'Duván', 'Brayan', 'Juan David', 'Julián', 'Alexander', 'Ramiro', 'Gustavo', 'Héctor', 'Camilo', 'Yeison', 'Nicolás'];
 
@@ -104,26 +111,28 @@ class DatosPruebaSeeder extends Seeder
     {
         $base = [
             'ofrenda'            => self::OFRENDA,
-            'que_incluye'        => 'Alojamiento, alimentación y materiales',
+            'que_incluye'        => self::MARCA_RETIRO,
             'porcentaje_reserva' => 50,
             'lugar'              => 'Colegio Nuestra Señora de Chiquinquirá',
             'direccion'          => 'Calle 7 oeste # 54-75, B. Belisario Caicedo',
             'ciudad'             => 'Santiago de Cali',
         ];
 
-        $pasado = Retiro::firstOrCreate(['numero_hombres' => 90], $base + [
-            'numero_mujeres'         => 89,
-            'fecha_inicio'           => '2026-09-11',
-            'fecha_fin'              => '2026-09-13',
-            'inscripciones_abiertas' => false,
-        ]);
-
+        //  El actual es el retiro real si ya existe; el pasado y el próximo
+        // se numeran a partir de él para no chocar con retiros reales
         $actual = Retiro::actual() ?? Retiro::firstOrCreate(['numero_hombres' => 91], $base + [
             'numero_mujeres'         => 90,
             'fecha_inicio'           => '2026-11-20',
             'fecha_fin'              => '2026-11-22',
             'fecha_limite_pago'      => '2026-11-16',
             'inscripciones_abiertas' => true,
+        ]);
+
+        $pasado = Retiro::firstOrCreate(['numero_hombres' => $actual->numero_hombres - 1], $base + [
+            'numero_mujeres'         => $actual->numero_mujeres - 1,
+            'fecha_inicio'           => $actual->fecha_inicio->copy()->subMonths(2)->toDateString(),
+            'fecha_fin'              => $actual->fecha_fin->copy()->subMonths(2)->toDateString(),
+            'inscripciones_abiertas' => false,
         ]);
 
         $proximo = Retiro::firstOrCreate(['numero_hombres' => $actual->numero_hombres + 1], $base + [
@@ -255,7 +264,7 @@ class DatosPruebaSeeder extends Seeder
             return;
         }
 
-        $mitad = self::OFRENDA / 2;
+        $mitad = ($inscripcion->retiro->ofrenda ?: self::OFRENDA) / 2;
         $fecha = $inscripcion->retiro->fecha_inicio->copy()->subDays(mt_rand(5, 30));
         $medio = $this->elegir(['Nequi 315 572 4732', 'Nequi 310 388 6311', 'Efectivo']);
 
@@ -278,8 +287,8 @@ class DatosPruebaSeeder extends Seeder
                 ['retiro_id' => $retiro->id, 'sexo' => $sexo, 'numero' => $numero],
                 [
                     'cantidad_sillas'     => 8,
-                    'catequista_titular'  => $this->elegir($nombres) . ' ' . $this->elegir(self::APELLIDOS),
-                    'catequista_auxiliar' => $this->elegir($nombres) . ' ' . $this->elegir(self::APELLIDOS),
+                    'catequista_titular'  => $this->elegir($nombres) . ' ' . $this->elegir(self::APELLIDOS) . ' ' . self::MARCA,
+                    'catequista_auxiliar' => $this->elegir($nombres) . ' ' . $this->elegir(self::APELLIDOS) . ' ' . self::MARCA,
                 ]
             );
         }
@@ -304,7 +313,7 @@ class DatosPruebaSeeder extends Seeder
         }
 
         // Todas llenas: se abre una mesa más
-        $nueva = Mesa::create(['retiro_id' => $retiro->id, 'sexo' => $sexo, 'numero' => ($mesas->max('numero') ?? 0) + 1, 'cantidad_sillas' => 8]);
+        $nueva = Mesa::create(['retiro_id' => $retiro->id, 'sexo' => $sexo, 'numero' => ($mesas->max('numero') ?? 0) + 1, 'cantidad_sillas' => 8, 'catequista_titular' => self::MARCA]);
 
         return [$nueva->id, 1];
     }
@@ -378,7 +387,7 @@ class DatosPruebaSeeder extends Seeder
 
                 // Entrada inicial, unas salidas y a veces algo por comprar o dañado
                 $cantidad = mt_rand(0, 100) <= 8 ? 0 : mt_rand(2, 60);
-                $this->movimiento($articulo, MovimientoInventario::ENTRADA, max($cantidad, 1), 'Cantidad inicial', $usuarios);
+                $this->movimiento($articulo, MovimientoInventario::ENTRADA, max($cantidad, 1), 'Cantidad inicial ' . self::MARCA, $usuarios);
 
                 for ($s = 0, $salidas = mt_rand(0, 3); $s < $salidas && $articulo->cantidad > 1; $s++) {
                     $this->movimiento($articulo, MovimientoInventario::SALIDA, mt_rand(1, (int) ceil($articulo->cantidad / 3)), $this->elegir(['Para la sala', 'Retiro de noviembre', null]), $usuarios);
