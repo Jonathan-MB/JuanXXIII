@@ -30,6 +30,11 @@ function ajustarTitulo(titulo) {
 
 
 //  Se espera a la letra Montserrat: con otra letra los anchos cambian
-document.fonts.ready.then(() => {
+function ajustarTodos() {
     document.querySelectorAll('.letrero-pared .titulo-letrero, .letrero-pared .numero-cuenta').forEach(ajustarTitulo);
-});
+}
+
+document.fonts.ready.then(ajustarTodos);
+
+// Y justo antes de imprimir, por si se imprime antes de que cargue la letra
+window.addEventListener('beforeprint', ajustarTodos);

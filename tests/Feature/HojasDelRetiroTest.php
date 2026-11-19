@@ -167,6 +167,22 @@ class HojasDelRetiroTest extends TestCase
 
 
 
+    public function test_todos_los_letreros_abren_con_el_numero_del_retiro(): void
+    {
+        foreach (array_keys(\App\Http\Controllers\LetreroController::LETREROS) as $clave) {
+            $this->get(route('letreros.show', $clave))->assertOk();
+        }
+
+        $this->get(route('letreros.show', 'ayudasDeDios'))->assertSee('R. 89 M – 90 H');
+
+        // Letreros de pared: la letra baja según lo largo, para no salirse ni partir palabras
+        $this->get(route('impresiones.letrerosMesa', ['sexo' => 'hombres', 'mesas' => '12']))->assertOk()->assertSee('Mesa 12');
+        $this->get(route('impresiones.letrerosMesa', ['lugar' => 'Rectorado']))->assertOk()->assertSee('letrero-mediano', false);
+        $this->get(route('impresiones.letrerosMesa', ['lugar' => 'Coordinación general']))->assertOk()->assertSee('letrero-largo', false);
+    }
+
+
+
     public function test_tesoreria_no_entra_a_impresiones_de_secretaria(): void
     {
         $this->actingAs($this->usuario(Rol::TESORERIA));

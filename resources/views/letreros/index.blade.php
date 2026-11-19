@@ -30,7 +30,7 @@
         @include('impresiones.formularioLetreros')
     </div>
 
-    <p class="texto-ayuda">Los archivos originales en Word y PowerPoint siguen en <a href="{{ route('archivos.index', ['categoria' => 'letreros']) }}">Archivos › Letreros originales</a>.</p>
+    <p class="texto-ayuda">Al empezar el retiro se imprimen todos desde aquí. Los letreros especiales que no estén en esta lista se suben en <a href="{{ route('archivos.index', ['categoria' => 'letreros']) }}">Archivos › Letreros</a>.</p>
 
 <script src="{{ recurso('js/letreros.js') }}"></script>
 @include('partials.footerPanel')

@@ -17,7 +17,10 @@
                 <div class="letrero-marco">
                     <img class="letrero-logo" src="{{ asset('img/logo.png') }}" alt="Logo del Movimiento Juan XXIII">
                     <div class="letrero-texto">
-                        <p class="letrero-principal {{ mb_strlen($letrero['principal']) > 9 ? 'letrero-largo' : '' }}">{{ $letrero['principal'] }}</p>
+                        @php
+                            $largo = mb_strlen($letrero['principal']);
+                        @endphp
+                        <p class="letrero-principal {{ $largo > 10 ? 'letrero-largo' : ($largo > 7 ? 'letrero-mediano' : '') }}">{{ $letrero['principal'] }}</p>
                         @if ($letrero['nombre'])
                             <p class="letrero-nombre">{{ $letrero['nombre'] }}</p>
                         @endif

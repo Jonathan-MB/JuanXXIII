@@ -25,13 +25,13 @@ Correrlas (MySQL de XAMPP encendido):
 cd /c/xampp/htdocs/JuanXXIII && /c/xampp/php/php.exe artisan test
 ```
 
-Debe terminar en `Tests: 20 passed`. Si alguna sale con ⨯, el nombre de la prueba dice qué regla se rompió.
+Debe terminar en `Tests: 21 passed`. Si alguna sale con ⨯, el nombre de la prueba dice qué regla se rompió.
 
 | Archivo | Qué revisa |
 |---|---|
 | `tests/Feature/SillasTest.php` | Quien abandona conserva su silla y nadie más la ocupa; quien no asistió no conserva puesto; un puesto se corrige sin mover a los demás; dos personas no quedan en la misma silla; en las listas impresas y en el mapa de Llegada la silla de quien se fue queda vacía. |
 | `tests/Feature/TesoreriaYLlamadasTest.php` | La lista de pagos trae pagado, falta, medio y padrino con teléfono. Las llamadas traen los dos contactos y el padrino. |
-| `tests/Feature/HojasDelRetiroTest.php` | Hojas 1, 2 y 3; «Editar datos» en Llegada corrige contactos sin perder el fijo; membretes y oraciones (una por invitado, con el número del retiro); carta solo a quien terminó, con la fecha del último día y el aviso si falta el próximo retiro; previstos con falda solo en mujeres; Secretaría puede imprimir todo y Tesorería no entra a las impresiones de Secretaría. |
+| `tests/Feature/HojasDelRetiroTest.php` | Hojas 1, 2 y 3; «Editar datos» en Llegada corrige contactos sin perder el fijo; membretes y oraciones (una por invitado, con el número del retiro); carta solo a quien terminó, con la fecha del último día y el aviso si falta el próximo retiro; previstos con falda solo en mujeres; todos los letreros abren con el número del retiro y la letra de los letreros de pared baja según lo largo del texto; Secretaría puede imprimir todo y Tesorería no entra a las impresiones de Secretaría. |
 
 El escenario de prueba (retiro, cuentas, personas con contactos, padrino y puesto) se arma en `tests/EscenarioRetiro.php`. Para una prueba nueva se copia una de las que existen y se cambia lo que se revisa.
 
@@ -61,7 +61,7 @@ El escenario de prueba (retiro, cuentas, personas con contactos, padrino y puest
 | Rectorado y firmas | Impresiones → Datos para imprimir | Salen en directorio, informes y carta. |
 | Desarrollo y Santísimo | Desarrollo / Santísimo → copiar la base | Las impresiones del desarrollo, charlistas, sala y Santísimo dejan de decir «no está preparado». |
 | Lista de tareas | Cronograma → «Imprimir la lista para marcar a mano» | Por día, con la fecha real del retiro y una casilla por tarea. |
-| Letreros de la casa | Letreros | Todos con logo y número del retiro: silencio, baños, Nequi, Ayudas de Dios, bebidas, mesas… |
+| Letreros de la casa | Letreros | Todos con logo y número del retiro: silencio, baños, Nequi, Ayudas de Dios, bebidas, mesas… Al guardarlos como PDF, ningún título se parte («SILENC / IO») ni se sale del marco. Los de pared («Mesa 12», «Rectorado») van con el logo arriba y el texto grande, para leerse de lejos. |
 | Membretes y oraciones | Impresiones | Uno por invitado activo; arriba se puede cambiar la cantidad. Membrete en oficio con «RETIRO N» y fechas; oraciones dos por hoja con número, lugar y fecha. |
 | Entrega de previstos | Impresiones | Una tabla por mesa; la falda solo en mujeres; sin mesas salen 10 en blanco. |
 

@@ -1016,10 +1016,11 @@ p {
     flex: 1 1 auto;
     min-width: 0;
     display: flex;
+    flex-direction: column;   /* logo arriba, texto grande debajo: se lee de lejos */
     align-items: center;
     justify-content: center;
-    gap: 1.4cm;
-    padding: 1cm 1.6cm;
+    gap: 0.5cm;
+    padding: 1cm 1.2cm;
     border: 3px double #1c2f5e;
     outline: 1px solid #1c2f5e;
     outline-offset: -0.45cm;
@@ -1029,8 +1030,8 @@ p {
 }
 
 .letrero-logo {
-    width: 6.5cm;
-    height: 6.5cm;
+    width: 4.2cm;
+    height: 4.2cm;
     flex-shrink: 0;
 }
 
@@ -1038,19 +1039,28 @@ p {
     text-align: center;
 }
 
-/* "Mesa 1" en una sola línea */
+/* "Mesa 1" en una sola línea y lo más grande posible: ocupa todo el ancho */
+.letrero-texto {
+    max-width: 100%;
+}
+
 .letrero-principal {
-    font-size: 100pt;
+    font-size: 150pt;
     font-weight: 700;
     line-height: 1;
     white-space: nowrap;
 }
 
-/* "Directores" y otros textos largos: más pequeño para que quepa */
+/* Palabras de 8 a 10 letras («Rectorado», «Secretaría») */
+.letrero-mediano {
+    font-size: 110pt;
+}
+
+/* Textos más largos: más pequeños y en varias líneas, sin partir palabras */
 .letrero-largo {
-    font-size: 66pt;
+    font-size: 72pt;
     white-space: normal;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
 }
 
 .letrero-nombre {
@@ -1063,8 +1073,9 @@ p {
     margin-top: 0.5cm;
     padding-top: 0.3cm;
     border-top: 1px solid #bbbbbb;
-    font-size: 14pt;
-    letter-spacing: 0.12em;
+    font-size: 22pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #555555;
 }

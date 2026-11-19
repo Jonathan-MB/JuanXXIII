@@ -60,11 +60,13 @@
     font-weight: 900;
     line-height: 1.02;
     text-transform: uppercase;
-    overflow-wrap: break-word;
+    /* Nunca partir una palabra («SILENC / IO»): si no cabe, letrerosHoja.js baja la letra */
+    overflow-wrap: normal;
 }
 
+/* 76pt cabe en el ancho del texto aunque el script no alcance a correr (impresión inmediata) */
 .titulo-gigante {
-    font-size: 96pt;
+    font-size: 76pt;
 }
 
 .subtitulo-letrero {
@@ -142,7 +144,8 @@
 
 .numero-cuenta {
     margin-top: 0.3cm;
-    font-size: 54pt;
+    font-size: 46pt;   /* «315 572 4732» en una línea */
+    white-space: nowrap;
     font-weight: 900;
     letter-spacing: 0.04em;
     white-space: nowrap;
