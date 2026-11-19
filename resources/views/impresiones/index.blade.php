@@ -47,6 +47,11 @@
             'descripcion' => 'Una hoja por mesa con el CA arriba, el CT abajo y las sillas alrededor, con el nombre de cada persona.',
         ],
         [
+            'ruta'        => 'impresiones.previstos',
+            'nombre'      => 'Entrega de previstos',
+            'descripcion' => 'Por mesa, con CT y CA: casillas para camiseta (con la talla), crucifijo, camándula, cartas y previstos; falda solo en mujeres. Sin mesas, sale en blanco.',
+        ],
+        [
             'ruta'        => 'impresiones.camisetas',
             'nombre'      => 'Camisetas por talla',
             'descripcion' => 'Para Librería: cuántas hay de cada talla y la talla de cada persona por mesa.',

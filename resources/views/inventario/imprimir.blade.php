@@ -4,22 +4,26 @@
         @php
             $porComprar = $equipo->articulos->where('por_comprar', '>', 0);
         @endphp
+        @php
+            //  Como en el Excel de Secretaría: de qué retiro es el conteo
+            $deRetiro = $retiro
+                ? 'Retiro ' . $retiro->numero_mujeres . ' M - ' . $retiro->numero_hombres . ' H · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year
+                : now()->locale('es')->translatedFormat('j \d\e F \d\e Y');
+        @endphp
         <section class="pagina">
-            @include('partials.membrete', ['subtitulo' => 'Inventario · Equipo ' . $equipo->nombre . ' · ' . now()->locale('es')->translatedFormat('j \d\e F \d\e Y')])
+            @include('partials.membrete', ['subtitulo' => 'Inventario · ' . $equipo->nombre . ' · ' . $deRetiro])
 
             @if ($equipo->articulos->isEmpty())
                 <p class="instruccion">Este equipo todavía no tiene artículos registrados.</p>
             @else
-                <p class="instruccion">Cuenten lo que hay y escriban la cantidad en «Conteo». Si no coincide con lo registrado, anótenlo en observaciones.</p>
+                <p class="instruccion">Cuenten lo que hay y escriban la cantidad en «Conteo». Si no coincide, anótenlo en observaciones.</p>
 
                 <table class="tabla-impresion tabla-inventario">
                     <thead>
                         <tr>
                             <th>Artículo</th>
-                            <th class="columna-numero">Registrado</th>
-                            <th>Unidad</th>
-                            <th>Estado</th>
-                            <th class="columna-numero">Por comprar</th>
+                            <th class="columna-cantidad">Hay</th>
+                            <th class="columna-cantidad">Comprar</th>
                             <th class="columna-conteo">Conteo</th>
                             <th>Observaciones</th>
                         </tr>
@@ -27,11 +31,9 @@
                     <tbody>
                         @foreach ($equipo->articulos as $articulo)
                             <tr>
-                                <td>{{ $articulo->nombre }}</td>
-                                <td class="columna-numero">{{ $articulo->cantidad }}</td>
-                                <td>{{ $articulo->unidad }}</td>
-                                <td>{{ $articulo->estado }}</td>
-                                <td class="columna-numero">{{ $articulo->por_comprar ?: '' }}</td>
+                                <td>{{ $articulo->nombre }}{{ $articulo->estado ? ' (' . mb_strtolower($articulo->estado) . ')' : '' }}</td>
+                                <td class="columna-cantidad">{{ $articulo->cantidad }} {{ $articulo->unidad }}</td>
+                                <td class="columna-cantidad">{{ $articulo->por_comprar ? $articulo->por_comprar . ' ' . $articulo->unidad : '' }}</td>
                                 <td class="columna-conteo"></td>
                                 <td></td>
                             </tr>

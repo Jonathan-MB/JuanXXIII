@@ -196,6 +196,23 @@ class ImpresionController extends Controller
 
 
 
+    //  Entrega de previstos (formato de Secretaría): por mesa, casillas
+    // para lo que recibe cada persona. Sin mesas todavía, sale en blanco.
+    public function previstos(Request $request)
+    {
+        $retiro = $this->retiroOFallar();
+        $sexo   = $this->sexoPedido($request);
+
+        return view('impresiones.previstos', [
+            'retiro' => $retiro,
+            'sexos'  => $sexo ? [$sexo] : ['Masculino', 'Femenino'],
+            'grupos' => $this->porGrupoYMesa($retiro, $sexo),
+            'titulo' => 'Entrega de previstos',
+        ]);
+    }
+
+
+
     public function correcciones(Request $request)
     {
         $retiro = $this->retiroOFallar();

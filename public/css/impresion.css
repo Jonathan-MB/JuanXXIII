@@ -1185,9 +1185,9 @@ p {
     font-size: 9pt;
 }
 
-.tabla-inventario .columna-numero {
-    width: 9%;
-    text-align: right;
+.tabla-inventario .columna-cantidad {
+    width: 15%;
+    white-space: nowrap;
 }
 
 .tabla-inventario .columna-conteo {
@@ -1983,4 +1983,26 @@ p.preguntas-charla {
 .formulario-cantidad .barra-boton {
     border-color: #1c2f5e;
     background: #1c2f5e;
+}
+
+
+/* ----------Entrega de previstos-------------- */
+.tabla-previstos {
+    font-size: 8.5pt;
+}
+
+.tabla-previstos .columna-entrega {
+    width: 9%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.tabla-previstos th.columna-entrega {
+    font-size: 7pt;
+}
+
+.tabla-previstos .casilla-papel {
+    width: 0.35cm;
+    height: 0.35cm;
+    vertical-align: middle;
 }

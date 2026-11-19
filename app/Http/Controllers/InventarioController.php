@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateArticuloRequest;
 use App\Models\Articulo;
 use App\Models\Equipo;
 use App\Models\MovimientoInventario;
+use App\Models\Retiro;
 use App\Models\Rol;
 use Illuminate\Support\Facades\DB;
 
@@ -91,6 +92,7 @@ class InventarioController extends Controller
         return view('inventario.imprimir', [
             'equipos' => collect([$equipo->load(['articulos' => fn ($consulta) => $consulta->orderBy('nombre')])]),
             'titulo'  => 'Inventario · ' . $equipo->nombre,
+            'retiro'  => Retiro::actual(),
             'volver'  => route('inventario.show', $equipo),
         ]);
     }
@@ -107,6 +109,7 @@ class InventarioController extends Controller
         return view('inventario.imprimir', [
             'equipos' => $equipos,
             'titulo'  => 'Inventario de todos los equipos',
+            'retiro'  => Retiro::actual(),
             'volver'  => route('inventario.index'),
         ]);
     }

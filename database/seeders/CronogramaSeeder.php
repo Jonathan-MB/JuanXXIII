@@ -12,7 +12,7 @@ class CronogramaSeeder extends Seeder
     //  Sube cada vez que se agregan tareas o cambian enlaces. Cada versión
     // se aplica una sola vez: lo que después se quite o se cambie desde
     // Cronograma no vuelve a aparecer al correr db:seed.
-    public const VERSION = 3;
+    public const VERSION = 4;
 
     //  [día, hora, descripción, responsable, enlace, versión en que llegó].
     // Día: 0 viernes, 1 sábado, 2 domingo; negativo = días antes. La hora
@@ -21,6 +21,7 @@ class CronogramaSeeder extends Seeder
     // Versión 1: el PDF "Funciones del equipo de Secretaría". Versión 2: los
     // pasos que faltaban (pagos, impresiones, llegada, llamado y cierre).
     // Versión 3: imprimir los membretes oficio y las oraciones.
+    // Versión 4: imprimir la entrega de previstos.
     private const TAREAS = [
         // Días antes
         [-3, '18:00', 'Revisar los inscritos: que tengan cédula, celular, fecha de nacimiento, talla y padrino', 'Secretaría', 'inscritos', 2],
@@ -39,6 +40,7 @@ class CronogramaSeeder extends Seeder
         [-1, '18:30', 'Imprimir la carpeta del rector(a)', 'Secretaría', 'imprimirCarpetaRector', 2],
         [-1, '18:30', 'Imprimir la carpeta del vicerrector(a)', 'Secretaría', 'imprimirCarpetaVicerrector', 2],
         [-1, '18:30', 'Imprimir la carpeta del dirigente', 'Secretaría', 'imprimirCarpetaDirigente', 2],
+        [-1, '19:00', 'Imprimir la entrega de previstos (por mesa) para Librería y Previstos', 'Secretaría', 'imprimirPrevistos', 4],
         [-1, '20:00', 'Cerrar las inscripciones del retiro', 'Secretaría', 'retiros', 2],
 
         // Viernes

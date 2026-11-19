@@ -37,6 +37,7 @@ class TareaCronograma extends Model
         'imprimirMesasEnBlanco'      => ['Imprimir hojas de mesa en blanco', 'impresiones.mesasEnBlanco', []],
         'imprimirMembretes'          => ['Imprimir membretes oficio (dinámicas)', 'impresiones.membretes', []],
         'imprimirOraciones'          => ['Imprimir oraciones (una por invitado)', 'impresiones.oraciones', []],
+        'imprimirPrevistos'          => ['Imprimir entrega de previstos', 'impresiones.previstos', []],
         'imprimirCarta'              => ['Imprimir cartas al presbítero', 'impresiones.carta', []],
         'imprimirCorrecciones'       => ['Imprimir hoja de correcciones', 'impresiones.correcciones', []],
         'imprimirDirectorio'         => ['Imprimir directorio', 'impresiones.directorio', []],
