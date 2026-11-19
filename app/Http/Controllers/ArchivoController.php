@@ -59,22 +59,55 @@ class ArchivoController extends Controller
 
 
 
-    //  Abre el archivo en el navegador (PDF e imágenes, para imprimir) o
-    // lo descarga. Los archivos están en una carpeta privada: solo se
-    // llega a ellos por aquí, con la sesión y el rol revisados.
+    //  Abre el archivo en el navegador o lo descarga. Un PDF o una imagen se
+    // abre tal cual; un Word, Excel o PowerPoint se ve por su PDF de vista
+    // previa. Los archivos están en una carpeta privada: solo se llega a
+    // ellos por aquí, con la sesión y el rol revisados.
     public function show(Request $request, Archivo $archivo)
     {
         if (! Storage::exists($archivo->ruta)) {
             return back()->with('error', 'No se encontró el archivo de "' . $archivo->titulo . '".');
         }
 
-        $nombre = $archivo->titulo . '.' . $archivo->extension;
-
-        if ($request->boolean('descargar') || ! $archivo->seVeEnNavegador()) {
-            return Storage::download($archivo->ruta, $nombre);
+        if ($request->boolean('descargar') || ! $archivo->tieneVistaPrevia()) {
+            return Storage::download($archivo->ruta, $archivo->titulo . '.' . $archivo->extension);
         }
 
-        return Storage::response($archivo->ruta, $nombre, [], 'inline');
+        if ($archivo->seVeEnNavegador()) {
+            return Storage::response($archivo->ruta, $archivo->titulo . '.' . $archivo->extension, [], 'inline');
+        }
+
+        if (! Storage::exists($archivo->vista_previa)) {
+            return back()->with('error', 'No se encontró la vista previa de "' . $archivo->titulo . '".');
+        }
+
+        return Storage::response($archivo->vista_previa, $archivo->titulo . '.pdf', [], 'inline');
+    }
+
+
+
+    //  Pone o cambia el PDF de vista previa de un Word, Excel o PowerPoint
+    public function vistaPrevia(Request $request, Archivo $archivo)
+    {
+        $request->validate(
+            ['vista_previa' => ['required', 'file', 'mimes:pdf', 'max:' . Archivo::TAMANO_MAXIMO]],
+            [
+                'vista_previa.required' => 'Elige el PDF de la vista previa.',
+                'vista_previa.mimes'    => 'La vista previa debe ser un PDF.',
+                'vista_previa.max'      => 'El PDF pesa más de 20 MB.',
+            ]
+        );
+
+        if ($archivo->seVeEnNavegador()) {
+            return back()->with('mensajeAlerta', '"' . $archivo->titulo . '" ya se ve en la página: no necesita vista previa.');
+        }
+
+        $ruta = Archivo::rutaVistaPrevia($archivo->ruta);
+        Storage::put($ruta, file_get_contents($request->file('vista_previa')->getRealPath()));
+        $archivo->update(['vista_previa' => $ruta]);
+
+        return redirect()->route('archivos.index', ['categoria' => $archivo->categoria])
+            ->with('mensajeActualizado', 'Vista previa de "' . $archivo->titulo . '" lista.');
     }
 
 
@@ -102,7 +135,7 @@ class ArchivoController extends Controller
     {
         $categoria = $archivo->categoria;
 
-        Storage::delete($archivo->ruta);
+        Storage::delete(array_filter([$archivo->ruta, $archivo->vista_previa]));
         $archivo->delete();
 
         return redirect()->route('archivos.index', ['categoria' => $categoria])->with('mensajeActualizado', '"' . $archivo->titulo . '" quitado.');

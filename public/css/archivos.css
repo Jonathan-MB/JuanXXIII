@@ -275,6 +275,109 @@
 }
 
 
+.sin-vista-previa {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: #fdf3d3;
+    color: #7a5600;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.formulario-vista-previa {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 6px;
+    margin: 8px 0;
+    font-size: 13px;
+    color: #5b6479;
+}
+
+.formulario-vista-previa label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.formulario-vista-previa .boton-secundario {
+    min-height: 40px;
+    padding: 6px 12px;
+}
+
+
+/* ----------Visor de vista previa-------------- */
+.visor-archivo {
+    width: min(1000px, 100% - 32px);
+    height: calc(100% - 48px);
+    max-height: none;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.visor-archivo[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.visor-archivo::backdrop {
+    background: rgba(19, 34, 74, 0.6);
+}
+
+.visor-barra {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #dde2ec;
+    background: #ffffff;
+}
+
+.visor-titulo {
+    flex: 1;
+    min-width: 0;
+    font-weight: 700;
+    color: #13224a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.visor-barra .boton-secundario {
+    min-height: 40px;
+    padding: 6px 12px;
+}
+
+.visor-paginas {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    overflow: auto;
+    background: #eef0f5;
+}
+
+.visor-pagina {
+    max-width: 100%;
+    height: auto;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(19, 34, 74, 0.25);
+}
+
+.visor-aviso {
+    margin: auto;
+    color: #5b6479;
+    font-weight: 600;
+    text-align: center;
+}
+
+
 /* ----------Celular-------------- */
 @media (max-width: 600px) {
 
@@ -284,5 +387,21 @@
 
     .acciones-archivo {
         grid-column: 1 / -1;
+    }
+
+    .visor-archivo {
+        width: 100%;
+        max-width: none;
+        height: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .visor-barra {
+        flex-wrap: wrap;
+    }
+
+    .visor-titulo {
+        flex-basis: 100%;
     }
 }

@@ -143,6 +143,8 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('archivos', ArchivoController::class)
             ->only(['index', 'store', 'show', 'update', 'destroy']);
+        Route::post('/archivos/{archivo}/vista-previa', [ArchivoController::class, 'vistaPrevia'])
+            ->name('archivos.vistaPrevia');
 
         Route::resource('perseverancias', PerseveranciaController::class)
             ->parameters(['perseverancias' => 'perseverancia'])

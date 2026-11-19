@@ -27,6 +27,7 @@ class Archivo extends Model
         'descripcion',
         'numero',
         'ruta',
+        'vista_previa',
         'nombre_original',
         'tipo_mime',
         'tamano',
@@ -42,11 +43,27 @@ class Archivo extends Model
 
 
 
-    //  Los PDF y las imágenes se abren en el navegador (para imprimir);
-    // Word, Excel y PowerPoint solo se pueden descargar.
+    //  Los PDF y las imágenes se abren tal cual en el navegador (para imprimir)
     public function seVeEnNavegador(): bool
     {
         return in_array($this->extension, ['pdf', 'jpg', 'jpeg', 'png', 'webp'], true);
+    }
+
+
+
+    //  Word, Excel y PowerPoint se ven por su PDF de vista previa; sin él,
+    // solo se pueden descargar.
+    public function tieneVistaPrevia(): bool
+    {
+        return $this->seVeEnNavegador() || $this->vista_previa !== null;
+    }
+
+
+
+    //  El PDF de vista previa va al lado del original, con el mismo nombre
+    public static function rutaVistaPrevia(string $rutaOriginal): string
+    {
+        return 'archivos/vista-previa/' . pathinfo($rutaOriginal, PATHINFO_FILENAME) . '.pdf';
     }
 
 

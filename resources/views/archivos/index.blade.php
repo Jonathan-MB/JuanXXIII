@@ -60,14 +60,19 @@
                             @endif
                             {{ $archivo->titulo }}
                         </p>
-                        <p class="detalle-archivo">{{ $archivo->tamano_texto }}{{ $archivo->descripcion ? ' · ' . $archivo->descripcion : '' }}</p>
+                        <p class="detalle-archivo">
+                            {{ $archivo->tamano_texto }}{{ $archivo->descripcion ? ' · ' . $archivo->descripcion : '' }}
+                            @unless ($archivo->tieneVistaPrevia())
+                                <span class="sin-vista-previa">Sin vista previa</span>
+                            @endunless
+                        </p>
                     </div>
 
                     <div class="acciones-archivo">
-                        @if ($archivo->seVeEnNavegador())
-                            <a class="boton-azul" href="{{ route('archivos.show', $archivo) }}" target="_blank" rel="noopener">Ver e imprimir</a>
+                        @if ($archivo->tieneVistaPrevia())
+                            <a class="boton-azul ver-archivo" href="{{ route('archivos.show', $archivo) }}" target="_blank" rel="noopener" data-titulo="{{ $archivo->titulo }}" data-tipo="{{ $archivo->seVeEnNavegador() && $archivo->extension !== 'pdf' ? 'imagen' : 'pdf' }}">Ver</a>
                         @endif
-                        <a class="boton-secundario" href="{{ route('archivos.show', ['archivo' => $archivo, 'descargar' => 1]) }}">Descargar</a>
+                        <a class="boton-secundario" href="{{ route('archivos.show', ['archivo' => $archivo, 'descargar' => 1]) }}">Descargar{{ $archivo->seVeEnNavegador() ? '' : ' ' . $archivo->tipo_texto }}</a>
                     </div>
 
                     <details class="editar-archivo">
@@ -85,6 +90,16 @@
                             </select>
                             <button type="submit" class="boton-secundario">Guardar</button>
                         </form>
+                        @unless ($archivo->seVeEnNavegador())
+                            <form class="formulario-vista-previa" method="POST" action="{{ route('archivos.vistaPrevia', $archivo) }}" enctype="multipart/form-data">
+                                @csrf
+                                <label>
+                                    {{ $archivo->vista_previa ? 'Cambiar' : 'Poner' }} la vista previa (PDF del mismo documento{{ $archivo->extension === 'xlsx' || $archivo->extension === 'xls' ? ', con todas las hojas' : '' }})
+                                    <input type="file" name="vista_previa" accept=".pdf" required>
+                                </label>
+                                <button type="submit" class="boton-secundario">Subir PDF</button>
+                            </form>
+                        @endunless
                         <form method="POST" action="{{ route('archivos.destroy', $archivo) }}" class="formulario-confirmar" data-confirmar="¿Quitar «{{ $archivo->titulo }}»? Se borra el archivo.">
                             @csrf
                             @method('DELETE')
@@ -95,6 +110,16 @@
             @endforeach
         </ul>
     @endif
+
+    {{-- --------------------VISTA PREVIA------------------- --}}
+    <dialog class="visor-archivo" id="visor-archivo" aria-labelledby="visor-titulo">
+        <div class="visor-barra">
+            <p class="visor-titulo" id="visor-titulo"></p>
+            <a class="boton-secundario" id="visor-pestana" href="#" target="_blank" rel="noopener">Abrir para imprimir</a>
+            <button type="button" class="boton-secundario" id="visor-cerrar">Cerrar</button>
+        </div>
+        <div class="visor-paginas" id="visor-paginas" data-pdfjs="{{ asset('vendor/pdfjs/pdf.min.js') }}" data-worker="{{ asset('vendor/pdfjs/pdf.worker.min.js') }}"></div>
+    </dialog>
 
 <script src="{{ recurso('js/archivos.js') }}"></script>
 @include('partials.footerPanel')
