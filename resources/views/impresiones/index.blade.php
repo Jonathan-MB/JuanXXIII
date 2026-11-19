@@ -17,6 +17,16 @@
             'soloGrupo'   => true,
         ],
         [
+            'ruta'        => 'impresiones.membretes',
+            'nombre'      => 'Membretes oficio (dinámicas)',
+            'descripcion' => 'Hoja oficio con el logo, el número y las fechas del retiro arriba, para las dinámicas. Una por invitado; se entrega con una hoja en blanco más.',
+        ],
+        [
+            'ruta'        => 'impresiones.oraciones',
+            'nombre'      => 'Oraciones',
+            'descripcion' => 'Invocación al Espíritu Santo, Padre Nuestro y Credo con el número, el lugar y la fecha del retiro. Una por invitado, dos por hoja carta para recortar.',
+        ],
+        [
             'ruta'        => 'impresiones.carta',
             'nombre'      => 'Cartas al presbítero',
             'descripcion' => 'Una por página para cada persona que llegó al retiro. Separadas por hombres y mujeres, en orden de mesa y silla.',

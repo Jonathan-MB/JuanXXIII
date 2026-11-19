@@ -178,6 +178,24 @@ class ImpresionController extends Controller
 
 
 
+    //  Membrete en hoja oficio para las dinámicas: uno por invitado, con el
+    // número, las fechas y el año del retiro
+    public function membretes(Request $request)
+    {
+        return $this->hojasPorInvitado($request, 'impresiones.membretes', 'Membretes oficio');
+    }
+
+
+
+    //  Invocación al Espíritu Santo, Padre Nuestro y Credo: una por
+    // invitado, dos por hoja carta para recortar
+    public function oraciones(Request $request)
+    {
+        return $this->hojasPorInvitado($request, 'impresiones.oraciones', 'Oraciones');
+    }
+
+
+
     public function correcciones(Request $request)
     {
         $retiro = $this->retiroOFallar();
@@ -614,6 +632,38 @@ class ImpresionController extends Controller
         abort_if(! $retiro, 404, 'No hay un retiro próximo.');
 
         return $retiro;
+    }
+
+
+
+    //  Hojas que van una por invitado. Cuántas: las que se pidan en
+    // ?cantidad o, si no, los invitados que siguen en el retiro (inscritos,
+    // confirmados y los que llegaron), por grupo.
+    private function hojasPorInvitado(Request $request, string $vista, string $titulo)
+    {
+        $retiro = $this->retiroOFallar();
+        $sexo   = $this->sexoPedido($request);
+        $grupos = [];
+
+        foreach ($sexo ? [$sexo] : ['Masculino', 'Femenino'] as $grupo) {
+            $grupos[$grupo] = $sexo && $request->filled('cantidad')
+                ? max(1, min(300, (int) $request->cantidad))
+                : $this->invitadosActivos($retiro, $grupo);
+        }
+
+        return view($vista, compact('retiro', 'sexo', 'grupos', 'titulo'));
+    }
+
+
+
+    private function invitadosActivos(Retiro $retiro, string $sexo): int
+    {
+        $cantidad = $retiro->inscripciones()
+            ->whereIn('estado', [Inscripcion::INSCRITO, Inscripcion::CONFIRMADO, Inscripcion::LLEGO])
+            ->whereHas('persona', fn ($persona) => $persona->where('sexo', $sexo))
+            ->count();
+
+        return max($cantidad, 1);
     }
 
 

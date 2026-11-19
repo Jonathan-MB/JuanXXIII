@@ -199,6 +199,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/impresiones/firmantes', [ImpresionController::class, 'guardarFirmantes'])->name('impresiones.firmantes');
         Route::get('/impresiones/carta', [ImpresionController::class, 'carta'])->name('impresiones.carta');
         Route::get('/impresiones/correcciones', [ImpresionController::class, 'correcciones'])->name('impresiones.correcciones');
+        Route::get('/impresiones/membretes', [ImpresionController::class, 'membretes'])->name('impresiones.membretes');
+        Route::get('/impresiones/oraciones', [ImpresionController::class, 'oraciones'])->name('impresiones.oraciones');
         Route::get('/impresiones/directorio', [ImpresionController::class, 'directorio'])->name('impresiones.directorio');
         Route::get('/impresiones/ubicacion', [ImpresionController::class, 'ubicacion'])->name('impresiones.ubicacion');
         Route::get('/impresiones/llegada', [ImpresionController::class, 'llegada'])->name('impresiones.llegada');

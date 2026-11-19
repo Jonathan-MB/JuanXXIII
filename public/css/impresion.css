@@ -1804,3 +1804,183 @@ p.preguntas-charla {
 .tabla-puertas .nombre-puertas {
     font-weight: 700;
 }
+
+
+/* ----------Membrete oficio para las dinámicas-------------- */
+.membrete-dinamica {
+    display: grid;
+    grid-template-columns: 2.4cm 1fr 2.4cm;
+    align-items: center;
+    gap: 0.4cm;
+    padding-top: 0.6cm;
+}
+
+.membrete-dinamica-logo {
+    width: 2.3cm;
+    height: auto;
+}
+
+.membrete-dinamica-virgen {
+    width: 1.9cm;
+    height: auto;
+    justify-self: end;
+}
+
+.membrete-dinamica-texto {
+    text-align: center;
+    font-size: 11pt;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+
+/* ----------Oraciones: dos copias por hoja carta, para recortar-------------- */
+.hoja-oraciones {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.9cm;
+    height: 25.9cm;   /* carta menos los márgenes de 1 cm: cada copia mide media hoja */
+}
+
+.oracion-copia {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #111111;
+    font-size: 9.5pt;
+    line-height: 1.3;
+}
+
+/* Línea de corte entre las dos copias */
+.oracion-copia + .oracion-copia {
+    position: relative;
+}
+
+.oracion-copia + .oracion-copia::before {
+    content: '';
+    position: absolute;
+    top: -0.47cm;
+    left: -0.4cm;
+    right: -0.4cm;
+    border-top: 1px dashed #999999;
+}
+
+.oracion-cabecera {
+    display: grid;
+    grid-template-columns: 1.6cm 1fr 1.6cm;
+    align-items: center;
+    padding: 0.15cm 0.3cm;
+    border-bottom: 1px solid #111111;
+}
+
+.oracion-logo,
+.oracion-virgen {
+    width: 1.4cm;
+    height: auto;
+}
+
+.oracion-virgen {
+    justify-self: end;
+}
+
+.oracion-titulo {
+    text-align: center;
+    font-size: 11pt;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.oracion-datos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2px 12px;
+    padding: 2px 0.3cm;
+    border-bottom: 1px solid #111111;
+    font-size: 8.5pt;
+}
+
+.oracion-columnas {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    border-bottom: 1px solid #111111;
+}
+
+.oracion-columnas .oracion + .oracion {
+    border-left: 1px solid #111111;
+}
+
+.oracion {
+    padding: 0.12cm 0.3cm;
+    text-align: center;
+}
+
+.oracion-nombre {
+    font-weight: 700;
+}
+
+.oracion-credo {
+    flex: 1;
+}
+
+.oracion-credo p:last-child {
+    font-size: 9pt;
+}
+
+@page cartaOraciones {
+    size: letter;
+    margin: 1cm;
+}
+
+.hoja-oraciones {
+    page: cartaOraciones;
+}
+
+
+/* ----------Cantidad de copias (solo en pantalla)-------------- */
+.aviso-cantidad {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+}
+
+.formulario-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.formulario-cantidad input {
+    width: 80px;
+    min-height: 36px;
+    padding: 4px 8px;
+    border: 1px solid #c9b46a;
+    border-radius: 8px;
+    font: inherit;
+}
+
+@media screen {
+
+    .pagina.hoja-oraciones {
+        height: auto;
+        min-height: 27.94cm;
+        padding: 1cm;
+    }
+
+    .hoja-oraciones {
+        grid-template-rows: 12.5cm 12.5cm;
+    }
+}
+
+@media print {
+
+    .aviso-cantidad {
+        display: none;
+    }
+}
+
+.formulario-cantidad .barra-boton {
+    border-color: #1c2f5e;
+    background: #1c2f5e;
+}

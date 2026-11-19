@@ -12,7 +12,7 @@ class CronogramaSeeder extends Seeder
     //  Sube cada vez que se agregan tareas o cambian enlaces. Cada versión
     // se aplica una sola vez: lo que después se quite o se cambie desde
     // Cronograma no vuelve a aparecer al correr db:seed.
-    public const VERSION = 2;
+    public const VERSION = 3;
 
     //  [día, hora, descripción, responsable, enlace, versión en que llegó].
     // Día: 0 viernes, 1 sábado, 2 domingo; negativo = días antes. La hora
@@ -20,6 +20,7 @@ class CronogramaSeeder extends Seeder
     // (el de las mujeres va un poco antes). Enlace: TareaCronograma::ENLACES.
     // Versión 1: el PDF "Funciones del equipo de Secretaría". Versión 2: los
     // pasos que faltaban (pagos, impresiones, llegada, llamado y cierre).
+    // Versión 3: imprimir los membretes oficio y las oraciones.
     private const TAREAS = [
         // Días antes
         [-3, '18:00', 'Revisar los inscritos: que tengan cédula, celular, fecha de nacimiento, talla y padrino', 'Secretaría', 'inscritos', 2],
@@ -28,6 +29,8 @@ class CronogramaSeeder extends Seeder
         [-2, '18:00', 'Crear las mesas de hombres y de mujeres (número y nombre de cada mesa)', 'Secretaría', 'mesas', 2],
         [-2, '19:00', 'Imprimir la lista de llegada (para marcar a mano quién llega)', 'Secretaría', 'imprimirLlegada', 2],
         [-2, '19:00', 'Imprimir las hojas de mesa en blanco', 'Secretaría', 'imprimirMesasEnBlanco', 2],
+        [-2, '19:15', 'Imprimir los membretes oficio de las dinámicas (uno por invitado, más una hoja en blanco)', 'Secretaría', 'imprimirMembretes', 3],
+        [-2, '19:15', 'Imprimir las oraciones (una por invitado) y recortarlas', 'Secretaría', 'imprimirOraciones', 3],
         [-2, '19:30', 'Imprimir los letreros de la casa: silencio, baños, Nequi, Ayudas de Dios, bebidas…', 'Secretaría', 'letreros', 2],
         [-2, '19:30', 'Imprimir los letreros de número de mesa', 'Secretaría', 'imprimirLetrerosMesa', 2],
         [-2, '20:00', 'Imprimir las tarjetas De / Para para Floristería', 'Secretaría', 'imprimirFlores', 2],
