@@ -14,7 +14,7 @@
 
                 <p class="datos-informe">
                     <span><strong>Retiro N.º</strong> {{ $retiro->numeroPara($sexo) }}</span>
-                    <span><strong>Fecha:</strong> <span class="hueco"></span></span>
+                    <span><strong>Fecha:</strong> {{ $retiro->dias_texto }} de {{ $retiro->fecha_inicio->year }}</span>
                 </p>
                 <h2 class="nombre-charla">Conferencia: {{ $charla['nombre'] }}</h2>
 
