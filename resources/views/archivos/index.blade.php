@@ -24,6 +24,10 @@
         <p class="aviso-charlas">Las charlas son propiedad intelectual del Movimiento Juan XXIII: no se publican ni se comparten fuera del equipo del retiro.</p>
     @endif
 
+    @if ($categoria === 'letreros')
+        <p class="aviso-charlas">Los letreros de la casa (silencio, baños, Nequi, Ayudas de Dios, mesas…) se imprimen con el logo y el número del retiro desde <a href="{{ route('letreros.index') }}">Letreros</a>. Aquí van solo letreros especiales que no estén allá.</p>
+    @endif
+
     {{-- --------------------SUBIR------------------- --}}
     <details class="subir-archivos" {{ $errors->has('archivos') || $errors->has('archivos.*') ? 'open' : '' }}>
         <summary class="boton-amarillo">+ Subir archivos</summary>
