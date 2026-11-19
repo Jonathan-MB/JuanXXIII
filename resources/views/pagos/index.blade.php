@@ -57,6 +57,7 @@
                             <th>Padrino</th>
                             <th>Pagado</th>
                             <th>Falta</th>
+                            <th>Medio</th>
                             <th>Pago</th>
                             <th>Estado</th>
                         </tr>
@@ -80,6 +81,7 @@
                                 </td>
                                 <td class="dato-valor">{{ '$' . number_format($inscrito->total_pagado, 0, ',', '.') }}</td>
                                 <td class="dato-valor">{{ '$' . number_format($inscrito->saldo, 0, ',', '.') }}</td>
+                                <td class="dato-secundario">{{ $inscrito->medio_pago }}</td>
                                 <td>@include('partials.chipPago', ['inscrito' => $inscrito])</td>
                                 <td><span class="chip {{ $inscrito->estaFuera() ? 'chip-rojo' : 'chip-gris' }}">{{ $inscrito->nombre_estado }}</span></td>
                             </tr>

@@ -35,7 +35,9 @@
                 <h2 class="subtitulo-vista">Invitados</h2>
                 <div class="botones-imprimir-llegada">
                     <a class="boton-secundario" href="{{ route('impresiones.llegada', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir lista de llegada</a>
-                    <a class="boton-secundario" href="{{ route('impresiones.mesasEnBlanco', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir hojas de mesa en blanco</a>
+                    <a class="boton-secundario" href="{{ route('impresiones.nombresMesa', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Hoja 1 · Nombres</a>
+                    <a class="boton-secundario" href="{{ route('impresiones.mesasEnBlanco', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Hoja 2 · Datos</a>
+                    <a class="boton-secundario" href="{{ route('impresiones.correcciones', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Hoja 3 · Correcciones</a>
                 </div>
             </div>
 
@@ -123,6 +125,15 @@
                                             <label>Ciudad<input type="text" name="ciudad" maxlength="60" value="{{ $persona->ciudad }}" required></label>
                                             <label>Barrio<input type="text" name="barrio" maxlength="60" value="{{ $persona->barrio }}" required></label>
                                             <label>Padrino de retiro <small>(vacío = sin padrino)</small><input type="text" name="padrino" maxlength="100" value="{{ $inscrito->tiene_padrino ? $inscrito->padrino_nombre : '' }}"></label>
+                                            <label>Teléfono del padrino<input type="tel" name="padrinoTelefono" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $inscrito->tiene_padrino ? $inscrito->padrino_telefono : '' }}"></label>
+                                            @php
+                                                $contactosPersona = $inscrito->contactosEmergencia->sortBy('id')->values();
+                                            @endphp
+                                            @foreach ([0, 1] as $c)
+                                                <label>Contacto {{ $c + 1 }} · nombre<input type="text" name="contactos[{{ $c }}][nombre]" maxlength="100" value="{{ $contactosPersona[$c]->nombre ?? '' }}" required></label>
+                                                <label>Parentesco<input type="text" name="contactos[{{ $c }}][parentesco]" maxlength="45" value="{{ $contactosPersona[$c]->parentesco ?? '' }}" required></label>
+                                                <label>Celular<input type="tel" name="contactos[{{ $c }}][celular]" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $contactosPersona[$c]->celular ?? '' }}" required></label>
+                                            @endforeach
                                             <div class="acciones-corregir">
                                                 <button type="submit" class="boton-azul">Guardar datos</button>
                                                 <button type="button" class="boton-texto" data-cerrar="editar-{{ $inscrito->id }}">Cancelar</button>
@@ -140,22 +151,28 @@
         {{-- --------------------CÓMO VAN LAS MESAS------------------- --}}
         <section class="seccion-mapa">
             <h2 class="subtitulo-vista">Cómo van las mesas</h2>
-            <p class="texto-ayuda texto-ayuda-puestos">Solo para mirar: en azul las sillas ocupadas y punteadas las libres. Para cambiar a alguien de puesto, búscalo arriba.</p>
+            <p class="texto-ayuda texto-ayuda-puestos">Solo para mirar: en azul las sillas ocupadas, punteadas las libres y en gris las de quien se fue (quedan vacías, no se le dan a nadie más). Para cambiar a alguien de puesto, búscalo arriba.</p>
 
             <div class="mapa-mesas" aria-label="Mesas y sillas">
                 @forelse ($mesas as $mesa)
                     @php
                         $porSilla = $mesa->inscripciones->keyBy(fn ($inscrito) => (int) $inscrito->silla);
+                        $sentados = $porSilla->filter(fn ($inscrito) => $inscrito->estado !== \App\Models\Inscripcion::ABANDONO);
                     @endphp
                     <article class="tarjeta-mesa">
                         <div class="cabecera-mesa">
                             <p class="numero-mesa">Mesa {{ $mesa->numero }}{{ $mesa->nombre ? ' · ' . $mesa->nombre : '' }}</p>
-                            <span class="ocupacion-mesa">{{ $porSilla->count() }} de {{ $mesa->cantidad_sillas }}</span>
+                            <span class="ocupacion-mesa">{{ $sentados->count() }} de {{ $mesa->cantidad_sillas }}</span>
                         </div>
                         <p class="catequistas-mesa">CT {{ $mesa->catequista_titular ?: '—' }} · CA {{ $mesa->catequista_auxiliar ?: '—' }}</p>
                         <ol class="sillas-mesa">
                             @for ($silla = 1; $silla <= $mesa->cantidad_sillas; $silla++)
-                                @if ($porSilla->has($silla))
+                                @if ($porSilla->has($silla) && ! $sentados->has($silla))
+                                    <li class="silla silla-se-fue" title="{{ $porSilla[$silla]->persona->nombre_completo }} se fue: la silla queda vacía">
+                                        <span class="numero-silla">{{ $silla }}</span>
+                                        <span class="nombre-silla">se fue</span>
+                                    </li>
+                                @elseif ($porSilla->has($silla))
                                     <li class="silla silla-ocupada" title="{{ $porSilla[$silla]->persona->nombre_completo }}">
                                         <span class="numero-silla">{{ $silla }}</span>
                                         <span class="nombre-silla">{{ \Illuminate\Support\Str::words($porSilla[$silla]->persona->nombres, 1, '') }} {{ mb_substr($porSilla[$silla]->persona->apellidos, 0, 1) }}.</span>

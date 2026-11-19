@@ -17,7 +17,7 @@ class MesaController extends Controller
         $sexo   = $request->sexo === 'mujeres' ? 'Femenino' : 'Masculino';
 
         $mesas = $retiro
-            ? $retiro->mesas()->where('sexo', $sexo)->withCount('inscripciones')->orderBy('numero')->get()
+            ? $retiro->mesas()->where('sexo', $sexo)->withCount(['inscripciones', 'inscripciones as sentados_count' => fn ($consulta) => $consulta->where('estado', '!=', \App\Models\Inscripcion::ABANDONO)])->orderBy('numero')->get()
             : collect();
 
         return view('mesas.index', compact('retiro', 'sexo', 'mesas'));

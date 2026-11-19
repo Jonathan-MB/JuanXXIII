@@ -11,10 +11,21 @@
             'descripcion' => 'La relación de invitados del rector(a): en orden alfabético y con el nombre grande, para llamar a cada uno a sala y marcar quién entró.',
         ],
         [
-            'ruta'        => 'impresiones.mesasEnBlanco',
-            'nombre'      => 'Hojas de mesa en blanco',
-            'descripcion' => 'Dos mesas por hoja con los números de silla, para que cada persona escriba su nombre, cédula y celular.',
+            'ruta'        => 'impresiones.nombresMesa',
+            'nombre'      => 'Hoja 1 · Nombres por mesa',
+            'descripcion' => 'En blanco, dos mesas por hoja: cada persona escribe su nombre en la fila de su silla. Con ella se revisa que los nombres estén bien en la aplicación.',
             'soloGrupo'   => true,
+        ],
+        [
+            'ruta'        => 'impresiones.mesasEnBlanco',
+            'nombre'      => 'Hoja 2 · Datos por mesa',
+            'descripcion' => 'En blanco, una mesa por hoja horizontal: silla, nombre, celular, ciudad, barrio y dos contactos de emergencia. Se corrige en Llegada con «Editar datos».',
+            'soloGrupo'   => true,
+        ],
+        [
+            'ruta'        => 'impresiones.correcciones',
+            'nombre'      => 'Hoja 3 · Correcciones',
+            'descripcion' => 'Ya impresa con los datos corregidos, por mesa: silla, nombre, documento, fecha de nacimiento, ciudad, barrio, celular y contactos de emergencia. La última revisión.',
         ],
         [
             'ruta'        => 'impresiones.membretes',
@@ -29,12 +40,7 @@
         [
             'ruta'        => 'impresiones.carta',
             'nombre'      => 'Cartas al presbítero',
-            'descripcion' => 'Una por página para cada persona que llegó al retiro. Separadas por hombres y mujeres, en orden de mesa y silla.',
-        ],
-        [
-            'ruta'        => 'impresiones.correcciones',
-            'nombre'      => 'Hoja de correcciones',
-            'descripcion' => 'Por mesa: silla, nombre, ciudad, barrio, teléfono, fecha de nacimiento y contacto de emergencia, para corregir datos por última vez.',
+            'descripcion' => 'Al final del retiro, una por página para cada persona que llegó y terminó (no a quien se fue). Por hombres y mujeres, en orden de mesa y silla.',
         ],
         [
             'ruta'        => 'impresiones.directorio',

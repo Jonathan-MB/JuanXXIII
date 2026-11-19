@@ -293,7 +293,16 @@ class ImpresionController extends Controller
 
     //  Hojas para que cada persona escriba sus datos en su silla. Usa las
     // mesas que ya existen; si no hay ninguna, 10 mesas de 8 sillas.
-    public function mesasEnBlanco(Request $request)
+    //  Hoja 1: cada persona escribe su nombre en la fila de su silla
+    public function nombresMesa(Request $request)
+    {
+        return $this->mesasEnBlanco($request, 'impresiones.nombresMesa', 'Hoja 1 · Nombres por mesa');
+    }
+
+
+
+    //  Hoja 2: datos de contacto en blanco, por mesa
+    public function mesasEnBlanco(Request $request, string $vista = 'impresiones.mesasEnBlanco', string $titulo = 'Hoja 2 · Datos por mesa')
     {
         $retiro = $this->retiroOFallar();
         $sexo   = $this->sexoPedido($request) ?? 'Masculino';
@@ -304,11 +313,11 @@ class ImpresionController extends Controller
             $mesas = collect(range(1, 10))->map(fn ($numero) => new Mesa(['numero' => $numero, 'cantidad_sillas' => 8, 'sexo' => $sexo]));
         }
 
-        return view('impresiones.mesasEnBlanco', [
+        return view($vista, [
             'retiro' => $retiro,
             'sexo'   => $sexo,
             'mesas'  => $mesas,
-            'titulo' => 'Hojas de mesa en blanco',
+            'titulo' => $titulo,
         ]);
     }
 

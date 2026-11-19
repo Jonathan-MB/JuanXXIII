@@ -86,6 +86,22 @@ class Inscripcion extends Model
 
 
 
+    //  Por qué medio pagó: los medios de los pagos registrados ("Nequi 315…,
+    // Efectivo") o, si aún no hay pagos, el que dijo al inscribirse
+    public function getMedioPagoAttribute(): string
+    {
+        $medios = $this->pagos->pluck('medio')->filter()->unique()->values();
+
+        if ($medios->isNotEmpty()) {
+            return $medios->implode(', ');
+        }
+
+        // Sin el "a nombre de…", que en la lista ocupa mucho
+        return $this->forma_pago ? 'Dijo: ' . \Illuminate\Support\Str::before($this->forma_pago, ' a nombre de') : '';
+    }
+
+
+
     public function getSaldoAttribute(): float
     {
         return max(0, (float) $this->retiro->ofrenda - $this->total_pagado);

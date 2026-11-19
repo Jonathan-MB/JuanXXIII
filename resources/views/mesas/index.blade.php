@@ -14,7 +14,12 @@
     @else
         <div class="cabecera-vista">
             <h1 class="vista-titulo">Mesas · {{ $retiro->nombre }}</h1>
-            <a class="boton-secundario" href="{{ route('llegada.index', ['sexo' => $grupo]) }}">Ir a la llegada</a>
+            <div class="acciones-cabecera">
+                <a class="boton-secundario" href="{{ route('impresiones.catequistas', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir catequistas por mesa</a>
+                <a class="boton-secundario" href="{{ route('impresiones.directorio', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir directorio</a>
+                <a class="boton-secundario" href="{{ route('impresiones.ubicacion', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir hojas de ubicación</a>
+                <a class="boton-secundario" href="{{ route('llegada.index', ['sexo' => $grupo]) }}">Ir a la llegada</a>
+            </div>
         </div>
         @include('partials.mensaje')
 
@@ -65,7 +70,7 @@
                         @method('PUT')
                         <div class="cabecera-config-mesa">
                             <p class="numero-mesa">Mesa {{ $mesa->numero }}</p>
-                            <span class="chip chip-gris">{{ $mesa->inscripciones_count }} sentados</span>
+                            <span class="chip chip-gris">{{ $mesa->sentados_count }} sentados</span>
                         </div>
 
                         <div class="elemento-formulario">

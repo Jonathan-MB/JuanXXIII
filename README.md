@@ -13,3 +13,5 @@ Hecha en Laravel 12 (PHP 8.2+ y MariaDB/MySQL).
 5. `php artisan retiro:crear-admin` para la primera cuenta de administración.
 
 Para publicarla en Hostinger, ver [DESPLIEGUE.md](DESPLIEGUE.md).
+
+Para probar que todo funciona (pruebas automáticas y recorrido del retiro por cada equipo), ver [PRUEBAS.md](PRUEBAS.md).

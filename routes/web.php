@@ -85,6 +85,9 @@ Route::middleware('auth')->group(function () {
         ->name('cronograma.marcar');
 
     // La lista de tareas solo la editan Administración y Secretaría
+    Route::get('/cronograma/imprimir', [CronogramaController::class, 'imprimir'])
+        ->middleware('rol:' . Rol::ADMINISTRACION . ',' . Rol::SECRETARIA)
+        ->name('cronograma.imprimir');
     Route::resource('cronograma', CronogramaController::class)
         ->parameters(['cronograma' => 'tarea'])
         ->only(['index', 'store', 'update', 'destroy'])
@@ -206,6 +209,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/impresiones/ubicacion', [ImpresionController::class, 'ubicacion'])->name('impresiones.ubicacion');
         Route::get('/impresiones/llegada', [ImpresionController::class, 'llegada'])->name('impresiones.llegada');
         Route::get('/impresiones/llamado', [ImpresionController::class, 'llamado'])->name('impresiones.llamado');
+        Route::get('/impresiones/nombres-mesa', [ImpresionController::class, 'nombresMesa'])->name('impresiones.nombresMesa');
         Route::get('/impresiones/mesas-en-blanco', [ImpresionController::class, 'mesasEnBlanco'])->name('impresiones.mesasEnBlanco');
         Route::get('/impresiones/letreros-mesa', [ImpresionController::class, 'letrerosMesa'])->name('impresiones.letrerosMesa');
         Route::get('/impresiones/camisetas', [ImpresionController::class, 'camisetas'])->name('impresiones.camisetas');

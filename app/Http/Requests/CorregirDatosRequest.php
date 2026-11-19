@@ -28,6 +28,13 @@ class CorregirDatosRequest extends FormRequest
             'ciudad'           => ['required', 'string', 'max:60'],
             'barrio'           => ['required', 'string', 'max:60'],
             'padrino'          => ['nullable', 'string', 'max:100'],
+            'padrino_telefono' => ['nullable', 'string', 'min:7', 'max:20', 'regex:/^[0-9]+$/'],
+
+            //  Los dos contactos de emergencia de la hoja de la mesa
+            'contactos'              => ['required', 'array', 'size:2'],
+            'contactos.*.nombre'     => ['required', 'string', 'max:100'],
+            'contactos.*.parentesco' => ['required', 'string', 'max:45'],
+            'contactos.*.celular'    => ['required', 'string', 'min:7', 'max:20', 'regex:/^[0-9]+$/'],
         ];
     }
 
@@ -44,6 +51,12 @@ class CorregirDatosRequest extends FormRequest
             'ciudad'           => trim((string) $this->ciudad),
             'barrio'           => trim((string) $this->barrio),
             'padrino'          => trim((string) $this->padrino) ?: null,
+            'padrino_telefono' => Persona::normalizarTelefono($this->padrinoTelefono),
+            'contactos'        => collect($this->contactos ?? [])->map(fn ($contacto) => [
+                'nombre'     => trim((string) ($contacto['nombre'] ?? '')),
+                'parentesco' => trim((string) ($contacto['parentesco'] ?? '')),
+                'celular'    => Persona::normalizarTelefono($contacto['celular'] ?? null),
+            ])->values()->all(),
         ]);
     }
 
@@ -64,6 +77,14 @@ class CorregirDatosRequest extends FormRequest
             'celular.regex'             => 'El celular solo puede tener números.',
             'ciudad.required'           => 'Escribe la ciudad.',
             'barrio.required'           => 'Escribe el barrio.',
+            'padrino_telefono.min'      => 'El teléfono del padrino parece incompleto.',
+            'padrino_telefono.regex'    => 'El teléfono del padrino solo puede tener números.',
+            'contactos.size'            => 'Faltan los dos contactos de emergencia.',
+            'contactos.*.nombre.required'     => 'Escribe el nombre de cada contacto de emergencia.',
+            'contactos.*.parentesco.required' => 'Escribe el parentesco de cada contacto de emergencia.',
+            'contactos.*.celular.required'    => 'Escribe el celular de cada contacto de emergencia.',
+            'contactos.*.celular.min'         => 'El celular de un contacto de emergencia parece incompleto.',
+            'contactos.*.celular.regex'       => 'El celular de un contacto de emergencia solo puede tener números.',
         ];
     }
 }

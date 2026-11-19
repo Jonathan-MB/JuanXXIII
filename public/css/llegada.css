@@ -422,6 +422,17 @@
     color: #5b6479;
 }
 
+.silla-se-fue {
+    background: #f1f1f1;
+    color: #8a8a8a;
+    text-decoration: line-through;
+}
+
+.silla-se-fue .numero-silla {
+    background: #b5b5b5;
+    color: #ffffff;
+}
+
 
 /* ----------Configurar mesas-------------- */
 .texto-ayuda-mesas {

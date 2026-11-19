@@ -25,7 +25,7 @@ class PagoController extends Controller
         $busqueda = trim((string) $request->busqueda);
         $pago     = in_array($request->pago, ['sin_pago', 'abono', 'completo'], true) ? $request->pago : null;
 
-        $consulta = Inscripcion::with(['persona', 'retiro'])
+        $consulta = Inscripcion::with(['persona', 'retiro', 'pagos'])
             ->select('inscripcions.*')
             ->withSum('pagos', 'valor')
             ->where('retiro_id', $retiro->id)
@@ -71,7 +71,7 @@ class PagoController extends Controller
 
         abort_unless($retiro, 404);
 
-        $grupos = Inscripcion::with(['persona', 'retiro'])
+        $grupos = Inscripcion::with(['persona', 'retiro', 'pagos'])
             ->select('inscripcions.*')
             ->withSum('pagos', 'valor')
             ->where('retiro_id', $retiro->id)

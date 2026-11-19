@@ -12,7 +12,7 @@ class CronogramaSeeder extends Seeder
     //  Sube cada vez que se agregan tareas o cambian enlaces. Cada versión
     // se aplica una sola vez: lo que después se quite o se cambie desde
     // Cronograma no vuelve a aparecer al correr db:seed.
-    public const VERSION = 4;
+    public const VERSION = 5;
 
     //  [día, hora, descripción, responsable, enlace, versión en que llegó].
     // Día: 0 viernes, 1 sábado, 2 domingo; negativo = días antes. La hora
@@ -22,6 +22,7 @@ class CronogramaSeeder extends Seeder
     // pasos que faltaban (pagos, impresiones, llegada, llamado y cierre).
     // Versión 3: imprimir los membretes oficio y las oraciones.
     // Versión 4: imprimir la entrega de previstos.
+    // Versión 5: hoja 1 (nombres por mesa) antes de la hoja 2.
     private const TAREAS = [
         // Días antes
         [-3, '18:00', 'Revisar los inscritos: que tengan cédula, celular, fecha de nacimiento, talla y padrino', 'Secretaría', 'inscritos', 2],
@@ -29,6 +30,7 @@ class CronogramaSeeder extends Seeder
         [-3, '19:00', 'Decorar los sobres de manila de Ayudas de Dios (uno por invitado)', 'Secretaría', null, 2],
         [-2, '18:00', 'Crear las mesas de hombres y de mujeres (número y nombre de cada mesa)', 'Secretaría', 'mesas', 2],
         [-2, '19:00', 'Imprimir la lista de llegada (para marcar a mano quién llega)', 'Secretaría', 'imprimirLlegada', 2],
+        [-2, '19:00', 'Imprimir la hoja 1 de cada mesa (nombres), para revisar cómo se escriben los nombres', 'Secretaría', 'imprimirNombresMesa', 5],
         [-2, '19:00', 'Imprimir las hojas de mesa en blanco', 'Secretaría', 'imprimirMesasEnBlanco', 2],
         [-2, '19:15', 'Imprimir los membretes oficio de las dinámicas (uno por invitado, más una hoja en blanco)', 'Secretaría', 'imprimirMembretes', 3],
         [-2, '19:15', 'Imprimir las oraciones (una por invitado) y recortarlas', 'Secretaría', 'imprimirOraciones', 3],
@@ -113,6 +115,9 @@ class CronogramaSeeder extends Seeder
             'Decorar los sobres de manila de Ayudas de Dios, si no' => ['imprimirSobres', null],
             'Tras el primer pase de sala'                           => [null, 'letreros'],
             'Entregar a los rectores, antes de Apóstoles'           => [null, 'imprimirDirectorio'],
+        ],
+        5 => [
+            'Pasar las correcciones a la app' => ['inscritos', 'llegada'],
         ],
     ];
 

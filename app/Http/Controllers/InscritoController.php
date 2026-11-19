@@ -148,8 +148,11 @@ class InscritoController extends Controller
 
         $cambios = ['estado' => $request->estado];
 
-        //  Quien sale de la lista deja libre su silla para otra persona
-        if (in_array($request->estado, Inscripcion::ESTADOS_FUERA, true)) {
+        //  Quien abandona el retiro CONSERVA su mesa y silla: las sillas no se
+        // cambian nunca, así que la suya queda vacía (en las listas no sale y
+        // nadie más la puede ocupar). Quien no asistió nunca se sentó: se le
+        // quita el puesto si alguien se lo había escrito.
+        if ($request->estado === Inscripcion::NO_ASISTIO) {
             $cambios['mesa_id'] = null;
             $cambios['silla']   = null;
         }

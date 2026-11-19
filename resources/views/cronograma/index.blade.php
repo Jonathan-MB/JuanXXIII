@@ -12,7 +12,10 @@
 @include('partials.header')
 
     <a class="enlace-volver" href="{{ route('panel') }}#cronograma">← Volver al inicio</a>
-    <h1 class="vista-titulo">Lista de tareas del retiro</h1>
+    <div class="cabecera-vista">
+        <h1 class="vista-titulo">Lista de tareas del retiro</h1>
+        <a class="boton-azul" href="{{ route('cronograma.imprimir') }}" target="_blank" rel="noopener">Imprimir la lista para marcar a mano</a>
+    </div>
     <p class="texto-ayuda texto-ayuda-arriba">Es la misma para todos los retiros. En el inicio cada tarea se marca como hecha y se pone en rojo cuando falta 1 hora o menos sin marcarse. Con el enlace, la tarea trae un botón que lleva a la sección o a la impresión que necesita.</p>
     @include('partials.mensaje')
 

@@ -19,6 +19,7 @@
                         <th>Padrino</th>
                         <th class="columna-valor">Pagado</th>
                         <th class="columna-valor">Falta</th>
+                        <th class="columna-medio">Medio</th>
                         <th class="columna-check">Terminó de pagar</th>
                         <th class="columna-check">No asistió</th>
                     </tr>
@@ -29,9 +30,10 @@
                             <td class="columna-silla">{{ $loop->iteration }}</td>
                             <td>{{ $inscrito->persona->apellidos }}, {{ $inscrito->persona->nombres }}</td>
                             <td class="dato-sin-salto">{{ $inscrito->persona->celular }}</td>
-                            <td>{{ $inscrito->tiene_padrino ? $inscrito->padrino_nombre : '' }}</td>
+                            <td>{{ $inscrito->tiene_padrino ? $inscrito->padrino_nombre : '' }}@if ($inscrito->tiene_padrino && $inscrito->padrino_telefono)<br><span class="dato-sin-salto">{{ $inscrito->padrino_telefono }}</span>@endif</td>
                             <td class="columna-valor">{{ '$' . number_format($inscrito->total_pagado, 0, ',', '.') }}</td>
                             <td class="columna-valor">{{ $inscrito->saldo > 0 ? '$' . number_format($inscrito->saldo, 0, ',', '.') : '—' }}</td>
+                            <td class="columna-medio">{{ $inscrito->medio_pago }}</td>
                             <td class="columna-check"><span class="casilla-papel"></span></td>
                             <td class="columna-check"><span class="casilla-papel"></span></td>
                         </tr>

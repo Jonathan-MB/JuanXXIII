@@ -2006,3 +2006,61 @@ p.preguntas-charla {
     height: 0.35cm;
     vertical-align: middle;
 }
+
+/* Medio de pago: corto y en letra pequeña para que la tabla quepa */
+.tabla-pagos-papel .columna-medio {
+    width: 16%;
+    font-size: 7.5pt;
+}
+
+/* Llamadas familiares: la fila del padrino se distingue (por si ningún contacto contesta) */
+.tabla-llamadas .fila-padrino td {
+    font-style: italic;
+    background: #f3f3f3;
+}
+
+/* Teléfonos y valores sin partirse en dos renglones */
+.dato-sin-salto {
+    white-space: nowrap;
+}
+
+/* ----------Hojas 1 y 2 de cada mesa (para escribir a mano)-------------- */
+.tabla-nombres-mesa td {
+    height: 0.95cm;
+}
+
+.tabla-datos-mesa td {
+    height: 1.25cm;
+}
+
+.tabla-datos-mesa th small {
+    font-weight: 400;
+    text-transform: none;
+}
+
+.columna-ciudad {
+    width: 2.8cm;
+}
+
+.columna-contacto {
+    width: 5.2cm;
+}
+
+/* Hoja de correcciones: los dos contactos, uno por renglón */
+.celda-contactos span {
+    display: block;
+    font-size: 8pt;
+}
+
+/* ----------Lista de tareas para marcar a mano-------------- */
+.tabla-tareas {
+    font-size: 8.5pt;
+}
+
+.tabla-tareas .columna-hora {
+    width: 1.8cm;
+}
+
+.tabla-tareas .columna-responsable {
+    width: 2.8cm;
+}

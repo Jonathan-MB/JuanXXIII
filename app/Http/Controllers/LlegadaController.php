@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CorregirDatosRequest;
+use App\Models\ContactoEmergencia;
 use App\Models\Inscripcion;
 use App\Models\Mesa;
 use App\Models\Retiro;
@@ -31,7 +32,7 @@ class LlegadaController extends Controller
 
         //  Los de este grupo que siguen en la lista (no los que no asistieron).
         // La búsqueda se hace en la misma página, mientras se escribe.
-        $grupo = Inscripcion::with(['persona', 'retiro', 'mesa'])
+        $grupo = Inscripcion::with(['persona', 'retiro', 'mesa', 'contactosEmergencia'])
             ->select('inscripcions.*')
             ->withSum('pagos', 'valor')
             ->where('retiro_id', $retiro->id)
@@ -140,7 +141,9 @@ class LlegadaController extends Controller
                     ->first();
 
                 if ($ocupante) {
-                    return 'La mesa ' . $numeroMesa . ', silla ' . $silla . ' ya es de ' . $ocupante->persona->nombre_completo . '.';
+                    return $ocupante->estado === Inscripcion::ABANDONO
+                        ? 'La mesa ' . $numeroMesa . ', silla ' . $silla . ' era de ' . $ocupante->persona->nombre_completo . ', que se fue: esa silla queda vacía.'
+                        : 'La mesa ' . $numeroMesa . ', silla ' . $silla . ' ya es de ' . $ocupante->persona->nombre_completo . '.';
                 }
 
                 // La mesa crece hasta la silla más alta que se use
@@ -174,20 +177,33 @@ class LlegadaController extends Controller
         $padrino = $request->validated('padrino');
 
         // Cargar datos sin guardar
-        $persona->fill(collect($request->validated())->except('padrino')->all());
+        $persona->fill(collect($request->validated())->except(['padrino', 'padrino_telefono', 'contactos'])->all());
         $inscripcion->fill([
-            'tiene_padrino'  => $padrino !== null,
-            'padrino_nombre' => $padrino,
+            'tiene_padrino'    => $padrino !== null,
+            'padrino_nombre'   => $padrino,
+            'padrino_telefono' => $padrino !== null ? $request->validated('padrino_telefono') : null,
         ]);
 
+        //  Los contactos se cambian en su sitio: así no se pierden el fijo
+        // ni el correo que la persona dio al inscribirse
+        $existentes = $inscripcion->contactosEmergencia()->orderBy('id')->get()->values();
+        $contactos  = collect($request->validated('contactos'))->map(function ($datos, $i) use ($existentes) {
+            return ($existentes[$i] ?? new ContactoEmergencia())->fill($datos);
+        });
+        $cambianContactos = $contactos->contains(fn ($contacto) => ! $contacto->exists || $contacto->isDirty());
+
         // No hubo cambios
-        if (! $persona->isDirty() && ! $inscripcion->isDirty()) {
+        if (! $persona->isDirty() && ! $inscripcion->isDirty() && ! $cambianContactos) {
             return back()->with('mensajeAlerta', 'No se detectaron cambios');
         }
 
-        DB::transaction(function () use ($persona, $inscripcion) {
+        DB::transaction(function () use ($persona, $inscripcion, $contactos) {
             $persona->save();
             $inscripcion->save();
+            foreach ($contactos as $contacto) {
+                $contacto->inscripcion_id = $inscripcion->id;
+                $contacto->save();
+            }
         });
 
         return back()->with('mensajeActualizado', 'Datos guardados: ' . $persona->nombre_completo . ' · CC ' . $persona->cedula);

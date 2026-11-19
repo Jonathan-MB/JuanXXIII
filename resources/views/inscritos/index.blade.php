@@ -12,6 +12,8 @@
         <div class="cabecera-vista">
             <h1 class="vista-titulo">Inscritos · {{ $retiro->nombre }}</h1>
             <div class="acciones-cabecera">
+                <a class="boton-secundario" href="{{ route('impresiones.llegada', ['sexo' => 'hombres']) }}" target="_blank" rel="noopener">Imprimir lista de hombres</a>
+                <a class="boton-secundario" href="{{ route('impresiones.llegada', ['sexo' => 'mujeres']) }}" target="_blank" rel="noopener">Imprimir lista de mujeres</a>
                 <a class="boton-secundario" href="{{ route('exportar.inscritos') }}">Descargar para Excel</a>
                 <a class="boton-secundario" href="{{ route('inscripcion') }}" target="_blank" rel="noopener">Abrir el formulario de inscripción</a>
             </div>

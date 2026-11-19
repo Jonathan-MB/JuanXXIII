@@ -20,6 +20,35 @@ class CronogramaController extends Controller
 
 
 
+    //  La lista para imprimir y marcar a mano: por día, con la fecha real
+    // del retiro actual. Las que ya se marcaron en la app salen hechas.
+    public function imprimir()
+    {
+        $retiro = Retiro::actual();
+        $hechas = $retiro
+            ? TareaCumplida::where('retiro_id', $retiro->id)->pluck('tarea_cronograma_id')->flip()
+            : collect();
+
+        $dias = TareaCronograma::orderBy('dia_relativo')->orderBy('hora')->get()
+            ->groupBy('dia_relativo')
+            ->map(fn ($tareas, $dia) => [
+                'nombre' => TareaCronograma::nombreDia((int) $dia)
+                    . ($retiro ? ' · ' . $retiro->fecha_inicio->copy()->addDays((int) $dia)->locale('es')->translatedFormat('l j \d\e F') : ''),
+                'tareas' => $tareas,
+            ]);
+
+        return view('cronograma.imprimir', [
+            'retiro'      => $retiro,
+            'dias'        => $dias,
+            'hechas'      => $hechas,
+            'titulo'      => 'Lista de tareas',
+            'volver'      => route('panel') . '#cronograma',
+            'volverTexto' => 'Volver al inicio',
+        ]);
+    }
+
+
+
     public function store(TareaCronogramaRequest $request)
     {
         TareaCronograma::create($request->validated());

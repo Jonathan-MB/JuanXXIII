@@ -25,22 +25,35 @@
                     <tbody>
                         @foreach ($fila['inscritos'] as $inscrito)
                             @php
-                                $contactos    = $inscrito->contactosEmergencia;
-                                $filasPersona = max(1, $contactos->count());
+                                //  Los dos contactos de emergencia y, al final, el padrino
+                                // de retiro por si ninguno contesta
+                                $aLlamar = $inscrito->contactosEmergencia->map(fn ($contacto) => [
+                                    'nombre'     => $contacto->nombre,
+                                    'parentesco' => $contacto->parentesco,
+                                    'celular'    => $contacto->celular,
+                                    'fijo'       => $contacto->telefono_fijo,
+                                    'padrino'    => false,
+                                ])->values();
+
+                                if ($inscrito->tiene_padrino && $inscrito->padrino_nombre) {
+                                    $aLlamar->push(['nombre' => $inscrito->padrino_nombre, 'parentesco' => 'Padrino de retiro', 'celular' => $inscrito->padrino_telefono, 'fijo' => null, 'padrino' => true]);
+                                }
+
+                                $filasPersona = max(1, $aLlamar->count());
                             @endphp
                             @for ($i = 0; $i < $filasPersona; $i++)
                                 @php
-                                    $contacto = $contactos[$i] ?? null;
+                                    $contacto = $aLlamar[$i] ?? null;
                                 @endphp
-                                <tr class="{{ $i === 0 ? '' : 'fila-segundo-contacto' }}">
+                                <tr class="{{ $i === 0 ? '' : 'fila-segundo-contacto' }} {{ ($contacto['padrino'] ?? false) ? 'fila-padrino' : '' }}">
                                     @if ($i === 0)
                                         <td class="columna-silla" rowspan="{{ $filasPersona }}">{{ $inscrito->silla ?? '–' }}</td>
                                         <td rowspan="{{ $filasPersona }}">{{ $inscrito->persona->nombre_completo }}</td>
                                     @endif
-                                    <td>{{ $contacto?->nombre }}</td>
-                                    <td>{{ $contacto?->parentesco }}</td>
-                                    <td>{{ $contacto?->celular }}</td>
-                                    <td>{{ $contacto?->telefono_fijo }}</td>
+                                    <td>{{ $contacto['nombre'] ?? '' }}</td>
+                                    <td>{{ $contacto['parentesco'] ?? '' }}</td>
+                                    <td class="dato-sin-salto">{{ $contacto['celular'] ?? '' }}</td>
+                                    <td class="dato-sin-salto">{{ $contacto['fijo'] ?? '' }}</td>
                                     <td class="columna-check"><span class="casilla-papel"></span></td>
                                 </tr>
                             @endfor
