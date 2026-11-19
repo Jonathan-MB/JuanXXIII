@@ -67,6 +67,16 @@ p {
         font-family: 'Segoe UI', Arial, sans-serif;
     }
 
+    .aviso-falta {
+        background: #fbe5e2;
+        color: #922b25;
+    }
+
+    .aviso-falta a {
+        color: inherit;
+        font-weight: 700;
+    }
+
     .barra-botones {
         display: flex;
         gap: 8px;

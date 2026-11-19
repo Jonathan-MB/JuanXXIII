@@ -1,7 +1,17 @@
 @php
+    //  La fecha de la carta es siempre el último día del retiro (el domingo
+    // en que termina), aunque se imprima días antes
     $fechaCarta = $retiro->fecha_fin->locale('es')->translatedFormat('j \d\e F \d\e Y');
 @endphp
 @include('partials.headImpresion')
+
+    {{-- Solo en pantalla: sin próximo retiro la carta no puede anunciarlo, y al imprimir se vuelve a preguntar --}}
+    @unless ($proximo)
+        <div class="aviso-carpeta aviso-falta" data-confirmar-impresion="Falta crear el próximo retiro: en la carta, la línea del próximo retiro saldrá con espacios en blanco para llenar a mano. ¿Imprimir de todas formas?">
+            <p><strong>Falta crear el próximo retiro.</strong> La carta anuncia sola la fecha y el lugar del próximo retiro; como no hay ninguno creado, esa línea sale en blanco.
+                <a href="{{ route('retiros.create') }}">Crear el próximo retiro</a></p>
+        </div>
+    @endunless
 
     @forelse ($inscritos as $inscrito)
         @php
