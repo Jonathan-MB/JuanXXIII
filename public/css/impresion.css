@@ -2046,6 +2046,14 @@ p.preguntas-charla {
     height: 1.25cm;
 }
 
+.tabla-datos-mesa .columna-ciudad {
+    width: 2.4cm;
+}
+
+.tabla-datos-mesa .columna-contacto {
+    width: 4.6cm;
+}
+
 .tabla-datos-mesa th small {
     font-weight: 400;
     text-transform: none;

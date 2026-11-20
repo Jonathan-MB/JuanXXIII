@@ -1,6 +1,7 @@
 {{-- Letreros para la pared: mesas elegidas o un lugar ("Rectorado") --}}
 <article class="tarjeta-impresion tarjeta-letreros">
     <h2 class="nombre-impresion">Letreros para la pared</h2>
+    <p class="cuando-impresion">Antes del retiro · al arreglar la casa</p>
     <p class="descripcion-impresion">Uno por hoja carta, con el logo: azul para hombres y vino para mujeres. Para mesas («Mesa 1», «Mesa 2»…) o para marcar un lugar («Rectorado»).</p>
     <form class="formulario-letreros" method="GET" action="{{ route('impresiones.letrerosMesa') }}" target="_blank">
         <select name="sexo" aria-label="Grupo">

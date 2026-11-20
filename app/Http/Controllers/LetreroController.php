@@ -10,21 +10,21 @@ class LetreroController extends Controller
 
     //  Letreros para pegar en la casa del retiro, hechos aquí para verlos
     // antes de imprimir. Reemplazan los Word y PowerPoint de la carpeta
-    // "Letreros". clave => [nombre, descripción].
+    // "Letreros". clave => [nombre, descripción, cuándo se usa].
     public const LETREROS = [
-        'silencio'          => ['Silencio, estamos en oración', 'Para la capilla y los pasillos cerca de las salas.'],
-        'santisimo'         => ['Adoración al Santísimo', 'Para la puerta de la capilla del Santísimo.'],
-        'ayudasDeDios'      => ['Ayudas de Dios', 'Para las canastas: horario de recepción y qué cartas no se reciben. Trae el número del retiro.'],
-        'nequi'             => ['Pago por Nequi', 'Una hoja para Librería, Cafetería y Floristería. El número y el titular se cambian en Ajustes.'],
-        'noCepillarse'      => ['No cepillarse aquí', 'Para los lavamanos donde no se deben cepillar los dientes.'],
-        'residuos'          => ['Residuos de comida', 'Para la caneca de los restos de comida.'],
-        'basura'            => ['Basura', 'Para las canecas de papeles, plásticos y empaques.'],
-        'noPapeles'         => ['No arrojar papeles al inodoro', 'Para cada baño.'],
-        'banoFueraServicio' => ['Baño fuera de servicio', 'Para la puerta del baño que no se puede usar.'],
-        'soloGrupo'         => ['Solo hombres / Solo mujeres', 'Dos hojas, sin número de mesa: para marcar baños, cuartos o zonas de cada grupo.'],
-        'bebidas'           => ['Bebidas para hombres / para mujeres', 'Dos hojas: una para la mesa de bebidas de los hombres y otra para la de las mujeres.'],
-        'abreLaCaja'        => ['Abre la caja', 'Cinco hojas: el título, los pasos 1, 2 y 3, y «Lee por favor».'],
-        'etiquetasMesa'     => ['Etiquetas de mesa', 'Una hoja de etiquetas pequeñas por mesa, para marcar sobres, cajas y paquetes.'],
+        'silencio'          => ['Silencio, estamos en oración', 'Para la capilla y los pasillos cerca de las salas.', 'Viernes · al arreglar la casa'],
+        'santisimo'         => ['Adoración al Santísimo', 'Para la puerta de la capilla del Santísimo.', 'Viernes · al arreglar la casa'],
+        'ayudasDeDios'      => ['Ayudas de Dios', 'Para las canastas: horario de recepción y qué cartas no se reciben. Trae el número del retiro.', 'Viernes · en las canastas'],
+        'nequi'             => ['Pago por Nequi', 'Una hoja para Librería, Cafetería y Floristería. El número y el titular se cambian en Ajustes.', 'Viernes · en Librería, Cafetería y Floristería'],
+        'noCepillarse'      => ['No cepillarse aquí', 'Para los lavamanos donde no se deben cepillar los dientes.', 'Viernes · al arreglar los baños'],
+        'residuos'          => ['Residuos de comida', 'Para la caneca de los restos de comida.', 'Viernes · al arreglar el comedor'],
+        'basura'            => ['Basura', 'Para las canecas de papeles, plásticos y empaques.', 'Viernes · al arreglar la casa'],
+        'noPapeles'         => ['No arrojar papeles al inodoro', 'Para cada baño.', 'Viernes · al arreglar los baños'],
+        'banoFueraServicio' => ['Baño fuera de servicio', 'Para la puerta del baño que no se puede usar.', 'Cuando un baño se daña'],
+        'soloGrupo'         => ['Solo hombres / Solo mujeres', 'Dos hojas, sin número de mesa: para marcar baños, cuartos o zonas de cada grupo.', 'Viernes · al arreglar la casa'],
+        'bebidas'           => ['Bebidas para hombres / para mujeres', 'Dos hojas: una para la mesa de bebidas de los hombres y otra para la de las mujeres.', 'Viernes · en las mesas de bebidas'],
+        'abreLaCaja'        => ['Abre la caja', 'Cinco hojas: el título, los pasos 1, 2 y 3, y «Lee por favor».', 'Domingo · para la dinámica de la caja'],
+        'etiquetasMesa'     => ['Etiquetas de mesa', 'Una hoja de etiquetas pequeñas por mesa, para marcar sobres, cajas y paquetes.', 'Antes del retiro · para sobres y cajas'],
     ];
 
     // Los equipos que reciben pagos y llevan su letrero de Nequi

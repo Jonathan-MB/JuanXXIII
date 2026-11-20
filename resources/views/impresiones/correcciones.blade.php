@@ -17,7 +17,7 @@
                             <th class="columna-silla">Silla</th>
                             <th>Nombres y apellidos</th>
                             <th>Documento</th>
-                            <th>Fecha nac.</th>
+                            <th class="columna-fecha">Fecha de nacimiento</th>
                             <th>Ciudad</th>
                             <th>Barrio</th>
                             <th>Celular</th>
@@ -32,7 +32,7 @@
                                 <td class="columna-silla">{{ $inscrito->silla }}</td>
                                 <td>{{ $inscrito->persona->nombre_completo }}</td>
                                 <td>{{ $inscrito->persona->cedula }}</td>
-                                <td>{{ $inscrito->persona->fecha_nacimiento->format('d/m/Y') }}</td>
+                                <td class="dato-sin-salto">{{ $inscrito->persona->fecha_nacimiento?->format('d/m/Y') }}</td>
                                 <td>{{ $inscrito->persona->ciudad }}</td>
                                 <td>{{ $inscrito->persona->barrio }}</td>
                                 <td class="dato-sin-salto">{{ $inscrito->persona->celular }}</td>

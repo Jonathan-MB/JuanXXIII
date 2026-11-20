@@ -17,6 +17,7 @@
                         <tr>
                             <th class="columna-silla">Silla</th>
                             <th>Nombres y apellidos</th>
+                            <th class="columna-fecha">Fecha de nacimiento<br><small>día / mes / año</small></th>
                             <th class="columna-telefono">Celular</th>
                             <th class="columna-ciudad">Ciudad</th>
                             <th class="columna-ciudad">Barrio</th>
@@ -26,11 +27,12 @@
                     </thead>
                     <tbody>
                         @foreach (['CT', 'CA'] as $cargo)
-                            <tr class="fila-catequista"><td class="columna-silla">{{ $cargo }}</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr class="fila-catequista"><td class="columna-silla">{{ $cargo }}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                         @endforeach
                         @for ($silla = 1; $silla <= $mesa->cantidad_sillas; $silla++)
                             <tr>
                                 <td class="columna-silla">{{ $silla }}</td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

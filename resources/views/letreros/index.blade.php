@@ -15,13 +15,14 @@
     @endunless
 
     <div class="rejilla-impresiones">
-        @foreach ($letreros as $clave => [$nombre, $descripcion])
+        @foreach ($letreros as $clave => [$nombre, $descripcion, $cuando])
             <article class="tarjeta-impresion">
                 {{-- Vista previa: la misma hoja en pequeño, sin descargar nada --}}
                 <a class="miniatura-letrero" href="{{ route('letreros.show', $clave) }}" target="_blank" rel="noopener" aria-label="Ver {{ $nombre }}">
                     <iframe src="{{ route('letreros.show', ['clave' => $clave, 'miniatura' => 1]) }}" loading="lazy" scrolling="no" tabindex="-1" title="Vista previa de {{ $nombre }}"></iframe>
                 </a>
                 <h2 class="nombre-impresion">{{ $nombre }}</h2>
+                <p class="cuando-impresion">{{ $cuando }}</p>
                 <p class="descripcion-impresion">{{ $descripcion }}</p>
                 <a class="boton-azul" href="{{ route('letreros.show', $clave) }}" target="_blank" rel="noopener">Ver e imprimir</a>
             </article>

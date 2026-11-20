@@ -16,6 +16,14 @@
             <span>Juan XXIII</span>
         </a>
 
+        {{-- Buscador general: desde cualquier página --}}
+        @unless (request()->routeIs('buscar'))
+            <form class="buscador-cabecera" method="GET" action="{{ route('buscar') }}" role="search">
+                <input type="search" name="q" placeholder="Buscar hojas, letreros, personas…" aria-label="Buscar en toda la aplicación" autocomplete="off">
+                <button type="submit" aria-label="Buscar">Buscar</button>
+            </form>
+        @endunless
+
         <div class="header-panel-usuario" id="contenedor-usuario">
             <div class="usuario-datos">
                 <p class="usuario-nombre">{{ $usuario->nombre }}</p>
@@ -33,6 +41,7 @@
         {{-- --------------------MENÚ SEGÚN EL ROL------------------- --}}
         <nav class="menu-panel" aria-label="Menú principal">
             <a class="menu-enlace {{ request()->routeIs('panel') ? 'menu-activo' : '' }}" href="{{ route('panel') }}">Inicio</a>
+            <a class="menu-enlace menu-buscar {{ request()->routeIs('buscar') ? 'menu-activo' : '' }}" href="{{ route('buscar') }}">Buscar</a>
 
             @if ($verPagos)
                 <p class="menu-grupo">Retiro actual</p>

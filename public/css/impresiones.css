@@ -38,6 +38,14 @@
     color: #13224a;
 }
 
+.cuando-impresion {
+    margin-top: -4px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #8a6a00;
+}
+
 .descripcion-impresion {
     flex: 1;
     font-size: 14px;
@@ -134,4 +142,11 @@
     font-weight: 700;
     text-decoration: underline;
     cursor: pointer;
+}
+
+/* Al llegar desde el buscador, la tarjeta buscada se resalta */
+.tarjeta-impresion:target {
+    outline: 3px solid #f4c20d;
+    outline-offset: 2px;
+    scroll-margin-top: 16px;
 }

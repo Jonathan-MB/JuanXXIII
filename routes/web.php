@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AjusteController;
 use App\Http\Controllers\ArchivoController;
+use App\Http\Controllers\BuscadorController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CronogramaController;
 use App\Http\Controllers\DesarrolloController;
@@ -63,6 +64,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
 
     Route::get('/panel', [PanelController::class, 'index'])->name('panel');
+
+    // Buscador general: todas las cuentas; cada resultado dice si lo puede abrir
+    Route::get('/buscar', [BuscadorController::class, 'index'])->name('buscar');
 
     //  Todas las cuentas: cada una ve solo el inventario de su equipo
     // (el controlador lo revisa); Administración y Secretaría ven todos.
