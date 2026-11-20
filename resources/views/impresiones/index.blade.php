@@ -1,5 +1,6 @@
 @php
-    $documentos = \App\Support\CatalogoImpresiones::DOCUMENTOS;
+    // Las carpetas completas van en su propia sección, arriba
+    $documentos = collect(\App\Support\CatalogoImpresiones::DOCUMENTOS)->reject(fn ($documento) => $documento["ruta"] === "impresiones.carpeta");
 @endphp
 @include('partials.head')
 
@@ -41,6 +42,43 @@
                 </ul>
             </section>
         @endif
+
+        {{-- --------------------CARPETAS DEL RECTORADO------------------- --}}
+        {{-- Cada carpeta sale entera en una sola impresión, en el orden de la lista de formatos --}}
+        <section class="seccion-carpetas">
+            <h2 class="titulo-seccion-impresion">Carpetas del rectorado</h2>
+            <p class="texto-ayuda">Cada botón abre la carpeta completa, con todas sus hojas en orden y las copias que lleva. Para descargarla: <strong>Imprimir</strong> y elegir <strong>Guardar como PDF</strong>.</p>
+            <div class="rejilla-impresiones">
+                @foreach (\App\Http\Controllers\ImpresionController::CARPETAS as $cargo => $carpeta)
+                    <article class="tarjeta-impresion tarjeta-carpeta" id="{{ \Illuminate\Support\Str::slug($carpeta['nombre'] . ' completa') }}">
+                        <h3 class="nombre-impresion">{{ $carpeta['nombre'] }}</h3>
+                        <ol class="contenido-carpeta">
+                            @foreach ($carpeta['documentos'] as $documento => $copias)
+                                <li>
+                                    {{ \App\Http\Controllers\ImpresionController::PARTES_CARPETA[$documento] }}
+                                    @if ($copias > 1)<strong>({{ $copias }} copias)</strong>@endif
+                                    @if ($documento === 'equipos')<small>solo uno de los dos vicerrectores</small>@endif
+                                </li>
+                            @endforeach
+                        </ol>
+                        <div class="botones-impresion">
+                            <a class="boton-azul" href="{{ route('impresiones.carpeta', ['cargo' => $cargo, 'sexo' => 'hombres']) }}" target="_blank" rel="noopener">Hombres</a>
+                            <a class="boton-azul" href="{{ route('impresiones.carpeta', ['cargo' => $cargo, 'sexo' => 'mujeres']) }}" target="_blank" rel="noopener">Mujeres</a>
+                            <a class="boton-secundario" href="{{ route('impresiones.carpeta', ['cargo' => $cargo]) }}" target="_blank" rel="noopener">Ambos</a>
+                        </div>
+                        @if ($cargo === 'vicerrector')
+                            <p class="segunda-carpeta">
+                                Segundo vicerrector(a), sin evaluación de equipos:
+                                <a href="{{ route('impresiones.carpeta', ['cargo' => $cargo, 'sexo' => 'hombres', 'equipos' => 0]) }}" target="_blank" rel="noopener">Hombres</a> ·
+                                <a href="{{ route('impresiones.carpeta', ['cargo' => $cargo, 'sexo' => 'mujeres', 'equipos' => 0]) }}" target="_blank" rel="noopener">Mujeres</a>
+                            </p>
+                        @endif
+                    </article>
+                @endforeach
+            </div>
+        </section>
+
+        <h2 class="titulo-seccion-impresion">Hojas sueltas</h2>
 
         {{-- --------------------DOCUMENTOS------------------- --}}
         <div class="rejilla-impresiones">

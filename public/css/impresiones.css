@@ -150,3 +150,48 @@
     outline-offset: 2px;
     scroll-margin-top: 16px;
 }
+
+
+/* ----------Carpetas del rectorado-------------- */
+.seccion-carpetas {
+    margin-bottom: 26px;
+}
+
+.titulo-seccion-impresion {
+    margin: 6px 0 8px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #13224a;
+}
+
+.seccion-carpetas .texto-ayuda {
+    margin-bottom: 12px;
+}
+
+.tarjeta-carpeta {
+    border-color: #b9c6e4;
+    background: #f6f8fd;
+}
+
+.contenido-carpeta {
+    flex: 1;
+    margin: 0;
+    padding-left: 22px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #3d4660;
+}
+
+.contenido-carpeta small {
+    display: block;
+    color: #8a6a00;
+}
+
+.segunda-carpeta {
+    font-size: 13px;
+    color: #5b6479;
+}
+
+.segunda-carpeta a {
+    font-weight: 700;
+}

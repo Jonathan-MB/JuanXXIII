@@ -34,20 +34,39 @@ class ImpresionController extends Controller
         'charlas'       => 'Evaluación de charlas',
     ];
 
-    //  Lo que lleva la carpeta de cada cargo, en orden. «charlistas» y
-    // «sala» salen del desarrollo; los demás son de aquí.
+    //  Las hojas que pueden ir en una carpeta, con el nombre que se ve en
+    // la página Impresiones. «desarrollo», «charlistas» y «sala» salen del
+    // desarrollo del retiro; «llamado» y «catequistas» son listas de aquí;
+    // las demás son los informes.
+    public const PARTES_CARPETA = [
+        'desarrollo'    => 'Desarrollo del retiro',
+        'llamado'       => 'Relación de invitados (hoja de llamado)',
+        'catequistas'   => 'Distribución en sala de catequistas (catequistas por mesa)',
+        'sala'          => 'Rotación al Santísimo en sala',
+        'charlistas'    => 'Lista de charlistas',
+        'charlas'       => 'Evaluación de charlas',
+        'ofrenda'       => 'Arqueo para la ofrenda',
+        'problematicas' => 'Problemáticas',
+        'equipos'       => 'Evaluación de equipos',
+        'rector'        => 'Informe del rector(a) responsable',
+        'vicerrector'   => 'Informe del vicerrector(a) responsable',
+        'dirigente'     => 'Informe del dirigente responsable',
+    ];
+
+    //  Lo que lleva la carpeta de cada cargo, en el orden de la lista de
+    // formatos del rectorado, con cuántas copias de cada hoja.
     public const CARPETAS = [
         'rector' => [
             'nombre'     => 'Carpeta del rector(a)',
-            'documentos' => ['charlistas', 'sala', 'catequistas', 'rector', 'problematicas', 'ofrenda'],
+            'documentos' => ['desarrollo' => 2, 'llamado' => 1, 'catequistas' => 1, 'sala' => 2, 'charlistas' => 1, 'ofrenda' => 1, 'rector' => 1],
         ],
         'vicerrector' => [
             'nombre'     => 'Carpeta del vicerrector(a)',
-            'documentos' => ['charlistas', 'vicerrector', 'equipos'],
+            'documentos' => ['desarrollo' => 1, 'problematicas' => 1, 'equipos' => 1, 'vicerrector' => 1],
         ],
         'dirigente' => [
             'nombre'     => 'Carpeta del dirigente responsable',
-            'documentos' => ['charlistas', 'dirigente', 'charlas'],
+            'documentos' => ['desarrollo' => 1, 'catequistas' => 1, 'charlas' => 1, 'charlistas' => 1, 'dirigente' => 1],
         ],
     ];
 
@@ -459,39 +478,59 @@ class ImpresionController extends Controller
 
 
     //  Toda la carpeta de un cargo en una sola impresión: cada documento
-    // se arma igual que suelto y aquí solo se juntan, con una sola barra.
-    // Si el desarrollo no está preparado, sus hojas se saltan y se avisa.
+    // se arma igual que suelto y aquí solo se juntan (las hojas que van
+    // dos veces salen repetidas), con una sola barra. Si el desarrollo no
+    // está preparado, sus hojas se saltan y se avisa.
+    //  ?equipos=0: carpeta del segundo vicerrector(a), sin la evaluación
+    // de equipos (solo la lleva uno de los dos).
     public function carpeta(Request $request, string $cargo)
     {
         abort_unless(array_key_exists($cargo, self::CARPETAS), 404);
 
-        $retiro    = $this->retiroOFallar();
-        $carpeta   = self::CARPETAS[$cargo];
-        $partes    = [];
-        $faltantes = [];
+        $retiro     = $this->retiroOFallar();
+        $carpeta    = self::CARPETAS[$cargo];
+        $sinEquipos = $request->query('equipos') === '0';
+        $partes     = [];
+        $faltantes  = [];
 
-        foreach ($carpeta['documentos'] as $documento) {
-            $vista = match ($documento) {
-                'charlistas', 'sala' => app(DesarrolloController::class)->imprimir(Request::create('/', 'GET', ['formato' => $documento, 'sexo' => $request->sexo])),
-                'catequistas'        => $this->catequistas($request),
-                default              => $this->informe($request, $documento),
-            };
-
-            if (! $vista instanceof View) {
-                $faltantes[] = $documento === 'sala' ? 'la rotación en sala' : 'la lista de charlistas';
+        foreach ($carpeta['documentos'] as $documento => $copias) {
+            if ($documento === 'equipos' && $sinEquipos) {
                 continue;
             }
 
-            $partes[] = $vista->with('enCarpeta', true)->render();
+            $vista = match ($documento) {
+                'desarrollo', 'charlistas', 'sala' => app(DesarrolloController::class)->imprimir(Request::create('/', 'GET', ['formato' => $documento, 'sexo' => $request->sexo])),
+                'llamado'                          => $this->llamado($request),
+                'catequistas'                      => $this->catequistas($request),
+                default                            => $this->informe($request, $documento),
+            };
+
+            if (! $vista instanceof View) {
+                $faltantes[] = mb_strtolower(self::PARTES_CARPETA[$documento]);
+                continue;
+            }
+
+            $hoja = $vista->with('enCarpeta', true)->render();
+
+            for ($copia = 0; $copia < $copias; $copia++) {
+                $partes[] = $hoja;
+            }
         }
+
+        $grupo = match ($request->sexo) {
+            'mujeres' => ' · Mujeres',
+            'hombres' => ' · Hombres',
+            default   => '',
+        };
 
         return view('impresiones.carpeta', [
             'retiro'    => $retiro,
             'partes'    => $partes,
             'faltantes' => $faltantes,
-            'titulo'    => $carpeta['nombre'] . ($request->sexo === 'mujeres' ? ' · Mujeres' : ($request->sexo === 'hombres' ? ' · Hombres' : '')),
+            'titulo'    => $carpeta['nombre'] . ($sinEquipos ? ' 2' : '') . $grupo,
         ]);
     }
+
 
 
 

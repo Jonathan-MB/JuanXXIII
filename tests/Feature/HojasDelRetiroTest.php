@@ -163,6 +163,11 @@ class HojasDelRetiroTest extends TestCase
         foreach (['rector', 'vicerrector', 'dirigente'] as $cargo) {
             $this->get(route('impresiones.carpeta', $cargo))->assertOk();
         }
+
+        // La carpeta del rector(a) trae la hoja de llamado; la del segundo vicerrector(a), sin evaluación de equipos
+        $this->get(route('impresiones.carpeta', 'rector'))->assertSee('Lista de llamado');
+        $this->get(route('impresiones.carpeta', ['cargo' => 'vicerrector', 'sexo' => 'hombres']))->assertSee('Evaluación de equipos');
+        $this->get(route('impresiones.carpeta', ['cargo' => 'vicerrector', 'sexo' => 'hombres', 'equipos' => 0]))->assertDontSee('Evaluación de equipos · Hombres');
     }
 
 

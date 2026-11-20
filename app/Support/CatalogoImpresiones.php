@@ -109,7 +109,7 @@ class CatalogoImpresiones
             'ruta'        => 'impresiones.catequistas',
             'nombre'      => 'Catequistas por mesa',
             'cuando'      => 'Antes del retiro · carpetas del rectorado',
-            'descripcion' => 'Carpetas del rectorado: cada mesa con su CT y su CA, ubicadas en U como en la sala. Si aún no hay mesas, salen en blanco.',
+            'descripcion' => 'La «distribución en sala de catequistas» de las carpetas: cada mesa con su CT y su CA, ubicadas en U como en la sala. Si aún no hay mesas, salen en blanco.',
         ],
         [
             'ruta'        => 'desarrollo.imprimir',
@@ -130,21 +130,21 @@ class CatalogoImpresiones
             'parametros'  => ['cargo' => 'rector'],
             'nombre'      => 'Carpeta del rector(a) completa',
             'cuando'      => 'Antes del retiro · para armar la carpeta',
-            'descripcion' => 'Todo junto en una sola impresión: charlistas, rotación en sala, catequistas por mesa, informe del rector(a), problemáticas y acta de la ofrenda.',
+            'descripcion' => 'Todo junto en una sola impresión: desarrollo (2), relación de invitados, catequistas por mesa, rotación en sala (2), charlistas, arqueo de la ofrenda e informe del rector(a).',
         ],
         [
             'ruta'        => 'impresiones.carpeta',
             'parametros'  => ['cargo' => 'vicerrector'],
             'nombre'      => 'Carpeta del vicerrector(a) completa',
             'cuando'      => 'Antes del retiro · para armar la carpeta',
-            'descripcion' => 'Todo junto en una sola impresión: charlistas, informe del vicerrector(a) y evaluación de equipos.',
+            'descripcion' => 'Todo junto en una sola impresión: desarrollo, problemáticas, evaluación de equipos (solo uno de los dos vicerrectores) e informe del vicerrector(a).',
         ],
         [
             'ruta'        => 'impresiones.carpeta',
             'parametros'  => ['cargo' => 'dirigente'],
-            'nombre'      => 'Carpeta del dirigente completa',
+            'nombre'      => 'Carpeta del dirigente responsable completa',
             'cuando'      => 'Antes del retiro · para armar la carpeta',
-            'descripcion' => 'Todo junto en una sola impresión: charlistas, informe del dirigente responsable y evaluación de charlas.',
+            'descripcion' => 'Todo junto en una sola impresión: desarrollo, catequistas por mesa, evaluación de charlas, charlistas e informe del dirigente responsable.',
         ],
         [
             'ruta'        => 'impresiones.informe',
@@ -178,7 +178,7 @@ class CatalogoImpresiones
             'ruta'        => 'impresiones.informe',
             'parametros'  => ['formato' => 'problematicas'],
             'nombre'      => 'Problemáticas',
-            'cuando'      => 'Todo el retiro · carpeta del rector(a)',
+            'cuando'      => 'Todo el retiro · carpeta del vicerrector(a)',
             'descripcion' => 'Hoja numerada del 1 al 20 para anotar la problemática de cada invitado y su mesa.',
         ],
         [
