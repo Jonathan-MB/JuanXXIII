@@ -57,4 +57,26 @@ class TesoreriaYLlamadasTest extends TestCase
             ->assertSee('Padrino de retiro')
             ->assertSee('3071823271');
     }
+
+
+    public function test_la_lista_de_pagos_marca_a_quien_no_vino_y_suma_las_cuentas(): void
+    {
+        $this->actingAs($this->usuario(Rol::TESORERIA));
+
+        $completo = $this->inscrito('Masculino');
+        $completo->pagos()->create(['valor' => 250000, 'fecha' => now()->toDateString(), 'medio' => 'Efectivo']);
+        $this->inscrito('Masculino'); // no ha pagado: falta 250.000
+        $fuera = $this->inscrito('Masculino', ['inscripcion' => ['estado' => \App\Models\Inscripcion::NO_ASISTIO]]);
+        $fuera->pagos()->create(['valor' => 50000, 'fecha' => now()->toDateString(), 'medio' => 'Efectivo']);
+
+        $respuesta = $this->get(route('pagos.imprimir'))->assertOk()
+            ->assertSee('No asistió')
+            ->assertSee('fila-fuera', false)
+            ->assertSee('Cuentas · Hombres');
+
+        $html = $respuesta->getContent();
+        $this->assertSame(2, substr_count($html, '✔'), 'Sale marcado quien pagó todo y quien no asistió');
+        $this->assertStringContainsString('0.000', $html, 'Recogido: también lo que pagó quien no vino');
+        $this->assertMatchesRegularExpression('/Falta por recoger<\/th>\s*<td>[$]250.000/', $html, 'A quien no vino no se le cobra lo que falta');
+    }
 }

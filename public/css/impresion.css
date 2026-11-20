@@ -2075,3 +2075,37 @@ p.preguntas-charla {
 .tabla-tareas .columna-responsable {
     width: 2.8cm;
 }
+
+/* Lista de pagos: quien no vino o se fue, en gris y marcado */
+.tabla-pagos-papel .fila-fuera td {
+    color: #777777;
+    background: #f1f1f1;
+}
+
+.tabla-pagos-papel .marca-fuera {
+    color: #111111;
+    font-size: 7.5pt;
+    text-transform: uppercase;
+}
+
+/* Cuentas al final de cada grupo: grandes y claras */
+.resumen-pagos-papel {
+    margin-top: 0.4cm;
+    font-size: 10.5pt;
+    break-inside: avoid;
+}
+
+.resumen-pagos-papel caption {
+    text-align: left;
+    font-weight: 700;
+    padding-bottom: 3px;
+}
+
+.resumen-pagos-papel th {
+    text-align: left;
+    width: 22%;
+}
+
+.resumen-pagos-papel td {
+    font-weight: 700;
+}

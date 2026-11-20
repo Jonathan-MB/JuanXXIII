@@ -25,12 +25,12 @@ Correrlas (MySQL de XAMPP encendido):
 cd /c/xampp/htdocs/JuanXXIII && /c/xampp/php/php.exe artisan test
 ```
 
-Debe terminar en `Tests: 21 passed`. Si alguna sale con ⨯, el nombre de la prueba dice qué regla se rompió.
+Debe terminar en `Tests: 22 passed`. Si alguna sale con ⨯, el nombre de la prueba dice qué regla se rompió.
 
 | Archivo | Qué revisa |
 |---|---|
 | `tests/Feature/SillasTest.php` | Quien abandona conserva su silla y nadie más la ocupa; quien no asistió no conserva puesto; un puesto se corrige sin mover a los demás; dos personas no quedan en la misma silla; en las listas impresas y en el mapa de Llegada la silla de quien se fue queda vacía. |
-| `tests/Feature/TesoreriaYLlamadasTest.php` | La lista de pagos trae pagado, falta, medio y padrino con teléfono. Las llamadas traen los dos contactos y el padrino. |
+| `tests/Feature/TesoreriaYLlamadasTest.php` | La lista de pagos trae pagado, falta, medio y padrino con teléfono; marca a quien no asistió o se fue y suma las cuentas (a quien no vino no se le cobra lo que falta). Las llamadas traen los dos contactos y el padrino. |
 | `tests/Feature/HojasDelRetiroTest.php` | Hojas 1, 2 y 3; «Editar datos» en Llegada corrige contactos sin perder el fijo; membretes y oraciones (una por invitado, con el número del retiro); carta solo a quien terminó, con la fecha del último día y el aviso si falta el próximo retiro; previstos con falda solo en mujeres; todos los letreros abren con el número del retiro y la letra de los letreros de pared baja según lo largo del texto; Secretaría puede imprimir todo y Tesorería no entra a las impresiones de Secretaría. |
 
 El escenario de prueba (retiro, cuentas, personas con contactos, padrino y puesto) se arma en `tests/EscenarioRetiro.php`. Para una prueba nueva se copia una de las que existen y se cambia lo que se revisa.
@@ -70,7 +70,7 @@ El escenario de prueba (retiro, cuentas, personas con contactos, padrino y puest
 | Paso | Quién | Dónde | Qué debe pasar |
 |---|---|---|---|
 | Lista de llegada y de llamado | Secretaría | Llegada o Impresiones | En orden alfabético, por hombres y mujeres. |
-| Lista para Tesorería | Secretaría para Tesorería | Pagos → «Ver e imprimir lista de pagos» | Por persona: celular, padrino con teléfono, pagado, falta, **medio** y casillas «Terminó de pagar» / «No asistió». |
+| Lista para Tesorería | Secretaría para Tesorería | Pagos → «Ver e imprimir lista de pagos» | Por persona: celular, padrino con teléfono, pagado, falta, **medio** y casillas «Terminó de pagar» / «No asistió» (ya marcadas cuando la app lo sabe). Quien no vino o se fue sale en gris. Al final de hombres, de mujeres y de todo el retiro: recogido, falta por recoger, cuántos deben y cuántos pagaron todo. |
 | Marcar quién llegó | Secretaría | Llegada | El botón marca la llegada; se puede deshacer. |
 | Dar mesa y silla (al azar) | Secretaría | Llegada → mesa y silla de cada persona | No deja poner a dos en la misma silla. La mesa se crea sola. |
 | Hoja 1 · Nombres | Secretaría → salas | Llegada o Impresiones | En blanco, dos mesas por hoja: cada uno escribe su nombre. Con ella se corrigen los nombres en «Editar datos». |
