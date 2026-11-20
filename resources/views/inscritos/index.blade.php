@@ -61,7 +61,7 @@
                     <tbody>
                         @foreach ($inscritos as $inscrito)
                             <tr>
-                                <td><a class="enlace-inscrito" href="{{ route('inscritos.show', $inscrito) }}">{{ $inscrito->persona->apellidos }}, {{ $inscrito->persona->nombres }}</a></td>
+                                <td><a class="enlace-inscrito" href="{{ route('inscritos.show', $inscrito) }}">{{ $inscrito->persona->nombre_completo }}</a></td>
                                 <td>{{ $inscrito->persona->cedula }}</td>
                                 <td>{{ $inscrito->persona->celular }}</td>
                                 <td>{{ (int) $inscrito->persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</td>

@@ -39,6 +39,7 @@ class LlegadaController extends Controller
             ->whereNotIn('inscripcions.estado', Inscripcion::ESTADOS_FUERA)
             ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
             ->where('personas.sexo', $sexo)
+            ->orderBy('personas.nombres')
             ->orderBy('personas.apellidos')
             ->get();
 

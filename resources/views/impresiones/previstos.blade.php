@@ -48,7 +48,7 @@
                                 @endphp
                                 <tr>
                                     <td class="columna-silla">{{ $silla }}</td>
-                                    <td>{{ $persona ? $persona->apellidos . ', ' . $persona->nombres : '' }}</td>
+                                    <td>{{ $persona?->nombre_completo }}</td>
                                     @foreach ($columnas as $columna)
                                         <td class="columna-entrega">
                                             <span class="casilla-papel"></span>

@@ -84,7 +84,7 @@
                                     data-llego="{{ $inscrito->llegada_en ? 1 : 0 }}"
                                     data-puesto="{{ $inscrito->mesa_id ? 1 : 0 }}">
                                     <td class="celda-nombre">
-                                        <a class="enlace-inscrito" href="{{ route('inscritos.show', $inscrito) }}">{{ $persona->apellidos }}, {{ $persona->nombres }}</a>
+                                        <a class="enlace-inscrito" href="{{ route('inscritos.show', $inscrito) }}">{{ $persona->nombre_completo }}</a>
                                         <button type="button" class="boton-editar-datos" data-editar="editar-{{ $inscrito->id }}" aria-expanded="false">Editar datos</button>
                                     </td>
                                     <td class="dato-sin-salto" data-titulo="Cédula">{{ $persona->cedula }}</td>

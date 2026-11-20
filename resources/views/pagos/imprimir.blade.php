@@ -29,7 +29,7 @@
                         {{-- Quien no vino o se fue sigue en la lista (sus pagos están ahí), en gris y marcado --}}
                         <tr @class(['fila-fuera' => $inscrito->estaFuera()])>
                             <td class="columna-silla">{{ $loop->iteration }}</td>
-                            <td>{{ $inscrito->persona->apellidos }}, {{ $inscrito->persona->nombres }}@if ($inscrito->estaFuera())<br><strong class="marca-fuera">{{ $inscrito->estado === \App\Models\Inscripcion::ABANDONO ? 'Se fue' : 'No asistió' }}</strong>@endif</td>
+                            <td>{{ $inscrito->persona->nombre_completo }}@if ($inscrito->estaFuera())<br><strong class="marca-fuera">{{ $inscrito->estado === \App\Models\Inscripcion::ABANDONO ? 'Se fue' : 'No asistió' }}</strong>@endif</td>
                             <td class="dato-sin-salto">{{ $inscrito->persona->celular }}</td>
                             <td>{{ $inscrito->tiene_padrino ? $inscrito->padrino_nombre : '' }}@if ($inscrito->tiene_padrino && $inscrito->padrino_telefono)<br><span class="dato-sin-salto">{{ $inscrito->padrino_telefono }}</span>@endif</td>
                             <td class="columna-valor">{{ '$' . number_format($inscrito->total_pagado, 0, ',', '.') }}</td>

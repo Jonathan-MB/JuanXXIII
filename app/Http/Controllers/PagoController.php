@@ -30,8 +30,8 @@ class PagoController extends Controller
             ->withSum('pagos', 'valor')
             ->where('retiro_id', $retiro->id)
             ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
-            ->orderBy('personas.apellidos')
-            ->orderBy('personas.nombres');
+            ->orderBy('personas.nombres')
+            ->orderBy('personas.apellidos');
 
         if ($busqueda !== '') {
             $cedula = preg_replace('/[\s.\-]/', '', $busqueda);
@@ -77,8 +77,9 @@ class PagoController extends Controller
             ->where('retiro_id', $retiro->id)
             ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
             ->orderByRaw("personas.sexo = 'Femenino'")
-            ->orderBy('personas.apellidos')
             ->orderBy('personas.nombres')
+            ->orderBy('personas.nombres')
+            ->orderBy('personas.apellidos')
             ->get()
             ->groupBy(fn ($inscrito) => $inscrito->persona->sexo);
 

@@ -65,7 +65,7 @@
                     <tbody>
                         @foreach ($inscritos as $inscrito)
                             <tr class="{{ $inscrito->estaFuera() ? 'fila-fuera' : '' }}">
-                                <td><a class="enlace-inscrito" href="{{ route('inscritos.show', $inscrito) }}#pagos">{{ $inscrito->persona->apellidos }}, {{ $inscrito->persona->nombres }}</a></td>
+                                <td><a class="enlace-inscrito" href="{{ route('inscritos.show', $inscrito) }}#pagos">{{ $inscrito->persona->nombre_completo }}</a></td>
                                 <td>{{ $inscrito->persona->cedula }}</td>
                                 <td class="dato-sin-salto">{{ $inscrito->persona->celular }}</td>
                                 <td>{{ $inscrito->persona->sexo === 'Femenino' ? 'M ' . $retiro->numero_mujeres : 'H ' . $retiro->numero_hombres }}</td>

@@ -722,6 +722,7 @@ class ImpresionController extends Controller
             ->orderByRaw('inscripcions.mesa_id IS NULL')
             ->orderBy('mesas.numero')
             ->orderBy('inscripcions.silla')
+            ->orderBy('personas.nombres')
             ->orderBy('personas.apellidos')
             ->get();
     }
@@ -739,8 +740,9 @@ class ImpresionController extends Controller
             ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
             ->when($sexo, fn ($consulta) => $consulta->where('personas.sexo', $sexo))
             ->orderByRaw("personas.sexo = 'Femenino'")
-            ->orderBy('personas.apellidos')
             ->orderBy('personas.nombres')
+            ->orderBy('personas.nombres')
+            ->orderBy('personas.apellidos')
             ->get()
             ->groupBy(fn ($inscrito) => $inscrito->persona->sexo);
     }

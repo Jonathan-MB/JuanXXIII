@@ -54,7 +54,7 @@
                     <tbody>
                         @foreach ($inscritos as $inscrito)
                             <tr>
-                                <td>{{ $inscrito->persona->apellidos }}, {{ $inscrito->persona->nombres }}</td>
+                                <td>{{ $inscrito->persona->nombre_completo }}</td>
                                 <td>{{ $inscrito->persona->ciudad }} / {{ $inscrito->persona->barrio }}</td>
                                 <td>{{ $inscrito->persona->celular }}</td>
                                 <td>{{ (int) $inscrito->persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</td>

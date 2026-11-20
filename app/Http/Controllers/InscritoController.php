@@ -34,8 +34,8 @@ class InscritoController extends Controller
             ->withSum('pagos', 'valor')
             ->where('retiro_id', $retiro->id)
             ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
-            ->orderBy('personas.apellidos')
-            ->orderBy('personas.nombres');
+            ->orderBy('personas.nombres')
+            ->orderBy('personas.apellidos');
 
         if ($pestana === 'fuera') {
             $consulta->whereIn('inscripcions.estado', Inscripcion::ESTADOS_FUERA);

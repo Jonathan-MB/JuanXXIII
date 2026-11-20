@@ -28,8 +28,8 @@ class DirectivoController extends Controller
             ->whereNotIn('inscripcions.estado', Inscripcion::ESTADOS_FUERA)
             ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
             ->where('personas.sexo', $grupo === 'mujeres' ? 'Femenino' : 'Masculino')
-            ->orderBy('personas.apellidos')
-            ->orderBy('personas.nombres');
+            ->orderBy('personas.nombres')
+            ->orderBy('personas.apellidos');
 
         if ($busqueda !== '') {
             $consulta->whereRaw("CONCAT(personas.nombres, ' ', personas.apellidos) LIKE ?", ['%' . $busqueda . '%']);
