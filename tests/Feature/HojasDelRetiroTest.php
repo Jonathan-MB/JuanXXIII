@@ -165,7 +165,7 @@ class HojasDelRetiroTest extends TestCase
         }
 
         // La carpeta del rector(a) trae la hoja de llamado; la del segundo vicerrector(a), sin evaluación de equipos
-        $this->get(route('impresiones.carpeta', 'rector'))->assertSee('Lista de llamado');
+        $this->get(route('impresiones.carpeta', 'rector'))->assertSee('Lista de llamado')->assertSee('rotulo-carpeta', false);
         $this->get(route('impresiones.carpeta', ['cargo' => 'vicerrector', 'sexo' => 'hombres']))->assertSee('Evaluación de equipos');
         $this->get(route('impresiones.carpeta', ['cargo' => 'vicerrector', 'sexo' => 'hombres', 'equipos' => 0]))->assertDontSee('Evaluación de equipos · Hombres');
     }

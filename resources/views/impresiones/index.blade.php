@@ -47,7 +47,7 @@
         {{-- Cada carpeta sale entera en una sola impresión, en el orden de la lista de formatos --}}
         <section class="seccion-carpetas">
             <h2 class="titulo-seccion-impresion">Carpetas del rectorado</h2>
-            <p class="texto-ayuda">Cada botón abre la carpeta completa, con todas sus hojas en orden y las copias que lleva. Para descargarla: <strong>Imprimir</strong> y elegir <strong>Guardar como PDF</strong>.</p>
+            <p class="texto-ayuda">Cada botón abre la carpeta completa: primero el rótulo para el frente (nombre, cargo y número del retiro) y después todas sus hojas en orden, con las copias que lleva. Para descargarla: <strong>Imprimir</strong> y elegir <strong>Guardar como PDF</strong>.</p>
             <div class="rejilla-impresiones">
                 @foreach (\App\Http\Controllers\ImpresionController::CARPETAS as $cargo => $carpeta)
                     <article class="tarjeta-impresion tarjeta-carpeta" id="{{ \Illuminate\Support\Str::slug($carpeta['nombre'] . ' completa') }}">

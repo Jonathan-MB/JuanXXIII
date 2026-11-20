@@ -523,9 +523,27 @@ class ImpresionController extends Controller
             default   => '',
         };
 
+        //  Rótulo para el frente de la carpeta: el nombre de quien la lleva, su cargo y el número del retiro (uno por grupo)
+        $sexos     = match ($request->sexo) {
+            'mujeres' => ['Femenino'],
+            'hombres' => ['Masculino'],
+            default   => ['Masculino', 'Femenino'],
+        };
+        $cargoRectorado = ['rector' => 'Rector(a)', 'vicerrector' => 'Vicerrector(a)', 'dirigente' => 'Dirigente responsable'][$cargo];
+        $rotulos = collect($sexos)->map(fn ($sexo) => [
+            'nombre' => $retiro->rectorados()->where('sexo', $sexo)->where('cargo', $cargoRectorado)->value('nombre'),
+            'cargo'  => match ($cargo) {
+                'rector'      => $sexo === 'Femenino' ? 'Rectora' : 'Rector',
+                'vicerrector' => $sexo === 'Femenino' ? 'Vicerrectora' : 'Vicerrector',
+                default       => 'Dirigente responsable',
+            },
+            'numero' => $retiro->numeroPara($sexo),
+        ]);
+
         return view('impresiones.carpeta', [
             'retiro'    => $retiro,
             'partes'    => $partes,
+            'rotulos'   => $rotulos,
             'faltantes' => $faltantes,
             'titulo'    => $carpeta['nombre'] . ($sinEquipos ? ' 2' : '') . $grupo,
         ]);

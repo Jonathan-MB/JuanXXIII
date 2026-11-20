@@ -2119,3 +2119,50 @@ p.preguntas-charla {
 .resumen-pagos-papel td {
     font-weight: 700;
 }
+
+
+/* ----------Rótulo del frente de las carpetas del rectorado-------------- */
+.pagina-rotulo-carpeta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1cm;
+    padding-top: 0.5cm;
+}
+
+.rotulo-carpeta {
+    width: 15cm;
+    border: 2px solid #333333;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #333333;
+}
+
+.rotulo-carpeta-cuerpo {
+    padding: 0.5cm 0.4cm 0.3cm;
+    border-bottom: 2px solid #333333;
+}
+
+.rotulo-carpeta-logo {
+    width: 3cm;
+    height: 3cm;
+    object-fit: contain;
+}
+
+.rotulo-carpeta-nombre {
+    min-height: 1.2em;
+    margin-top: 0.35cm;
+    font-size: 22pt;
+}
+
+.rotulo-carpeta-cargo {
+    margin-top: 0.15cm;
+    font-size: 22pt;
+}
+
+.rotulo-carpeta-retiro {
+    padding: 0.15cm;
+    font-size: 22pt;
+}
