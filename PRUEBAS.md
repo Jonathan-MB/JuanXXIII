@@ -25,13 +25,13 @@ Correrlas (MySQL de XAMPP encendido):
 cd /c/xampp/htdocs/JuanXXIII && /c/xampp/php/php.exe artisan test
 ```
 
-Debe terminar en `Tests: 22 passed`. Si alguna sale con ⨯, el nombre de la prueba dice qué regla se rompió.
+Debe terminar en `Tests: 24 passed`. Si alguna sale con ⨯, el nombre de la prueba dice qué regla se rompió.
 
 | Archivo | Qué revisa |
 |---|---|
 | `tests/Feature/SillasTest.php` | Quien abandona conserva su silla y nadie más la ocupa; quien no asistió no conserva puesto; un puesto se corrige sin mover a los demás; dos personas no quedan en la misma silla; en las listas impresas y en el mapa de Llegada la silla de quien se fue queda vacía. |
 | `tests/Feature/TesoreriaYLlamadasTest.php` | La lista de pagos trae pagado, falta, medio y padrino con teléfono; marca a quien no asistió o se fue y suma las cuentas (a quien no vino no se le cobra lo que falta). Las llamadas traen los dos contactos y el padrino. |
-| `tests/Feature/HojasDelRetiroTest.php` | Hojas 1, 2 y 3; «Editar datos» en Llegada corrige contactos sin perder el fijo; membretes y oraciones (una por invitado, con el número del retiro); carta solo a quien terminó, con la fecha del último día y el aviso si falta el próximo retiro; previstos con falda solo en mujeres; todos los letreros abren con el número del retiro y la letra de los letreros de pared baja según lo largo del texto; Secretaría puede imprimir todo y Tesorería no entra a las impresiones de Secretaría. |
+| `tests/Feature/HojasDelRetiroTest.php` | Hojas 1, 2 y 3; «Editar datos» en Llegada corrige contactos sin perder el fijo; membretes y oraciones (una por invitado, con el número del retiro); carta solo a quien terminó, con la fecha del último día y el aviso si falta el próximo retiro; previstos con falda solo en mujeres; todos los letreros abren con el número del retiro y la letra de los letreros de pared baja según lo largo del texto; Secretaría puede imprimir todo; Tesorería no entra a las impresiones de Secretaría; Directivos imprime el desarrollo y el directorio, pero no lo de Secretaría; el inventario dice «1 unidad» y el cronograma no repite el día. |
 
 El escenario de prueba (retiro, cuentas, personas con contactos, padrino y puesto) se arma en `tests/EscenarioRetiro.php`. Para una prueba nueva se copia una de las que existen y se cambia lo que se revisa.
 
@@ -104,5 +104,5 @@ El escenario de prueba (retiro, cuentas, personas con contactos, padrino y puest
 | Secretaría | Todo lo del retiro e imprimir todo: listas, hojas, carpetas, letreros, pagos, Santísimo, desarrollo, inventario de cualquier equipo y cronograma. No entra a «Cuentas». |
 | Tesorería | Pagos: registrar, corregir, ver quién debe e imprimir la lista. No entra a las impresiones de Secretaría. |
 | Equipo (cocina, montaje…) | Su inventario, el horario del Santísimo y sus tareas. |
-| Directivos | Solo consulta: inscritos y desarrollo del retiro. |
+| Directivos | Consulta inscritos y desarrollo. Imprime desde su página: directorio por mesa, desarrollo y charlistas (botón «Volver» lleva a su página). No entra a las impresiones de Secretaría. |
 | Administración | Todo, más crear y editar cuentas. |

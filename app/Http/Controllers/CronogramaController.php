@@ -32,8 +32,10 @@ class CronogramaController extends Controller
         $dias = TareaCronograma::orderBy('dia_relativo')->orderBy('hora')->get()
             ->groupBy('dia_relativo')
             ->map(fn ($tareas, $dia) => [
-                'nombre' => TareaCronograma::nombreDia((int) $dia)
-                    . ($retiro ? ' · ' . $retiro->fecha_inicio->copy()->addDays((int) $dia)->locale('es')->translatedFormat('l j \d\e F') : ''),
+                // "3 días antes · martes 17 de noviembre"; los días del retiro, solo "Viernes 20 de noviembre"
+                'nombre' => ! $retiro ? TareaCronograma::nombreDia((int) $dia)
+                    : ((int) $dia >= 0 ? '' : TareaCronograma::nombreDia((int) $dia) . ' · ')
+                        . \Illuminate\Support\Str::ucfirst($retiro->fecha_inicio->copy()->addDays((int) $dia)->locale('es')->translatedFormat('l j \d\e F')),
                 'tareas' => $tareas,
             ]);
 

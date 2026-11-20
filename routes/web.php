@@ -103,6 +103,15 @@ Route::middleware('auth')->group(function () {
         ->middleware('rol:' . Rol::ADMINISTRACION . ',' . Rol::SECRETARIA . ',' . Rol::DIRECTIVOS)
         ->name('desarrollo.index');
 
+    //  Lo que Directivos puede imprimir: el desarrollo (también charlistas
+    // y sala) y el directorio de invitados por mesa.
+    Route::get('/desarrollo/imprimir', [DesarrolloController::class, 'imprimir'])
+        ->middleware('rol:' . Rol::ADMINISTRACION . ',' . Rol::SECRETARIA . ',' . Rol::DIRECTIVOS)
+        ->name('desarrollo.imprimir');
+    Route::get('/directivos/directorio', [ImpresionController::class, 'directorio'])
+        ->middleware('rol:' . Rol::ADMINISTRACION . ',' . Rol::DIRECTIVOS)
+        ->name('directivos.directorio');
+
 
     /*
 |--------------------------------------------------------------------------
@@ -168,7 +177,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/desarrollo', [DesarrolloController::class, 'guardar'])->name('desarrollo.guardar');
         Route::post('/desarrollo/actividades', [DesarrolloController::class, 'agregar'])->name('desarrollo.agregar');
         Route::post('/desarrollo/copiar-base', [DesarrolloController::class, 'copiarBase'])->name('desarrollo.copiarBase');
-        Route::get('/desarrollo/imprimir', [DesarrolloController::class, 'imprimir'])->name('desarrollo.imprimir');
         Route::get('/desarrollo/base', [DesarrolloController::class, 'base'])->name('desarrollo.base');
         Route::put('/desarrollo/base', [DesarrolloController::class, 'guardarBase'])->name('desarrollo.guardarBase');
         Route::post('/desarrollo/base/actividades', [DesarrolloController::class, 'agregarBase'])->name('desarrollo.agregarBase');

@@ -22,7 +22,11 @@
         <p class="barra-titulo">{{ $titulo }}{{ isset($retiro) ? ' · ' . $retiro->nombre : '' }}</p>
         <div class="barra-botones">
             <button type="button" class="barra-boton barra-imprimir" id="boton-imprimir">Imprimir</button>
-            <a class="barra-boton" href="{{ $volver ?? route('impresiones.index') }}">{{ $volverTexto ?? 'Volver a impresiones' }}</a>
+            @if (! isset($volver) && auth()->user()?->tieneRol(\App\Models\Rol::DIRECTIVOS) && ! auth()->user()->tieneRol(\App\Models\Rol::ADMINISTRACION, \App\Models\Rol::SECRETARIA))
+                <a class="barra-boton" href="{{ route('directivos.index') }}">Volver</a>
+            @else
+                <a class="barra-boton" href="{{ $volver ?? route('impresiones.index') }}">{{ $volverTexto ?? 'Volver a impresiones' }}</a>
+            @endif
         </div>
     </div>
 @endunless

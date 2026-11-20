@@ -2,7 +2,7 @@
     use App\Models\ActividadBase;
     use App\Models\Rol;
 
-    // Directivos solo consulta: sin editar, imprimir ni preparar
+    // Directivos solo consulta e imprime: sin editar ni preparar
     $puedeEditar = auth()->user()->tieneRol(Rol::ADMINISTRACION, Rol::SECRETARIA);
 @endphp
 @include('partials.head')
@@ -14,13 +14,15 @@
 
     <div class="cabecera-vista">
         <h1 class="vista-titulo">Desarrollo del retiro</h1>
-        @if ($retiro && $puedeEditar)
+        @if ($retiro)
             <div class="acciones-desarrollo">
                 @if ($actividades->isNotEmpty())
                     <a class="boton-secundario" href="{{ route('desarrollo.imprimir', ['sexo' => $grupo]) }}" target="_blank">Imprimir {{ $grupo }}</a>
                     <a class="boton-secundario" href="{{ route('desarrollo.imprimir') }}" target="_blank">Imprimir ambos</a>
                 @endif
-                <a class="boton-azul" href="{{ route('desarrollo.editar', ['sexo' => $grupo]) }}">Editar</a>
+                @if ($puedeEditar)
+                    <a class="boton-azul" href="{{ route('desarrollo.editar', ['sexo' => $grupo]) }}">Editar</a>
+                @endif
             </div>
         @endif
     </div>

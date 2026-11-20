@@ -3,7 +3,7 @@
     {{--  Para el PC de Secretaría: se imprime y cada responsable marca a mano
          lo que va haciendo. Lo ya marcado en la aplicación sale con ✓. --}}
     <section class="pagina">
-        @include('partials.membrete', ['subtitulo' => 'Lista de tareas' . ($retiro ? ' · Retiro ' . $retiro->numero_mujeres . ' M - ' . $retiro->numero_hombres . ' H · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year : '')])
+        @include('partials.membrete', ['subtitulo' => 'Lista de tareas' . ($retiro ? ' · Retiro ' . $retiro->numero_mujeres . " M - " . $retiro->numero_hombres . " H · " . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year : '')])
 
         @forelse ($dias as $dia)
             <table class="tabla-impresion bloque-mesa tabla-tareas">

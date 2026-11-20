@@ -183,6 +183,38 @@ class HojasDelRetiroTest extends TestCase
 
 
 
+    public function test_directivos_imprime_desarrollo_y_directorio_pero_no_lo_de_secretaria(): void
+    {
+        $this->actingAs($this->usuario(Rol::DIRECTIVOS));
+        $this->inscrito('Masculino', [], 1, 1);
+
+        $this->get(route('directivos.index'))->assertOk()->assertSee('Imprimir directorio de hombres');
+        $this->get(route('directivos.directorio', ['sexo' => 'hombres']))->assertOk()->assertSee('Retiro 90')->assertSee(route('directivos.index'));
+        // Entra al desarrollo (aquí no está preparado, así que vuelve a su página con el aviso, no al inicio)
+        $this->get(route('desarrollo.imprimir', ['sexo' => 'hombres']))->assertRedirect(route('desarrollo.index'))->assertSessionHas('error');
+        $this->get(route('desarrollo.index'))->assertOk()->assertDontSee(route('desarrollo.editar', ['sexo' => 'hombres']));
+
+        $this->get(route('impresiones.carta'))->assertRedirect();
+        $this->get(route('impresiones.directorio'))->assertRedirect();
+    }
+
+
+
+    public function test_inventario_dice_1_unidad_y_el_cronograma_no_repite_el_dia(): void
+    {
+        $this->assertSame('1 unidad', \App\Models\Articulo::cantidadConUnidad(1, 'unidades'));
+        $this->assertSame('1 kilo', \App\Models\Articulo::cantidadConUnidad(1, 'kilos'));
+        $this->assertSame('3 paquetes', \App\Models\Articulo::cantidadConUnidad(3, 'paquetes'));
+
+        \App\Models\TareaCronograma::create(['dia_relativo' => 0, 'hora' => '14:00', 'descripcion' => 'Recibir a los invitados', 'responsable' => 'Secretaría']);
+
+        $this->get(route('cronograma.imprimir'))->assertOk()
+            ->assertSee(\Illuminate\Support\Str::ucfirst($this->retiro->fecha_inicio->locale('es')->translatedFormat('l j \d\e F')))
+            ->assertDontSee('Viernes · viernes');
+    }
+
+
+
     public function test_tesoreria_no_entra_a_impresiones_de_secretaria(): void
     {
         $this->actingAs($this->usuario(Rol::TESORERIA));

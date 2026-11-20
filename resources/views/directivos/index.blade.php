@@ -13,6 +13,13 @@
         <h1 class="vista-titulo">Inscritos del retiro · {{ $retiro->nombre }}</h1>
         <p class="texto-ayuda">Solo para consultar. {{ $retiro->dias_texto }} de {{ $retiro->fecha_inicio->year }}.</p>
 
+        {{-- Lo que Directivos puede imprimir --}}
+        <div class="acciones-cabecera">
+            <a class="boton-secundario" href="{{ route('directivos.directorio', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir directorio de {{ $grupo }}</a>
+            <a class="boton-secundario" href="{{ route('desarrollo.imprimir', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir desarrollo de {{ $grupo }}</a>
+            <a class="boton-secundario" href="{{ route('desarrollo.imprimir', ['sexo' => $grupo, 'formato' => 'charlistas']) }}" target="_blank" rel="noopener">Imprimir charlistas</a>
+        </div>
+
         {{-- --------------------PESTAÑAS------------------- --}}
         <nav class="pestanas-inscritos" aria-label="Grupos">
             <a class="pestana {{ $grupo === 'hombres' ? 'pestana-activa' : '' }}" href="{{ route('directivos.index', ['sexo' => 'hombres']) }}">Hombres · Retiro {{ $retiro->numero_hombres }} <span>{{ (int) $conteos->hombres }}</span></a>

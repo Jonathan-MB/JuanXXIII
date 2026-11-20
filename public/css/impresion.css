@@ -167,6 +167,8 @@ p {
 .membrete-subtitulo {
     margin-top: 4px;
     font-size: 11pt;
+    /* Reparte las líneas parejo: que el año no quede solo abajo */
+    text-wrap: balance;
 }
 
 

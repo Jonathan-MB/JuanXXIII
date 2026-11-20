@@ -7,7 +7,7 @@
         @php
             //  Como en el Excel de Secretaría: de qué retiro es el conteo
             $deRetiro = $retiro
-                ? 'Retiro ' . $retiro->numero_mujeres . ' M - ' . $retiro->numero_hombres . ' H · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year
+                ? 'Retiro ' . $retiro->numero_mujeres . "\u{00A0}M\u{00A0}-\u{00A0}" . $retiro->numero_hombres . "\u{00A0}H · " . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year
                 : now()->locale('es')->translatedFormat('j \d\e F \d\e Y');
         @endphp
         <section class="pagina">
@@ -32,8 +32,8 @@
                         @foreach ($equipo->articulos as $articulo)
                             <tr>
                                 <td>{{ $articulo->nombre }}{{ $articulo->estado ? ' (' . mb_strtolower($articulo->estado) . ')' : '' }}</td>
-                                <td class="columna-cantidad">{{ $articulo->cantidad }} {{ $articulo->unidad }}</td>
-                                <td class="columna-cantidad">{{ $articulo->por_comprar ? $articulo->por_comprar . ' ' . $articulo->unidad : '' }}</td>
+                                <td class="columna-cantidad">{{ \App\Models\Articulo::cantidadConUnidad($articulo->cantidad, $articulo->unidad) }}</td>
+                                <td class="columna-cantidad">{{ $articulo->por_comprar ? \App\Models\Articulo::cantidadConUnidad($articulo->por_comprar, $articulo->unidad) : '' }}</td>
                                 <td class="columna-conteo"></td>
                                 <td></td>
                             </tr>
@@ -44,7 +44,7 @@
                 @if ($porComprar->isNotEmpty())
                     <p class="resumen-comprar">
                         <strong>Por comprar ({{ $porComprar->count() }}):</strong>
-                        {{ $porComprar->map(fn ($articulo) => $articulo->nombre . ' — ' . $articulo->por_comprar . ' ' . $articulo->unidad)->implode(' · ') }}
+                        {{ $porComprar->map(fn ($articulo) => $articulo->nombre . ' — ' . \App\Models\Articulo::cantidadConUnidad($articulo->por_comprar, $articulo->unidad))->implode(' · ') }}
                     </p>
                 @endif
             @endif
