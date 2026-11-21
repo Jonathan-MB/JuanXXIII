@@ -25,7 +25,7 @@ Correrlas (MySQL de XAMPP encendido):
 cd /c/xampp/htdocs/JuanXXIII && /c/xampp/php/php.exe artisan test
 ```
 
-Debe terminar en `Tests: 38 passed`. Si alguna sale con ⨯, el nombre de la prueba dice qué regla se rompió.
+Debe terminar en `Tests: 39 passed`. Si alguna sale con ⨯, el nombre de la prueba dice qué regla se rompió.
 
 | Archivo | Qué revisa |
 |---|---|
@@ -36,6 +36,7 @@ Debe terminar en `Tests: 38 passed`. Si alguna sale con ⨯, el nombre de la pru
 | `tests/Feature/InscripcionPublicaTest.php` | El formulario público ya no pide dirección ni correo; a quien ya estaba registrado se le conservan los que tenía. |
 | `tests/Feature/SantisimoRepartoTest.php` | Con el retiro andando, el reparto del Santísimo no toca lo que ya pasó ni las franjas de TODOS y respeta las horas prohibidas de cada equipo. |
 | `tests/Feature/AgregarPersonaTest.php` | Secretaría agrega en Llegada a quien llegó sin inscribirse con solo nombres y apellidos (cédula, fecha y talla pueden quedar pendientes y se completan después); no repite a quien ya está en la lista; la inscripción pública sigue pidiendo todos los datos. |
+| `HojasDelRetiroTest` (puertas) | La lista para puertas trae los directivos y el CT y el CA de cada mesa con su ciudad y barrio. |
 
 El escenario de prueba (retiro, cuentas, personas con contactos, padrino y puesto) se arma en `tests/EscenarioRetiro.php`. Para una prueba nueva se copia una de las que existen y se cambia lo que se revisa.
 

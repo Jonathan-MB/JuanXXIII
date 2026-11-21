@@ -103,7 +103,7 @@ class CatalogoImpresiones
             'ruta'        => 'impresiones.puertas',
             'nombre'      => 'Listado de invitados para puertas',
             'cuando'      => 'Todo el retiro · en las puertas',
-            'descripcion' => 'Hombres y mujeres por separado, por mesa y en orden de silla: nombre, ciudad, barrio y padrino. Letra grande, fácil de leer.',
+            'descripcion' => 'Hombres y mujeres por separado: los directivos arriba y, en cada mesa, el CT y el CA y luego los invitados en orden de silla, con ciudad, barrio y padrino. Letra grande.',
         ],
         [
             'ruta'        => 'impresiones.familiares',

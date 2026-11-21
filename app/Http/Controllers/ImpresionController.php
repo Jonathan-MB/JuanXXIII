@@ -389,9 +389,13 @@ class ImpresionController extends Controller
         $sexo   = $this->sexoPedido($request);
 
         return view('impresiones.puertas', [
-            'retiro' => $retiro,
-            'grupos' => $this->porGrupoYMesa($retiro, $sexo),
-            'titulo' => 'Listado de invitados para puertas',
+            'retiro'     => $retiro,
+            'grupos'     => $this->porGrupoYMesa($retiro, $sexo),
+            'rectorados' => $retiro->rectorados()->orderBy('orden')->get()->groupBy('sexo'),
+            //  ?servidores=1: solo directivos y catequistas por mesa, como hoja
+            // aparte para completar una lista que ya se imprimió sin ellos
+            'servidores' => $request->boolean('servidores'),
+            'titulo'     => $request->boolean('servidores') ? 'Directivos y catequistas por mesa' : 'Listado de invitados para puertas',
         ]);
     }
 

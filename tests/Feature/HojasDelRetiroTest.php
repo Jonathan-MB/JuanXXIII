@@ -360,4 +360,21 @@ class HojasDelRetiroTest extends TestCase
         $this->get(route('pagos.imprimir'))->assertOk();
         $this->get(route('impresiones.carta'))->assertRedirect();
     }
+
+
+
+    //  La lista para puertas trae el rectorado del grupo y los catequistas de cada mesa
+    public function test_la_lista_para_puertas_trae_rectorado_y_catequistas(): void
+    {
+        $this->inscrito('Masculino', [], 1, 1);
+        $this->retiro->rectorados()->create(['sexo' => 'Masculino', 'cargo' => 'Catequista rotativo (CR)', 'nombre' => 'Rotativo Prueba', 'orden' => 4]);
+
+        $this->get(route('impresiones.puertas', ['sexo' => 'hombres']))
+            ->assertOk()
+            ->assertSee('Directivos')
+            ->assertSee('Rotativo Prueba')
+            ->assertSee('CT Mesa 1')
+            ->assertSee('CA Mesa 1')
+            ->assertSee('Catequista titular');
+    }
 }

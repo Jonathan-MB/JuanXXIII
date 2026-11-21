@@ -2422,3 +2422,26 @@ p.preguntas-charla {
     padding-top: 0;
     border-top: 0;
 }
+
+/* Lista para puertas: rectorado del grupo y catequistas de cada mesa */
+.caja-rectorado-puertas .cargo-puertas {
+    width: 6.5cm;
+    font-size: 11pt;
+    font-weight: 700;
+    color: #444444;
+}
+
+.fila-catequista-puertas td {
+    border-bottom: 1.5px solid #111111;
+}
+
+.fila-catequista-puertas .nombre-puertas span {
+    margin-left: 0.3cm;
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: #555555;
+}
+
+.caja-rectorado-puertas .ciudad-directivo {
+    width: 5cm;
+}
