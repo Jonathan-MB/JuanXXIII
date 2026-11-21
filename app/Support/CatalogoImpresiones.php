@@ -55,7 +55,7 @@ class CatalogoImpresiones
             'ruta'        => 'impresiones.sacramentos',
             'nombre'      => 'Sacramentos (dinámica)',
             'cuando'      => 'Sábado · en la charla de sacramentos',
-            'descripcion' => 'La tabla de los siete sacramentos: citas, materia, forma, gracia y ministro. Una por invitado, dos por hoja oficio horizontal para cortar.',
+            'descripcion' => 'La tabla de los siete sacramentos: citas, materia, forma, gracia y ministro. Una por invitado, dos por hoja horizontal para cortar. Cabe completa aunque la impresora tenga puesto papel legal y la hoja sea oficio.',
         ],
         [
             'ruta'        => 'impresiones.carta',

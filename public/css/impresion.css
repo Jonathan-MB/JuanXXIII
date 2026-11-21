@@ -2169,10 +2169,14 @@ p.preguntas-charla {
 
 
 /* ----------Sacramentos (dinámica del sábado): oficio horizontal, dos copias para cortar-------------- */
-/* Oficio de 8,5 x 13 pulgadas, el de las impresoras de aquí, con 1 cm de margen igual en los cuatro lados */
+/*  La hoja va en tamaño legal (14 pulgadas), que es lo que la impresora
+   tiene puesto, pero el papel de aquí es oficio de 13: la pulgada que sobra
+   cae al lado izquierdo y se pierde. Por eso todo va en las primeras 13
+   pulgadas desde la derecha, con un margen izquierdo más ancho. Si el papel
+   sí es de 14, solo queda más blanco a la izquierda. */
 @page sacramentos {
-    size: 13in 8.5in;
-    margin: 1cm;
+    size: 14in 8.5in;
+    margin: 1cm 1cm 1cm 3.6cm;
 }
 
 .pagina-sacramentos {
@@ -2187,10 +2191,10 @@ p.preguntas-charla {
 
 @media screen {
     .pagina.pagina-sacramentos {
-        width: 33.02cm;
+        width: 35.56cm;
         min-height: 21.59cm;
         height: auto;
-        padding: 1cm;
+        padding: 1cm 1cm 1cm 3.6cm;
     }
 }
 
