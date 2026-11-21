@@ -2491,16 +2491,20 @@ p.preguntas-charla {
 
 
 /* ----------Lista sencilla: pequeña, dos columnas, para pasar lista-------------- */
-.para-sencilla {
+/* El grupo grande arriba, para no confundir las hojas */
+.grupo-sencilla {
     margin: 0 0 8px;
-    font-size: 11pt;
-    font-weight: 700;
+    font-size: 20pt;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
-.para-sencilla span {
-    display: inline-block;
-    width: 7cm;
-    border-bottom: 1.5px solid #111111;
+.grupo-sencilla span {
+    margin-left: 8px;
+    font-size: 11pt;
+    letter-spacing: 0;
+    text-transform: none;
 }
 
 .columnas-sencilla {

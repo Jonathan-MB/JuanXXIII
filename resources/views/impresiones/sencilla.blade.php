@@ -11,7 +11,7 @@
         <section class="pagina">
             @include('partials.membrete', ['subtitulo' => 'Lista sencilla · Retiro N.º ' . $numero . ' ' . $nombre . ' · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year])
 
-            <p class="para-sencilla">Para: <span></span></p>
+            <p class="grupo-sencilla">{{ $nombre }} <span>Retiro N.º {{ $numero }}</span></p>
 
             <div class="columnas-sencilla">
                 @foreach ($grupo['bloques'] as $bloque)
