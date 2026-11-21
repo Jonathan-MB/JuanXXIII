@@ -120,6 +120,10 @@
                         {{-- El grupo es lo que más importa: va grande; "Solo" o "Bebidas para", pequeño encima --}}
                         <p class="antetitulo-letrero antetitulo-grupo">{{ $clave === 'bebidas' ? 'Bebidas para' : 'Solo' }}</p>
                         <p class="titulo-letrero titulo-gigante">{{ $nombreGrupo }}</p>
+                        @if ($clave === 'bebidas')
+                            {{-- Para saber de quién es cada vaso --}}
+                            <p class="aviso-puesto"><span>Por favor coloca la <strong>mesa</strong></span><span>y la <strong>silla</strong> de tu invitado</span><span class="ejemplo-puesto">M 1 – S 1</span></p>
+                        @endif
                     </div>
                     @include('letreros.pie')
                 </section>

@@ -22,7 +22,7 @@ class LetreroController extends Controller
         'noPapeles'         => ['No arrojar papeles al inodoro', 'Para cada baño.', 'Viernes · al arreglar los baños'],
         'banoFueraServicio' => ['Baño fuera de servicio', 'Para la puerta del baño que no se puede usar.', 'Cuando un baño se daña'],
         'soloGrupo'         => ['Solo hombres / Solo mujeres', 'Dos hojas, sin número de mesa: para marcar baños, cuartos o zonas de cada grupo.', 'Viernes · al arreglar la casa'],
-        'bebidas'           => ['Bebidas para hombres / para mujeres', 'Dos hojas: una para la mesa de bebidas de los hombres y otra para la de las mujeres.', 'Viernes · en las mesas de bebidas'],
+        'bebidas'           => ['Bebidas para hombres / para mujeres', 'Dos hojas: una para la mesa de bebidas de los hombres y otra para la de las mujeres. Piden escribir la mesa y la silla del invitado (M 1 – S 1).', 'Viernes · en las mesas de bebidas'],
         'abreLaCaja'        => ['Abre la caja', 'Cinco hojas: el título, los pasos 1, 2 y 3, y «Lee por favor».', 'Domingo · para la dinámica de la caja'],
         'etiquetasMesa'     => ['Etiquetas de mesa', 'Una hoja de etiquetas pequeñas por mesa, para marcar sobres, cajas y paquetes.', 'Antes del retiro · para sobres y cajas'],
     ];
