@@ -69,7 +69,16 @@ class Persona extends Model
     public function yaHizoRetiro(): bool
     {
         return $this->inscripciones()->where('estado', Inscripcion::TERMINO)->exists()
-            || RetiristaAnterior::where('cedula', $this->cedula)->exists();
+            || ($this->cedula && RetiristaAnterior::where('cedula', $this->cedula)->exists());
+    }
+
+
+
+    //  Años cumplidos a una fecha (la del retiro). Sin fecha de nacimiento
+    // (alguien agregado en la puerta, con datos pendientes) no hay edad.
+    public function edadAl($fecha): ?int
+    {
+        return $this->fecha_nacimiento ? (int) $this->fecha_nacimiento->diffInYears($fecha) : null;
     }
 
 

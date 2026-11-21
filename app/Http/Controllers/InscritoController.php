@@ -103,6 +103,11 @@ class InscritoController extends Controller
         // no admiten nulo en la base), y un contacto del todo vacío no se guarda
         $data['eps']                  = (string) ($data['eps'] ?? '');
         $data['direccion']            = (string) ($data['direccion'] ?? '');
+        $data['celular']              = (string) ($data['celular'] ?? '');
+        $data['barrio']               = (string) ($data['barrio'] ?? '');
+        $data['ciudad']               = (string) ($data['ciudad'] ?? '');
+        $data['cedula']               = ($data['cedula'] ?? '') ?: null;
+        $data['talla_camiseta']       = ($data['talla_camiseta'] ?? '') ?: null;
         $data['contactos_emergencia'] = collect($data['contactos_emergencia'] ?? [])
             ->map(fn ($contacto) => [
                 'nombre'        => (string) ($contacto['nombre'] ?? ''),

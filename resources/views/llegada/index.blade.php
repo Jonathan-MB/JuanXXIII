@@ -47,6 +47,44 @@
                 <li>Oprime <strong>Guardar</strong> (o Enter). Si alguien se va, marca <strong>Se fue</strong>.</li>
             </ol>
 
+            {{-- --------------------AGREGAR PERSONA------------------- --}}
+            {{--  Para quien llega sin haberse inscrito: solo nombres y apellidos
+                 son obligatorios; lo demás se completa después en su fila. --}}
+            <details class="agregar-persona" @if ($errors->any() || old('nombres')) open @endif>
+                <summary class="boton-agregar-persona">+ Agregar persona que llegó sin inscribirse</summary>
+                <form class="formulario-agregar" method="POST" action="{{ route('llegada.agregar') }}">
+                    @csrf
+                    <p class="ayuda-agregar">Solo los <strong>nombres</strong> y los <strong>apellidos</strong> son obligatorios. Lo que no sepas, déjalo en blanco y complétalo después en su fila o en «Más datos».</p>
+                    <div class="campos-agregar">
+                        <label>Grupo
+                            <select name="sexo">
+                                <option value="Masculino" @selected(old('sexo', $sexo) === 'Masculino')>Hombres</option>
+                                <option value="Femenino" @selected(old('sexo', $sexo) === 'Femenino')>Mujeres</option>
+                            </select>
+                        </label>
+                        <label>Nombres *<input type="text" name="nombres" maxlength="60" value="{{ old('nombres') }}" required></label>
+                        <label>Apellidos *<input type="text" name="apellidos" maxlength="60" value="{{ old('apellidos') }}" required></label>
+                        <label>Documento<input type="text" name="cedula" maxlength="20" value="{{ old('cedula') }}"></label>
+                        <label>Fecha de nacimiento<input type="date" name="fechaNacimiento" value="{{ old('fechaNacimiento') }}"></label>
+                        <label>Celular<input type="tel" name="celular" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ old('celular') }}"></label>
+                        <label>Ciudad<input type="text" name="ciudad" maxlength="60" value="{{ old('ciudad', 'Cali') }}"></label>
+                        <label>Barrio<input type="text" name="barrio" maxlength="60" value="{{ old('barrio') }}"></label>
+                        <label>Talla
+                            <select name="tallaCamiseta">
+                                <option value="">—</option>
+                                @foreach (\App\Models\Persona::TALLAS as $talla)
+                                    <option value="{{ $talla }}" @selected(old('tallaCamiseta') === $talla)>{{ $talla }}</option>
+                                @endforeach
+                            </select>
+                        </label>
+                    </div>
+                    @if ($errors->any())
+                        <p class="error-agregar">{{ $errors->first() }}</p>
+                    @endif
+                    <button type="submit" class="boton-azul">Agregar a la lista</button>
+                </form>
+            </details>
+
             @if ($inscritosGrupo->isEmpty())
                 <p class="texto-vacio">No hay inscritos en este grupo.</p>
             @else
@@ -97,18 +135,19 @@
                                         <input class="campo-fila" form="{{ $form }}" type="text" name="apellidos" maxlength="60" value="{{ $persona->apellidos }}" required placeholder="Apellidos" aria-label="Apellidos de {{ $persona->nombres }}">
                                     </td>
                                     <td class="celda-doble" data-titulo="Documento y celular">
-                                        <input class="campo-fila campo-documento" form="{{ $form }}" type="text" name="cedula" maxlength="20" value="{{ $persona->cedula }}" required placeholder="Documento" aria-label="Documento de {{ $persona->nombres }}">
+                                        <input class="campo-fila campo-documento" form="{{ $form }}" type="text" name="cedula" maxlength="20" value="{{ $persona->cedula }}" placeholder="Documento" aria-label="Documento de {{ $persona->nombres }}">
                                         <input class="campo-fila campo-documento" form="{{ $form }}" type="tel" name="celular" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $persona->celular }}" placeholder="Celular" aria-label="Celular de {{ $persona->nombres }}">
                                     </td>
                                     <td class="celda-doble" data-titulo="Nacimiento y talla">
-                                        <input class="campo-fila campo-fecha" form="{{ $form }}" type="date" name="fechaNacimiento" value="{{ $persona->fecha_nacimiento->format('Y-m-d') }}" required aria-label="Fecha de nacimiento de {{ $persona->nombres }}">
+                                        <input class="campo-fila campo-fecha" form="{{ $form }}" type="date" name="fechaNacimiento" value="{{ $persona->fecha_nacimiento?->format('Y-m-d') }}" aria-label="Fecha de nacimiento de {{ $persona->nombres }}">
                                         <div class="talla-edad">
                                             <select class="campo-fila campo-talla" form="{{ $form }}" name="tallaCamiseta" aria-label="Talla de camiseta de {{ $persona->nombres }}">
+                                                <option value="" @selected(! $persona->talla_camiseta)>—</option>
                                                 @foreach (\App\Models\Persona::TALLAS as $talla)
                                                     <option value="{{ $talla }}" @selected($persona->talla_camiseta === $talla)>{{ $talla }}</option>
                                                 @endforeach
                                             </select>
-                                            <span class="edad-fila"><span data-edad>{{ (int) $persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</span> años</span>
+                                            <span class="edad-fila"><span data-edad>{{ $persona->edadAl($retiro->fecha_inicio) ?? '—' }}</span> años</span>
                                         </div>
                                     </td>
                                     <td class="celda-doble celda-lugar" data-titulo="Ciudad y barrio">

@@ -363,7 +363,7 @@ class ImpresionController extends Controller
             ->whereNotNull('mesa_id')
             ->groupBy(fn ($inscrito) => $inscrito->persona->sexo)
             ->map(function ($delGrupo) {
-                $porTalla = $delGrupo->countBy(fn ($inscrito) => $inscrito->persona->talla_camiseta);
+                $porTalla = $delGrupo->countBy(fn ($inscrito) => $inscrito->persona->talla_camiseta ?: 'Sin talla');
 
                 // Primero las tallas conocidas en orden; si llega otra, al final
                 return collect(Persona::TALLAS)->mapWithKeys(fn ($talla) => [$talla => $porTalla[$talla] ?? 0])

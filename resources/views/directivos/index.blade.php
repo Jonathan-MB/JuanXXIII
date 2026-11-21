@@ -57,7 +57,7 @@
                                 <td>{{ $inscrito->persona->nombre_completo }}</td>
                                 <td>{{ $inscrito->persona->ciudad }} / {{ $inscrito->persona->barrio }}</td>
                                 <td>{{ $inscrito->persona->celular }}</td>
-                                <td>{{ (int) $inscrito->persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</td>
+                                <td>{{ $inscrito->persona->edadAl($retiro->fecha_inicio) ?? '—' }}</td>
                                 <td>{{ $inscrito->mesa ? 'Mesa ' . $inscrito->mesa->numero . ' · Silla ' . $inscrito->silla : '—' }}</td>
                                 <td><span class="chip {{ $inscrito->estado === 'confirmado' ? 'chip-azul' : 'chip-gris' }}">{{ $inscrito->nombre_estado }}</span></td>
                             </tr>

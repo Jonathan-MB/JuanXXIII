@@ -64,7 +64,7 @@
                                 <td><a class="enlace-inscrito" href="{{ route('inscritos.show', $inscrito) }}">{{ $inscrito->persona->nombre_completo }}</a></td>
                                 <td>{{ $inscrito->persona->cedula }}</td>
                                 <td>{{ $inscrito->persona->celular }}</td>
-                                <td>{{ (int) $inscrito->persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</td>
+                                <td>{{ $inscrito->persona->edadAl($retiro->fecha_inicio) ?? '—' }}</td>
                                 <td>@include('partials.chipPago', ['inscrito' => $inscrito])</td>
                                 <td><span class="chip {{ $inscrito->estado === 'confirmado' ? 'chip-azul' : 'chip-gris' }}">{{ $inscrito->nombre_estado }}</span></td>
                             </tr>

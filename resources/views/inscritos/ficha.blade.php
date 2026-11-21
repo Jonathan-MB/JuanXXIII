@@ -76,8 +76,8 @@
         <section class="bloque-ficha">
             <h2 class="titulo-bloque-ficha">Datos personales</h2>
             <dl class="datos-ficha">
-                <dt>Cédula</dt><dd>{{ $persona->cedula }}</dd>
-                <dt>Nacimiento</dt><dd>{{ $persona->fecha_nacimiento->format('d/m/Y') }} ({{ (int) $persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }} años)</dd>
+                <dt>Cédula</dt><dd>{{ $persona->cedula ?: 'Pendiente' }}</dd>
+                <dt>Nacimiento</dt><dd>@if ($persona->fecha_nacimiento){{ $persona->fecha_nacimiento->format('d/m/Y') }} ({{ $persona->edadAl($retiro->fecha_inicio) }} años)@else Pendiente @endif</dd>
                 <dt>Celular</dt><dd>{{ $persona->celular }}</dd>
                 <dt>Correo</dt><dd>{{ $persona->correo ?? '—' }}</dd>
                 <dt>Dirección</dt><dd>{{ $persona->direccion ?: '—' }}</dd>
@@ -92,7 +92,7 @@
             <dl class="datos-ficha">
                 <dt>EPS</dt><dd>{{ $persona->eps }}</dd>
                 <dt>Medicamentos</dt><dd>{{ $persona->medicamentos ?: 'No toma' }}</dd>
-                <dt>Talla</dt><dd>{{ $persona->talla_camiseta }}</dd>
+                <dt>Talla</dt><dd>{{ $persona->talla_camiseta ?: 'Pendiente' }}</dd>
                 <dt>Sacramentos</dt><dd>{{ $sacramentos->isEmpty() ? 'Ninguno' : $sacramentos->join(', ', ' y ') }}</dd>
             </dl>
         </section>

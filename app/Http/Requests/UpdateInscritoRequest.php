@@ -22,7 +22,7 @@ class UpdateInscritoRequest extends StoreInscripcionRequest
             ->all();
 
         $personaId        = $this->route('inscripcion')->persona_id;
-        $reglas['cedula'] = ['required', 'string', 'min:4', 'max:20', 'regex:/^[0-9A-Za-z]+$/', Rule::unique('personas', 'cedula')->ignore($personaId)];
+        $reglas['cedula'] = ['nullable', 'string', 'min:4', 'max:20', 'regex:/^[0-9A-Za-z]+$/', Rule::unique('personas', 'cedula')->ignore($personaId)];
 
         //  Secretaría corrige datos que llegaron incompletos (el formulario
         // antiguo no los pedía): se puede guardar sin correo, sin dirección, sin EPS y con
@@ -30,6 +30,13 @@ class UpdateInscritoRequest extends StoreInscripcionRequest
         // admite letras por los pasaportes.
         $reglas['correo']                            = ['nullable', 'email', 'max:100'];
         $reglas['direccion']                         = ['nullable', 'string', 'max:100'];
+
+        //  A quien llegó sin inscribirse le pueden faltar estos; se completan en la verificación
+        $reglas['fecha_nacimiento'] = ['nullable', 'date', 'before:today'];
+        $reglas['celular']          = ['nullable', 'string', 'min:7', 'max:20', 'regex:/^[0-9]+$/'];
+        $reglas['barrio']           = ['nullable', 'string', 'max:60'];
+        $reglas['ciudad']           = ['nullable', 'string', 'max:60'];
+        $reglas['talla_camiseta']   = ['nullable', Rule::in(\App\Models\Persona::TALLAS)];
         $reglas['eps']                               = ['nullable', 'string', 'max:60'];
         $reglas['contactos_emergencia']              = ['nullable', 'array', 'max:2'];
         $reglas['contactos_emergencia.*.nombre']     = ['nullable', 'string', 'max:100'];

@@ -25,12 +25,12 @@ class CorregirDatosRequest extends FormRequest
         return [
             'nombres'          => ['required', 'string', 'max:60'],
             'apellidos'        => ['required', 'string', 'max:60'],
-            'cedula'           => ['required', 'string', 'min:4', 'max:20', 'regex:/^[0-9A-Za-z]+$/', Rule::unique('personas', 'cedula')->ignore($this->route('inscripcion')->persona_id)],
-            'fecha_nacimiento' => ['required', 'date', 'before:today'],
+            'cedula'           => ['nullable', 'string', 'min:4', 'max:20', 'regex:/^[0-9A-Za-z]+$/', Rule::unique('personas', 'cedula')->ignore($this->route('inscripcion')->persona_id)],
+            'fecha_nacimiento' => ['nullable', 'date', 'before:today'],
             'celular'          => ['nullable', 'string', 'min:7', 'max:20', 'regex:/^[0-9]+$/'],
             'ciudad'           => ['nullable', 'string', 'max:60'],
             'barrio'           => ['nullable', 'string', 'max:60'],
-            'talla_camiseta'   => ['required', Rule::in(Persona::TALLAS)],
+            'talla_camiseta'   => ['nullable', Rule::in(Persona::TALLAS)],
 
             //  Pueden quedar a medias: muchos llegaron así del formulario antiguo
             'contactos'              => ['required', 'array', 'size:2'],
@@ -51,12 +51,12 @@ class CorregirDatosRequest extends FormRequest
         $this->merge([
             'nombres'          => trim((string) $this->nombres),
             'apellidos'        => trim((string) $this->apellidos),
-            'cedula'           => Persona::normalizarCedula($this->cedula),
+            'cedula'           => Persona::normalizarCedula($this->cedula) ?: null,
             'fecha_nacimiento' => $this->fechaNacimiento,
             'celular'          => (string) Persona::normalizarTelefono($this->celular),
             'ciudad'           => trim((string) $this->ciudad),
             'barrio'           => trim((string) $this->barrio),
-            'talla_camiseta'   => $this->tallaCamiseta,
+            'talla_camiseta'   => $this->tallaCamiseta ?: null,
             'contactos'        => collect($this->contactos ?? [])->map(fn ($contacto) => [
                 'nombre'     => trim((string) ($contacto['nombre'] ?? '')),
                 'parentesco' => trim((string) ($contacto['parentesco'] ?? '')),

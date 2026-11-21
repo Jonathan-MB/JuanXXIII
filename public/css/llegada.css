@@ -850,3 +850,73 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* ----------Agregar persona que llegó sin inscribirse-------------- */
+.agregar-persona {
+    margin-bottom: 14px;
+    border: 1px dashed #1c2f5e;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.boton-agregar-persona {
+    padding: 12px 16px;
+    color: #1c2f5e;
+    font-weight: 800;
+    cursor: pointer;
+    list-style: none;
+}
+
+.boton-agregar-persona::-webkit-details-marker {
+    display: none;
+}
+
+.agregar-persona[open] .boton-agregar-persona {
+    border-bottom: 1px solid #dde2ec;
+}
+
+.formulario-agregar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px 16px;
+}
+
+.ayuda-agregar {
+    font-size: 14px;
+    color: #5b6479;
+}
+
+.campos-agregar {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 10px 12px;
+    width: 100%;
+}
+
+.campos-agregar label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #5b6479;
+}
+
+.campos-agregar input,
+.campos-agregar select {
+    min-height: 40px;
+    padding: 6px 10px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    color: #13224a;
+}
+
+.error-agregar {
+    color: #c0392b;
+    font-weight: 700;
+}

@@ -59,15 +59,15 @@
             <div class="linea-formulario">
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="cedula">Cédula</label>
-                    <input type="text" name="cedula" id="cedula" maxlength="20" value="{{ old('cedula', $persona->cedula) }}" required>
+                    <input type="text" name="cedula" id="cedula" maxlength="20" value="{{ old('cedula', $persona->cedula) }}">
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="fechaNacimiento">Fecha de nacimiento</label>
-                    <input type="date" name="fechaNacimiento" id="fechaNacimiento" value="{{ old('fechaNacimiento', $persona->fecha_nacimiento->format('Y-m-d')) }}" required>
+                    <input type="date" name="fechaNacimiento" id="fechaNacimiento" value="{{ old('fechaNacimiento', $persona->fecha_nacimiento?->format('Y-m-d')) }}">
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="celular">Celular</label>
-                    <input type="tel" inputmode="numeric" data-solo-numeros name="celular" id="celular" maxlength="20" value="{{ old('celular', $persona->celular) }}" required>
+                    <input type="tel" inputmode="numeric" data-solo-numeros name="celular" id="celular" maxlength="20" value="{{ old('celular', $persona->celular) }}">
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="correo">Correo</label>
@@ -81,11 +81,11 @@
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="barrio">Barrio</label>
-                    <input type="text" name="barrio" id="barrio" maxlength="60" value="{{ old('barrio', $persona->barrio) }}" required>
+                    <input type="text" name="barrio" id="barrio" maxlength="60" value="{{ old('barrio', $persona->barrio) }}">
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="ciudad">Ciudad</label>
-                    <input type="text" name="ciudad" id="ciudad" maxlength="60" value="{{ old('ciudad', $persona->ciudad) }}" required>
+                    <input type="text" name="ciudad" id="ciudad" maxlength="60" value="{{ old('ciudad', $persona->ciudad) }}">
                 </div>
             </div>
         </fieldset>
@@ -113,7 +113,8 @@
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="tallaCamiseta">Talla</label>
-                    <select name="tallaCamiseta" id="tallaCamiseta" required>
+                    <select name="tallaCamiseta" id="tallaCamiseta">
+                        <option value="">— Pendiente —</option>
                         @foreach (\App\Models\Persona::TALLAS as $talla)
                             <option value="{{ $talla }}" {{ old('tallaCamiseta', $persona->talla_camiseta) === $talla ? 'selected' : '' }}>{{ $talla }}</option>
                         @endforeach

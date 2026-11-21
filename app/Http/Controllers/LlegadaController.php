@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\PuestoOcupado;
+use App\Http\Requests\AgregarPersonaRequest;
 use App\Http\Requests\CorregirDatosRequest;
 use App\Models\ContactoEmergencia;
 use App\Models\Inscripcion;
 use App\Models\Mesa;
+use App\Models\Persona;
 use App\Models\Retiro;
+use App\Models\RetiristaAnterior;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -66,6 +69,73 @@ class LlegadaController extends Controller
             compact('retiro', 'sexo', 'mesas', 'llegaron', 'faltan', 'seFueron', 'esUltimoDia', 'porTerminar'),
             ['inscritosGrupo' => $grupo]
         ));
+    }
+
+
+
+    //  Agregar persona: quien llega sin haberse inscrito entra a la lista
+    // con lo poco que se sepa. Lo demás se completa después en su fila o
+    // en «Más datos». Si ya estaba registrada (por su cédula), se usa esa
+    // misma persona y solo se llenan los datos que le faltaban.
+    public function agregar(AgregarPersonaRequest $request)
+    {
+        $retiro = Retiro::actual();
+        $datos  = $request->validated();
+        $grupo  = $datos['sexo'] === 'Femenino' ? 'mujeres' : 'hombres';
+        $volver = redirect()->route('llegada.index', ['sexo' => $grupo]);
+
+        if (! $retiro) {
+            return $volver->with('error', 'No hay un retiro próximo.');
+        }
+
+        $persona = $datos['cedula'] ? Persona::where('cedula', $datos['cedula'])->first() : null;
+
+        if ($persona && $persona->inscripciones()->where('retiro_id', $retiro->id)->exists()) {
+            return $volver->withInput()->with('error', 'Esa cédula ya está en la lista: es de ' . $persona->nombre_completo . '. Búscala arriba.');
+        }
+
+        if ($persona ? $persona->yaHizoRetiro() : ($datos['cedula'] && RetiristaAnterior::where('cedula', $datos['cedula'])->exists())) {
+            return $volver->withInput()->with('error', 'Esa cédula ya vivió el retiro Juan XXIII. El retiro se vive una sola vez.');
+        }
+
+        //  Las columnas que no admiten vacío en la base van en blanco
+        $nuevos = [
+            'nombres'          => $datos['nombres'],
+            'apellidos'        => $datos['apellidos'],
+            'sexo'             => $datos['sexo'],
+            'cedula'           => $datos['cedula'],
+            'fecha_nacimiento' => $datos['fecha_nacimiento'],
+            'celular'          => (string) $datos['celular'],
+            'ciudad'           => (string) $datos['ciudad'],
+            'barrio'           => (string) $datos['barrio'],
+            'talla_camiseta'   => $datos['talla_camiseta'],
+        ];
+
+        $inscripcion = DB::transaction(function () use ($persona, $nuevos, $retiro) {
+            if ($persona) {
+                // Ya registrada: no se le borra nada, solo se llena lo que faltaba
+                foreach ($nuevos as $campo => $valor) {
+                    if (($persona->$campo === null || $persona->$campo === '') && $valor !== null && $valor !== '') {
+                        $persona->$campo = $valor;
+                    }
+                }
+                $persona->save();
+            } else {
+                $persona = Persona::create($nuevos + ['direccion' => '', 'eps' => '']);
+            }
+
+            return Inscripcion::create([
+                'estado'             => Inscripcion::INSCRITO,
+                'forma_pago'         => 'Por confirmar',
+                'tiene_padrino'      => false,
+                'acepta_datos'       => false,
+                'declara_requisitos' => false,
+                'persona_id'         => $persona->id,
+                'retiro_id'          => $retiro->id,
+            ]);
+        });
+
+        return $volver->with('mensajeCreado', $inscripcion->persona->nombre_completo . ' quedó en la lista. Escríbele la mesa y la silla, y completa sus datos cuando se pueda.');
     }
 
 
@@ -255,7 +325,7 @@ class LlegadaController extends Controller
 
         return response()->json([
             'mensaje' => $mensaje,
-            'edad'    => (int) $persona->fecha_nacimiento->diffInYears($inscripcion->retiro->fecha_inicio),
+            'edad'    => $persona->edadAl($inscripcion->retiro->fecha_inicio) ?? '—',
             'buscar'  => mb_strtolower($persona->nombre_completo . ' ' . $persona->cedula . ' ' . $inscripcion->padrino_nombre),
             'puesto'  => $inscripcion->mesa_id !== null,
         ]);
