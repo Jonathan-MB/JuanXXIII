@@ -76,44 +76,6 @@
     border-left-color: #c0392b;
 }
 
-.formulario-puesto {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-}
-
-.casilla-puesto {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #5b6479;
-}
-
-.casilla-puesto input {
-    width: 64px;
-    min-height: 44px;
-    padding: 8px;
-    border: 1px solid #c9d1e3;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 16px;
-    font-weight: 700;
-    text-align: center;
-    color: #13224a;
-}
-
-.formulario-puesto .boton-secundario {
-    min-height: 44px;
-    padding: 8px 14px;
-}
-
-.formulario-un-clic {
-    margin: 0;
-}
 
 .aviso-saldo {
     margin-top: 4px;
@@ -219,8 +181,7 @@
     vertical-align: middle;
 }
 
-.fila-puesto[hidden],
-.fila-editar[hidden] {
+.fila-puesto[hidden] {
     display: none;
 }
 
@@ -228,73 +189,6 @@
     background: #f1faf4;
 }
 
-.boton-llego {
-    min-height: 44px;
-    padding: 8px 18px;
-}
-
-.boton-deshacer {
-    min-height: 28px;
-    font-size: 12px;
-}
-
-.boton-editar-datos {
-    display: block;
-    margin-top: 4px;
-    padding: 4px 10px;
-    border: 1px solid #c9d1e3;
-    border-radius: 6px;
-    background: #ffffff;
-    color: #1c2f5e;
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.boton-editar-datos[aria-expanded="true"] {
-    border-color: #1c2f5e;
-    background: #1c2f5e;
-    color: #ffffff;
-}
-
-/* ----------Editar datos: debajo de la persona, a todo el ancho-------------- */
-.fila-editar > td {
-    background: #fffbea;
-    border-bottom: 2px solid #f4c20d;
-}
-
-.formulario-corregir {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 10px 12px;
-    margin: 0;
-}
-
-.formulario-corregir label {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #5b6479;
-}
-
-.formulario-corregir input {
-    min-height: 42px;
-    padding: 6px 10px;
-    border: 1px solid #c9d1e3;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 15px;
-    color: #13224a;
-}
-
-.acciones-corregir {
-    display: flex;
-    align-items: flex-end;
-    gap: 14px;
-}
 
 .boton-texto {
     min-height: 36px;
@@ -543,7 +437,7 @@
 
     .tabla-puestos .fila-puesto {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 6px 10px;
         margin-bottom: 10px;
         padding: 12px;
@@ -570,25 +464,220 @@
         color: #8a92a6;
     }
 
-    .tabla-puestos .celda-nombre,
+    .tabla-puestos .celda-contacto,
     .tabla-puestos .celda-llegada,
-    .tabla-puestos .celda-puesto {
+    .tabla-puestos .celda-guardar {
         grid-column: 1 / -1;
     }
+}
 
-    .tabla-puestos .celda-nombre .enlace-inscrito {
-        font-size: 16px;
-        font-weight: 800;
+
+/* ----------Cada invitado: una fila lista para corregir-------------- */
+.tabla-puestos {
+    min-width: 1120px;
+    font-size: 14px;
+}
+
+.tabla-puestos th,
+.tabla-puestos td {
+    padding: 5px 4px;
+}
+
+.tabla-puestos th small {
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #8a92a6;
+}
+
+/* Nombres y apellidos con espacio para leerse completos */
+.tabla-puestos td:nth-child(1),
+.tabla-puestos td:nth-child(2) {
+    min-width: 140px;
+}
+
+.tabla-puestos th {
+    white-space: nowrap;
+}
+
+
+
+/* Las casillas parecen texto hasta que se pasa el mouse o se escriben */
+.campo-fila {
+    width: 100%;
+    min-width: 0;
+    min-height: 34px;
+    padding: 4px 7px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: #f4f6fb;
+    font-family: inherit;
+    font-size: 14px;
+    color: #13224a;
+}
+
+.campo-fila:hover {
+    border-color: #c9d1e3;
+}
+
+.campo-fila:focus {
+    outline: none;
+    border-color: #1c2f5e;
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(28, 47, 94, 0.15);
+}
+
+.campo-fila::placeholder {
+    color: #a3abbd;
+}
+
+.campo-fila.campo-con-error {
+    border-color: #c0392b;
+    background: #fdecea;
+}
+
+.campo-documento {
+    width: 104px;
+}
+
+.campo-fecha {
+    width: 128px;
+}
+
+.campo-numero {
+    width: 50px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.edad-fila {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #5b6479;
+}
+
+.celda-contacto {
+    min-width: 320px;
+}
+
+.contacto-linea {
+    display: grid;
+    grid-template-columns: 1.75fr 0.8fr 1fr;
+    gap: 4px;
+}
+
+.contacto-linea + .contacto-linea {
+    margin-top: 4px;
+}
+
+.celda-mesa-silla {
+    white-space: nowrap;
+}
+
+.celda-llegada {
+    min-width: 92px;
+}
+
+.boton-llego {
+    min-height: 36px;
+    padding: 6px 14px;
+}
+
+.boton-deshacer {
+    min-height: 24px;
+    font-size: 12px;
+}
+
+.celda-guardar {
+    min-width: 96px;
+    text-align: center;
+}
+
+.formulario-fila,
+.formulario-llego {
+    margin: 0;
+}
+
+.boton-guardar-fila {
+    min-height: 34px;
+    padding: 6px 14px;
+    border: 0;
+    border-radius: 8px;
+    background: #1c2f5e;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.boton-guardar-fila:disabled {
+    background: #e3e7f0;
+    color: #8a93a8;
+    cursor: default;
+}
+
+.enlace-mas-datos {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #1c2f5e;
+}
+
+.mensaje-fila {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.mensaje-ok {
+    color: #1f7a45;
+}
+
+.mensaje-error {
+    max-width: 160px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #c0392b;
+}
+
+/* Con cambios sin guardar, la fila queda en amarillo hasta guardar */
+.fila-puesto.fila-cambiada > td {
+    background: #fff8dc;
+}
+
+.fila-puesto.fila-cambiada .boton-guardar-fila {
+    background: #f4c20d;
+    color: #13224a;
+}
+
+.fila-puesto.fila-guardada > td {
+    background: #e3f5e9;
+    transition: background 0.3s;
+}
+
+@media (max-width: 760px) {
+    .tabla-puestos {
+        min-width: 0;
     }
 
-    .tabla-puestos .fila-editar:not([hidden]) {
-        display: block;
-        margin: -6px 0 10px;
+    .tabla-puestos td:nth-child(1),
+    .tabla-puestos td:nth-child(2),
+    .celda-contacto,
+    .celda-llegada,
+    .celda-guardar {
+        min-width: 0;
     }
 
-    .tabla-puestos .fila-editar > td {
-        display: block;
-        padding: 12px;
-        border-radius: 0 0 12px 12px;
+    .campo-documento,
+    .campo-fecha {
+        width: 100%;
+    }
+
+    .celda-guardar {
+        text-align: left;
     }
 }

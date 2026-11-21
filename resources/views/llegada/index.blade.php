@@ -42,17 +42,17 @@
             </div>
 
             <ol class="pasos-llegada">
-                <li>Busca a la persona por su nombre o su cédula.</li>
+                <li>Busca a la persona por su nombre o su documento.</li>
                 <li>Cuando llegue, oprime <strong>Llegó</strong>.</li>
-                <li>Escribe su <strong>mesa</strong> y su <strong>silla</strong> y oprime <strong>Guardar</strong>.</li>
-                <li>Si un dato está mal, oprime <strong>Editar datos</strong>. Para cualquier otro dato (correo, dirección, EPS, talla, sacramentos, medicamentos, pago o padrino), ahí mismo está <strong>Todos los datos</strong>.</li>
+                <li>Corrige lo que haga falta y escribe la <strong>mesa</strong> y la <strong>silla</strong> ahí mismo, en su fila.</li>
+                <li>Oprime <strong>Guardar</strong> (o Enter). Lo demás (celular, EPS, talla, padrino…) está en <strong>Más datos</strong>.</li>
             </ol>
 
             @if ($inscritosGrupo->isEmpty())
                 <p class="texto-vacio">No hay inscritos en este grupo.</p>
             @else
                 <div class="filtros-llegada">
-                    <input class="buscador buscador-puestos" type="search" id="buscar-puesto" placeholder="Buscar por nombre, cédula o padrino…" aria-label="Buscar invitado" autofocus>
+                    <input class="buscador buscador-puestos" type="search" id="buscar-puesto" placeholder="Buscar por nombre, documento o padrino…" aria-label="Buscar invitado" autofocus>
                     <div class="botones-filtro" role="group" aria-label="Mostrar">
                         <button type="button" class="boton-filtro boton-filtro-activo" data-filtro="todos">Todos</button>
                         <button type="button" class="boton-filtro" data-filtro="faltan">Faltan por llegar</button>
@@ -61,85 +61,67 @@
                 </div>
                 <p class="texto-vacio" id="puestos-sin-resultados" hidden>Nadie coincide con la búsqueda.</p>
 
+                {{--  Una fila por invitado, ya lista para corregir: cada casilla se
+                     escribe directo y «Guardar» la guarda toda sin recargar la
+                     página. Los campos van atados al formulario de la última
+                     casilla con el atributo form. --}}
                 <div class="contenedor-tabla contenedor-llegada">
                     <table class="tabla-general tabla-puestos">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>Cédula</th>
-                                <th>Edad</th>
-                                <th>Padrino</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Documento</th>
+                                <th>Nacimiento</th>
+                                <th>Contactos de emergencia <small>(nombre · parentesco · celular)</small></th>
+                                <th>Mesa · Silla</th>
                                 <th>Llegada</th>
-                                <th>Mesa y silla</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- Primero quienes faltan por llegar o no tienen puesto --}}
+                            {{-- Primero quienes no tienen puesto --}}
                             @foreach ($inscritosGrupo->sortBy(fn ($inscrito) => [$inscrito->mesa_id ? 1 : 0, $inscrito->mesa?->numero, $inscrito->silla]) as $inscrito)
                                 @php
-                                    $persona = $inscrito->persona;
+                                    $persona   = $inscrito->persona;
+                                    $form      = 'fila-' . $inscrito->id;
+                                    $contactos = $inscrito->contactosEmergencia->sortBy('id')->values();
                                 @endphp
                                 <tr class="fila-puesto {{ $inscrito->llegada_en ? 'fila-llego' : '' }}"
                                     data-buscar="{{ mb_strtolower($persona->nombre_completo . ' ' . $persona->cedula . ' ' . $inscrito->padrino_nombre) }}"
                                     data-llego="{{ $inscrito->llegada_en ? 1 : 0 }}"
-                                    data-puesto="{{ $inscrito->mesa_id ? 1 : 0 }}">
-                                    <td class="celda-nombre">
-                                        <a class="enlace-inscrito" href="{{ route('inscritos.show', $inscrito) }}">{{ $persona->nombre_completo }}</a>
-                                        <button type="button" class="boton-editar-datos" data-editar="editar-{{ $inscrito->id }}" aria-expanded="false">Editar datos</button>
+                                    data-puesto="{{ $inscrito->mesa_id ? 1 : 0 }}"
+                                    data-form="{{ $form }}">
+                                    <td data-titulo="Nombres"><input class="campo-fila" form="{{ $form }}" type="text" name="nombres" maxlength="60" value="{{ $persona->nombres }}" required aria-label="Nombres"></td>
+                                    <td data-titulo="Apellidos"><input class="campo-fila" form="{{ $form }}" type="text" name="apellidos" maxlength="60" value="{{ $persona->apellidos }}" required aria-label="Apellidos de {{ $persona->nombres }}"></td>
+                                    <td data-titulo="Documento"><input class="campo-fila campo-documento" form="{{ $form }}" type="text" name="cedula" maxlength="20" value="{{ $persona->cedula }}" required aria-label="Documento de {{ $persona->nombres }}"></td>
+                                    <td data-titulo="Nacimiento">
+                                        <input class="campo-fila campo-fecha" form="{{ $form }}" type="date" name="fechaNacimiento" value="{{ $persona->fecha_nacimiento->format('Y-m-d') }}" required aria-label="Fecha de nacimiento de {{ $persona->nombres }}">
+                                        <span class="edad-fila"><span data-edad>{{ (int) $persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</span> años</span>
                                     </td>
-                                    <td class="dato-sin-salto" data-titulo="Cédula">{{ $persona->cedula }}</td>
-                                    <td data-titulo="Edad">{{ (int) $persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</td>
-                                    <td data-titulo="Padrino">{{ $inscrito->tiene_padrino ? $inscrito->padrino_nombre : '—' }}</td>
-                                    <td class="celda-llegada">
-                                        @if ($inscrito->llegada_en)
-                                            <span class="chip chip-verde">Llegó {{ $inscrito->llegada_en->format('g:i a') }}</span>
-                                            <form method="POST" action="{{ route('llegada.deshacer', $inscrito) }}" class="formulario-confirmar" data-confirmar="¿Deshacer la llegada de {{ $persona->nombres }}? Su puesto se conserva.">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="boton-texto boton-deshacer">Deshacer</button>
-                                            </form>
-                                        @else
-                                            <form method="POST" action="{{ route('llegada.marcar', $inscrito) }}" class="formulario-un-clic">
-                                                @csrf
-                                                <button type="submit" class="boton-amarillo boton-llego">Llegó</button>
-                                            </form>
-                                            @if ($inscrito->estado_pago !== 'completo')
-                                                <p class="aviso-saldo">Le falta {{ '$' . number_format($inscrito->saldo, 0, ',', '.') }}</p>
-                                            @endif
-                                        @endif
+                                    {{-- Un renglón por contacto: nombre, parentesco y celular --}}
+                                    <td class="celda-contacto" data-titulo="Contactos de emergencia">
+                                        @foreach ([0, 1] as $c)
+                                            <div class="contacto-linea">
+                                                <input class="campo-fila" form="{{ $form }}" type="text" name="contactos[{{ $c }}][nombre]" maxlength="100" value="{{ $contactos[$c]->nombre ?? '' }}" placeholder="Contacto {{ $c + 1 }}" aria-label="Contacto {{ $c + 1 }} de {{ $persona->nombres }}: nombre">
+                                                <input class="campo-fila" form="{{ $form }}" type="text" name="contactos[{{ $c }}][parentesco]" maxlength="45" value="{{ $contactos[$c]->parentesco ?? '' }}" placeholder="Parentesco" aria-label="Contacto {{ $c + 1 }}: parentesco">
+                                                <input class="campo-fila" form="{{ $form }}" type="tel" name="contactos[{{ $c }}][celular]" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $contactos[$c]->celular ?? '' }}" placeholder="Celular" aria-label="Contacto {{ $c + 1 }}: celular">
+                                            </div>
+                                        @endforeach
                                     </td>
-                                    <td class="celda-puesto">@include('llegada.puesto', ['inscrito' => $inscrito])</td>
-                                </tr>
-
-                                {{-- Se abre con "Editar datos": los mismos datos de la hoja de mesa --}}
-                                <tr class="fila-editar" id="editar-{{ $inscrito->id }}" hidden>
-                                    <td colspan="6">
-                                        <form class="formulario-corregir" method="POST" action="{{ route('llegada.datos', $inscrito) }}">
+                                    <td class="celda-mesa-silla" data-titulo="Mesa y silla">
+                                        <input class="campo-fila campo-numero" form="{{ $form }}" type="number" name="mesa" min="1" max="99" inputmode="numeric" value="{{ $inscrito->mesa?->numero }}" placeholder="M" aria-label="Mesa de {{ $persona->nombres }}">
+                                        <input class="campo-fila campo-numero" form="{{ $form }}" type="number" name="silla" min="1" max="{{ \App\Models\Mesa::MAXIMO_SILLAS }}" inputmode="numeric" value="{{ $inscrito->silla }}" placeholder="S" aria-label="Silla de {{ $persona->nombres }}">
+                                    </td>
+                                    <td class="celda-llegada" data-titulo="Llegada">@include('llegada.celdaLlegada')</td>
+                                    <td class="celda-guardar">
+                                        <form id="{{ $form }}" class="formulario-fila" method="POST" action="{{ route('llegada.datos', $inscrito) }}">
                                             @csrf
                                             @method('PATCH')
-                                            <label>Nombres<input type="text" name="nombres" maxlength="60" value="{{ $persona->nombres }}" required></label>
-                                            <label>Apellidos<input type="text" name="apellidos" maxlength="60" value="{{ $persona->apellidos }}" required></label>
-                                            <label>Cédula<input type="text" name="cedula" maxlength="20" value="{{ $persona->cedula }}" required></label>
-                                            <label>Fecha de nacimiento<input type="date" name="fechaNacimiento" value="{{ $persona->fecha_nacimiento->format('Y-m-d') }}" required></label>
-                                            <label>Celular<input type="tel" name="celular" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $persona->celular }}" required></label>
-                                            <label>Ciudad<input type="text" name="ciudad" maxlength="60" value="{{ $persona->ciudad }}" required></label>
-                                            <label>Barrio<input type="text" name="barrio" maxlength="60" value="{{ $persona->barrio }}" required></label>
-                                            <label>Padrino de retiro <small>(vacío = sin padrino)</small><input type="text" name="padrino" maxlength="100" value="{{ $inscrito->tiene_padrino ? $inscrito->padrino_nombre : '' }}"></label>
-                                            <label>Teléfono del padrino<input type="tel" name="padrinoTelefono" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $inscrito->tiene_padrino ? $inscrito->padrino_telefono : '' }}"></label>
-                                            @php
-                                                $contactosPersona = $inscrito->contactosEmergencia->sortBy('id')->values();
-                                            @endphp
-                                            @foreach ([0, 1] as $c)
-                                                <label>Contacto {{ $c + 1 }} · nombre<input type="text" name="contactos[{{ $c }}][nombre]" maxlength="100" value="{{ $contactosPersona[$c]->nombre ?? '' }}"></label>
-                                                <label>Parentesco<input type="text" name="contactos[{{ $c }}][parentesco]" maxlength="45" value="{{ $contactosPersona[$c]->parentesco ?? '' }}"></label>
-                                                <label>Celular<input type="tel" name="contactos[{{ $c }}][celular]" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $contactosPersona[$c]->celular ?? '' }}"></label>
-                                            @endforeach
-                                            <div class="acciones-corregir">
-                                                <button type="submit" class="boton-azul">Guardar datos</button>
-                                                <a class="boton-secundario" href="{{ route('inscritos.edit', ['inscripcion' => $inscrito, 'volver' => 'llegada']) }}">Todos los datos</a>
-                                                <button type="button" class="boton-texto" data-cerrar="editar-{{ $inscrito->id }}">Cancelar</button>
-                                            </div>
+                                            <button type="submit" class="boton-guardar-fila">Guardar</button>
                                         </form>
+                                        <a class="enlace-mas-datos" href="{{ route('inscritos.edit', ['inscripcion' => $inscrito, 'volver' => 'llegada']) }}">Más datos</a>
+                                        <p class="mensaje-fila" role="status" hidden></p>
                                     </td>
                                 </tr>
                             @endforeach

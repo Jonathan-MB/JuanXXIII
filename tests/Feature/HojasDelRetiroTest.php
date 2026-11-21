@@ -48,36 +48,71 @@ class HojasDelRetiroTest extends TestCase
 
 
 
-    public function test_editar_datos_en_llegada_corrige_contactos_sin_perder_el_fijo(): void
+    public function test_la_fila_de_llegada_guarda_datos_contactos_y_puesto_sin_recargar(): void
     {
-        $juan     = $this->inscrito('Masculino', [], 1, 1);
-        $persona  = $juan->persona;
-        $primero  = $juan->contactosEmergencia()->orderBy('id')->first();
+        $juan    = $this->inscrito('Masculino', [], 1, 1);
+        $persona = $juan->persona;
+        $primero = $juan->contactosEmergencia()->orderBy('id')->first();
 
-        $this->patch(route('llegada.datos', $juan), [
+        $this->getJson(route('llegada.index'))->assertOk();
+        $this->get(route('llegada.index'))->assertOk()->assertSee('name="contactos[1][celular]"', false)->assertSee('Más datos');
+
+        $this->patchJson(route('llegada.datos', $juan), [
             'nombres'         => 'Juan Carlos',
             'apellidos'       => $persona->apellidos,
-            'cedula'          => $persona->cedula,
-            'fechaNacimiento' => '1990-05-10',
-            'celular'         => '310 555 1234',
-            'ciudad'          => 'Jamundí',
-            'barrio'          => 'Centro',
-            'padrino'         => 'Nuevo Padrino',
-            'padrinoTelefono' => '3159998877',
+            'cedula'          => '1.130.456.221',
+            'fechaNacimiento' => '1985-05-10',
             'contactos'       => [
-                ['nombre' => 'Rosa Corregida', 'parentesco' => 'Esposa', 'celular' => '3001112233'],
+                ['nombre' => 'Rosa Corregida', 'parentesco' => 'Esposa', 'celular' => '300 111 2233'],
                 ['nombre' => 'Luis Corregido', 'parentesco' => 'Hijo', 'celular' => '3004445566'],
             ],
-        ])->assertSessionHas('mensajeActualizado');
+            'mesa'            => 4,
+            'silla'           => 2,
+        ])->assertOk()->assertJsonPath('puesto', true)->assertJsonStructure(['mensaje', 'edad', 'buscar']);
 
-        $this->assertSame('Juan Carlos', $persona->refresh()->nombres);
-        $this->assertSame('3105551234', $persona->celular);
-        $this->assertSame('3159998877', $juan->refresh()->padrino_telefono);
+        $persona->refresh();
+        $this->assertSame('Juan Carlos', $persona->nombres);
+        $this->assertSame('1130456221', $persona->cedula);
+        $this->assertSame('1985-05-10', $persona->fecha_nacimiento->format('Y-m-d'));
+        $this->assertSame(4, $juan->refresh()->mesa->numero);
+        $this->assertSame(2, (int) $juan->silla);
 
         $primero->refresh();
         $this->assertSame('Rosa Corregida', $primero->nombre);
+        $this->assertSame('3001112233', $primero->celular);
         $this->assertSame('6025555555', $primero->telefono_fijo, 'El fijo que dio al inscribirse no se pierde');
         $this->assertSame(2, $juan->contactosEmergencia()->count());
+    }
+
+
+
+    public function test_si_el_puesto_esta_ocupado_la_fila_no_guarda_nada(): void
+    {
+        $pedro = $this->inscrito('Masculino', [], 1, 1);
+        $juan  = $this->inscrito('Masculino', [], 1, 2);
+
+        $this->patchJson(route('llegada.datos', $juan), [
+            'nombres'         => 'Otro Nombre',
+            'apellidos'       => $juan->persona->apellidos,
+            'cedula'          => $juan->persona->cedula,
+            'fechaNacimiento' => '1990-05-10',
+            'contactos'       => [['nombre' => 'A'], ['nombre' => 'B']],
+            'mesa'            => 1,
+            'silla'           => 1,
+        ])->assertStatus(422)->assertJsonPath('errors.mesa.0', 'La mesa 1, silla 1 ya es de ' . $pedro->persona->nombre_completo . '.');
+
+        $this->assertNotSame('Otro Nombre', $juan->persona->refresh()->nombres);
+        $this->assertSame(2, (int) $juan->refresh()->silla);
+    }
+
+
+
+    public function test_llego_se_marca_sin_recargar(): void
+    {
+        $maria = $this->inscrito('Femenino', ['inscripcion' => ['estado' => \App\Models\Inscripcion::CONFIRMADO]]);
+
+        $this->postJson(route('llegada.marcar', $maria))->assertOk()->assertJsonFragment(['mensaje' => $maria->persona->nombre_completo . ' llegó.'])->assertSee('Deshacer');
+        $this->assertNotNull($maria->refresh()->llegada_en);
     }
 
 
@@ -218,13 +253,12 @@ class HojasDelRetiroTest extends TestCase
             'apellidos'       => $persona->apellidos,
             'cedula'          => 'XP123456',
             'fechaNacimiento' => '1990-05-10',
-            'celular'         => '3105551234',
-            'ciudad'          => 'Cali',
-            'barrio'          => 'Centro',
             'contactos'       => [
                 ['nombre' => 'Jaime Pérez', 'parentesco' => '', 'celular' => ''],
                 ['nombre' => '', 'parentesco' => '', 'celular' => ''],
             ],
+            'mesa'            => 1,
+            'silla'           => 1,
         ])->assertSessionHasNoErrors()->assertSessionHas('mensajeActualizado');
 
         $this->assertSame(['Jaime Pérez'], $juan->contactosEmergencia()->pluck('nombre')->all());
