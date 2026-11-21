@@ -1,55 +1,64 @@
 @include('partials.headImpresion')
 
-    {{--  Hombres y mujeres nunca se mezclan: con «Ambos» sale primero la hoja de
-         hombres y después la de mujeres. Trae retiristas, directivos y catequistas --}}
-    @foreach ($grupos as $sexo => $filas)
-        @php
-            $numero = $sexo === 'Femenino' ? $retiro->numero_mujeres : $retiro->numero_hombres;
-            $nombre = $sexo === 'Femenino' ? 'Mujeres' : 'Hombres';
-            $faltan = $sinFecha[$sexo] ?? collect();
-        @endphp
-        <section class="pagina">
-            @include('partials.membrete', ['subtitulo' => 'Cumpleaños · Retiro N.º ' . $numero . ' ' . $nombre . ' · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year])
+    {{--  Una sola lista con hombres y mujeres juntos, en orden de fecha:
+         retiristas, directivos y catequistas. Al final, renglones en blanco
+         para escribir a mano a quien falte --}}
+    @php
+        $grupoTexto = match ($sexo) {
+            'Masculino' => 'Retiro N.º ' . $retiro->numero_hombres . ' Hombres',
+            'Femenino'  => 'Retiro N.º ' . $retiro->numero_mujeres . ' Mujeres',
+            default     => 'Retiro ' . $retiro->numero_hombres . ' Hombres y ' . $retiro->numero_mujeres . ' Mujeres',
+        };
+        $inicioRetiro = $retiro->fecha_inicio->copy()->startOfDay();
+        $finRetiro    = $retiro->fecha_fin->copy()->startOfDay();
+    @endphp
+    <section class="pagina">
+        @include('partials.membrete', ['subtitulo' => 'Cumpleaños · ' . $grupoTexto . ' · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year])
 
-            <p class="ayuda-cumpleanos">
-                Quienes cumplen años del <strong>{{ $desde->locale('es')->translatedFormat('j \d\e F') }}</strong> al <strong>{{ $hasta->locale('es')->translatedFormat('j \d\e F') }}</strong>
-                ({{ \App\Http\Controllers\ImpresionController::DIAS_CUMPLEANOS }} días antes y {{ \App\Http\Controllers\ImpresionController::DIAS_CUMPLEANOS }} días después del retiro).
-                Los marcados con ★ cumplen durante el retiro.
-            </p>
+        <p class="grupo-sencilla titulo-cumpleanos">Cumpleaños</p>
 
-            @if ($filas->isEmpty())
-                <p class="vacio-cumpleanos">Nadie de {{ mb_strtolower($nombre) }} cumple años en estos días.</p>
-            @else
-                <table class="tabla-impresion tabla-cumpleanos">
-                    <thead>
-                        <tr>
-                            <th class="columna-fecha-cumple">Día</th>
-                            <th>Nombre</th>
-                            <th>Quién es</th>
-                            <th class="columna-anios-cumple">Cumple</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($filas as $fila)
-                            @php $enRetiro = $fila['fecha']->between($retiro->fecha_inicio->copy()->startOfDay(), $retiro->fecha_fin->copy()->startOfDay()); @endphp
-                            <tr class="{{ $enRetiro ? 'cumple-en-retiro' : '' }}">
-                                <td class="columna-fecha-cumple">{{ $enRetiro ? '★ ' : '' }}{{ ucfirst($fila['fecha']->locale('es')->translatedFormat('D j M')) }}</td>
-                                <td class="nombre-cumple">{{ $fila['nombre'] }}</td>
-                                <td>{{ $fila['quien'] }}</td>
-                                <td class="columna-anios-cumple">{{ $fila['anios'] }} años</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
+        <p class="ayuda-cumpleanos">
+            Quienes cumplen años del <strong>{{ $desde->locale('es')->translatedFormat('j \d\e F') }}</strong> al <strong>{{ $hasta->locale('es')->translatedFormat('j \d\e F') }}</strong>
+            ({{ \App\Http\Controllers\ImpresionController::DIAS_CUMPLEANOS }} días antes y {{ \App\Http\Controllers\ImpresionController::DIAS_CUMPLEANOS }} días después del retiro).
+            Los marcados con ★ cumplen durante el retiro.
+        </p>
 
-            <p class="pie-lista">{{ $filas->count() }} {{ $filas->count() === 1 ? 'persona' : 'personas' }} · impreso el {{ now()->format('d/m/Y g:i a') }}</p>
+        <table class="tabla-impresion tabla-cumpleanos">
+            <thead>
+                <tr>
+                    <th class="columna-fecha-cumple">Día</th>
+                    <th>Nombre</th>
+                    <th>Quién es</th>
+                    <th class="columna-grupo-cumple">Grupo</th>
+                    <th class="columna-anios-cumple">Cumple</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($filas as $fila)
+                    @php $enRetiro = $fila['fecha']->between($inicioRetiro, $finRetiro); @endphp
+                    <tr class="{{ $enRetiro ? 'cumple-en-retiro' : '' }}">
+                        <td class="columna-fecha-cumple">{{ $enRetiro ? '★ ' : '' }}{{ ucfirst($fila['fecha']->locale('es')->translatedFormat('D j M')) }}</td>
+                        <td class="nombre-cumple">{{ $fila['nombre'] }}</td>
+                        <td>{{ $fila['quien'] }}</td>
+                        <td class="columna-grupo-cumple">{{ $fila['sexo'] === 'Femenino' ? 'Mujeres' : 'Hombres' }}</td>
+                        <td class="columna-anios-cumple">{{ $fila['anios'] }} años</td>
+                    </tr>
+                @endforeach
+                {{-- En blanco, para escribir a mano a quien no esté --}}
+                @for ($renglon = 0; $renglon < 8; $renglon++)
+                    <tr class="renglon-cumple">
+                        <td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                @endfor
+            </tbody>
+        </table>
 
-            {{-- Para completar en Mesas o en Datos para imprimir --}}
-            @if ($faltan->isNotEmpty())
-                <p class="falta-cumpleanos">Sin cumpleaños anotado (directivos y catequistas): {{ $faltan->pluck('nombre')->join(', ') }}.</p>
-            @endif
-        </section>
-    @endforeach
+        <p class="pie-lista">{{ $filas->count() }} {{ $filas->count() === 1 ? 'persona' : 'personas' }} · impreso el {{ now()->format('d/m/Y g:i a') }}</p>
+
+        {{-- Para completar en Mesas o en Datos para imprimir --}}
+        @if ($sinFecha->isNotEmpty())
+            <p class="falta-cumpleanos">Sin cumpleaños anotado (directivos y catequistas): {{ $sinFecha->join(', ') }}.</p>
+        @endif
+    </section>
 
 @include('partials.footerImpresion')

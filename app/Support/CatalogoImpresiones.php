@@ -115,7 +115,7 @@ class CatalogoImpresiones
             'ruta'        => 'impresiones.cumpleanos',
             'nombre'      => 'Cumpleaños',
             'cuando'      => 'Todo el retiro · para saludarlos',
-            'descripcion' => 'Retiristas, directivos y catequistas que cumplen años desde 5 días antes hasta 5 días después del retiro, en orden de fecha y con los años que cumplen. Los de los días del retiro van resaltados. Hombres y mujeres por separado.',
+            'descripcion' => 'Retiristas, directivos y catequistas que cumplen años desde 5 días antes hasta 5 días después del retiro, en orden de fecha y con los años que cumplen. Los de los días del retiro van resaltados. Hombres y mujeres juntos, con renglones en blanco al final para agregar a mano.',
         ],
         [
             'ruta'        => 'impresiones.familiares',

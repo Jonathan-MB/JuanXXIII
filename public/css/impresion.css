@@ -2556,3 +2556,18 @@ p.preguntas-charla {
     white-space: nowrap;
     font-weight: 700;
 }
+
+.columna-grupo-cumple {
+    width: 2cm;
+    text-align: center;
+}
+
+/* Renglones en blanco para escribir a mano */
+.renglon-cumple td {
+    height: 0.8cm;
+}
+
+.titulo-cumpleanos {
+    font-size: 26pt;
+    text-align: center;
+}

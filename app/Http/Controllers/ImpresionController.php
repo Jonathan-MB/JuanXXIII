@@ -530,17 +530,17 @@ class ImpresionController extends Controller
             ])->filter(fn ($par) => $par[0] && ! $par[1])->map(fn ($par) => ['sexo' => $mesa->sexo, 'nombre' => $par[0]])))
             ->groupBy('sexo');
 
-        //  Siempre hombres primero y luego mujeres, cada grupo en su hoja
-        $grupos = collect($sexo ? [$sexo] : ['Masculino', 'Femenino'])
-            ->mapWithKeys(fn ($grupo) => [$grupo => $filas->where('sexo', $grupo)->sortBy([
-                fn ($a, $b) => $a['fecha'] <=> $b['fecha'],
-                fn ($a, $b) => strcmp($a['nombre'], $b['nombre']),
-            ])->values()]);
+        //  Hombres y mujeres juntos en una sola lista, en orden de fecha
+        $filas = $filas->sortBy([
+            fn ($a, $b) => $a['fecha'] <=> $b['fecha'],
+            fn ($a, $b) => strcmp($a['nombre'], $b['nombre']),
+        ])->values();
 
         return view('impresiones.cumpleanos', [
             'retiro'   => $retiro,
-            'grupos'   => $grupos,
-            'sinFecha' => $sinFecha,
+            'sexo'     => $sexo,
+            'filas'    => $filas,
+            'sinFecha' => $sinFecha->flatten(1)->pluck('nombre'),
             'desde'    => $desde,
             'hasta'    => $hasta,
             'titulo'   => 'Cumpleaños',

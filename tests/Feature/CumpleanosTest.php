@@ -72,8 +72,8 @@ class CumpleanosTest extends TestCase
             ->assertSee('Sin cumpleaños anotado')
             ->assertSee('Vicerrector Sin Fecha')
             ->assertSee('Auxiliar Sin Fecha')
-            //  Hombres primero, después mujeres
-            ->assertSeeInOrder(['Retiro N.º 90 Hombres', 'Rector Inventado', 'Retiro N.º 89 Mujeres', 'Cumple Cinco después']);
+            //  Hombres y mujeres juntos, en orden de fecha, y renglones en blanco al final
+            ->assertSeeInOrder(['Rector Inventado', 'Cumple En el retiro', 'Catequista Inventado', 'Cumple Cinco después', 'renglon-cumple'], false);
 
         //  La Hoja 3 trae los datos del catequista que ya están en Mesas
         $mesa->update(['titular_celular' => '3009998877', 'titular_ciudad' => 'Palmira', 'titular_barrio' => 'Barrio Inventado']);
