@@ -306,6 +306,21 @@ class ImpresionController extends Controller
 
 
 
+    //  Lista sencilla: solo nombre, mesa y silla, y una casilla, para pasar
+    // lista en floristería, secretaría y sobres. En orden alfabético.
+    public function sencilla(Request $request)
+    {
+        $retiro = $this->retiroOFallar();
+
+        return view('impresiones.sencilla', [
+            'retiro' => $retiro,
+            'grupos' => $this->enOrdenAlfabetico($retiro, $this->sexoPedido($request)),
+            'titulo' => 'Lista sencilla',
+        ]);
+    }
+
+
+
     //  Lista de llamado ("relación de invitados" de la carpeta del
     // rector(a)): con ella se llama a cada invitado a sala. Va antes de
     // dar las mesas, así que salen todos los de la lista en orden
@@ -918,7 +933,7 @@ class ImpresionController extends Controller
     // puesto: para las listas de antes de dar las mesas (llegada y llamado).
     private function enOrdenAlfabetico(Retiro $retiro, ?string $sexo): Collection
     {
-        return Inscripcion::with('persona')
+        return Inscripcion::with(['persona', 'mesa'])
             ->select('inscripcions.*')
             ->where('inscripcions.retiro_id', $retiro->id)
             ->whereNotIn('inscripcions.estado', Inscripcion::ESTADOS_FUERA)

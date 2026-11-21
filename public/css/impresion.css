@@ -2488,3 +2488,45 @@ p.preguntas-charla {
     font-size: 8.5pt;
     color: #444444;
 }
+
+
+/* ----------Lista sencilla: pequeña, dos columnas, para pasar lista-------------- */
+.para-sencilla {
+    margin: 0 0 8px;
+    font-size: 11pt;
+    font-weight: 700;
+}
+
+.para-sencilla span {
+    display: inline-block;
+    width: 7cm;
+    border-bottom: 1.5px solid #111111;
+}
+
+.columnas-sencilla {
+    display: flex;
+    gap: 0.5cm;
+    align-items: flex-start;
+}
+
+.tabla-sencilla {
+    flex: 1;
+    width: 50%;
+}
+
+.tabla-sencilla th,
+.tabla-sencilla td {
+    padding: 2px 4px;
+    font-size: 9pt;
+}
+
+.tabla-sencilla .casilla-papel {
+    width: 0.4cm;
+    height: 0.4cm;
+}
+
+.puesto-sencilla {
+    width: 1.4cm;
+    text-align: center;
+    white-space: nowrap;
+}

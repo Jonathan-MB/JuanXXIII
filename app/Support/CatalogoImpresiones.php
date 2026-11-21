@@ -106,6 +106,12 @@ class CatalogoImpresiones
             'descripcion' => 'Hombres y mujeres por separado: los directivos arriba y, en cada mesa, el CT y el CA y luego los invitados en orden de silla, con ciudad, barrio y padrino. Letra grande.',
         ],
         [
+            'ruta'        => 'impresiones.sencilla',
+            'nombre'      => 'Lista sencilla · floristería, secretaría, sobres',
+            'cuando'      => 'Todo el retiro · para pasar lista',
+            'descripcion' => 'Una lista sencilla para pasar lista en floristería, secretaría y sobres: solo el nombre, la mesa y la silla, y una casilla para marcar. Pequeña, en orden alfabético y en dos columnas por hoja.',
+        ],
+        [
             'ruta'        => 'impresiones.cumpleanos',
             'nombre'      => 'Cumpleaños',
             'cuando'      => 'Todo el retiro · para saludarlos',
