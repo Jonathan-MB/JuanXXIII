@@ -62,4 +62,19 @@ class BuscadorTest extends TestCase
         $this->get(route('impresiones.mesasEnBlanco', ['sexo' => 'hombres']))->assertOk()->assertSee('Fecha de nacimiento');
         $this->get(route('impresiones.correcciones', ['sexo' => 'hombres']))->assertOk()->assertSee('Fecha de nacimiento');
     }
+
+
+
+    //  «cesar», «CÉSAR» y «César» encuentran a la misma persona
+    public function test_buscar_personas_no_distingue_tildes_ni_mayusculas(): void
+    {
+        $this->actingAs($this->usuario());
+        $cesar = $this->inscrito('Masculino', ['persona' => ['nombres' => 'César', 'apellidos' => 'Muñoz']]);
+        $this->inscrito('Masculino', ['persona' => ['nombres' => 'Pedro', 'apellidos' => 'Gómez']]);
+
+        foreach (['cesar', 'CÉSAR', 'César', 'CESAR', 'munoz', 'cesar muñoz'] as $texto) {
+            $this->get(route('inscritos.index', ['busqueda' => $texto]))->assertOk()->assertSee('César Muñoz')->assertDontSee('Pedro Gómez');
+            $this->get(route('pagos.index', ['busqueda' => $texto]))->assertOk()->assertSee('César Muñoz');
+        }
+    }
 }

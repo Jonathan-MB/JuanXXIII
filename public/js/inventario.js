@@ -5,12 +5,16 @@ const tarjetas     = document.querySelectorAll('.tarjeta-articulo');
 const sinResultado = document.getElementById('sin-resultados');
 let filtroActual   = 'todos';
 
+//  «César», «CESAR» y «cesar» son lo mismo al buscar: sin tildes y en minúscula
+const sinTildes = (texto) => String(texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+
 function aplicarFiltros() {
-    const texto  = buscador ? buscador.value.trim().toLowerCase() : '';
+    const texto  = buscador ? sinTildes(buscador.value.trim()) : '';
     let visibles = 0;
 
     tarjetas.forEach((tarjeta) => {
-        const coincide = tarjeta.dataset.nombre.includes(texto)
+        const coincide = sinTildes(tarjeta.dataset.nombre).includes(texto)
             && (filtroActual === 'todos' || tarjeta.dataset.comprar === '1');
 
         tarjeta.hidden = ! coincide;

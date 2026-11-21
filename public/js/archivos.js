@@ -45,15 +45,19 @@ document.getElementById('formulario-subir').addEventListener('submit', (evento) 
 
 // ============ BUSCAR ============
 
+//  «César», «CESAR» y «cesar» son lo mismo al buscar: sin tildes y en minúscula
+const sinTildes = (texto) => String(texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+
 const buscarArchivo = document.getElementById('buscar-archivo');
 
 if (buscarArchivo) {
     buscarArchivo.addEventListener('input', () => {
-        const texto = buscarArchivo.value.trim().toLowerCase();
+        const texto = sinTildes(buscarArchivo.value.trim());
         let visibles = 0;
 
         document.querySelectorAll('.fila-archivo').forEach((fila) => {
-            const coincide = fila.dataset.buscar.includes(texto);
+            const coincide = sinTildes(fila.dataset.buscar).includes(texto);
             fila.hidden = ! coincide;
             if (coincide) {
                 visibles++;

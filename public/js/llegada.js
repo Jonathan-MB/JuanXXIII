@@ -219,6 +219,10 @@ document.querySelectorAll('.formulario-se-fue').forEach((formulario) => {
 //  Filtra la tabla mientras se escribe (nombre, apellidos, documento y
 // padrino) y según el botón elegido: todos, los que faltan por llegar
 // (sin mesa y silla) o los que se fueron.
+//  «César», «CESAR» y «cesar» son lo mismo al buscar: sin tildes y en minúscula
+const sinTildes = (texto) => String(texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+
 const buscarPuesto = document.getElementById('buscar-puesto');
 let filtro         = 'todos';
 
@@ -239,12 +243,12 @@ function pasaFiltro(fila) {
 
 
 function filtrarInvitados() {
-    const texto = buscarPuesto.value.trim().toLowerCase();
+    const texto = sinTildes(buscarPuesto.value.trim());
     let visibles = 0;
 
     document.querySelectorAll('.fila-puesto').forEach((fila) => {
         // Una fila con cambios sin guardar no se esconde
-        const mostrar = fila.classList.contains('fila-cambiada') || (fila.dataset.buscar.includes(texto) && pasaFiltro(fila));
+        const mostrar = fila.classList.contains('fila-cambiada') || (sinTildes(fila.dataset.buscar).includes(texto) && pasaFiltro(fila));
         fila.hidden = ! mostrar;
 
         if (mostrar) {
