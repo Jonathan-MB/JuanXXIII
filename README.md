@@ -9,8 +9,10 @@ Hecha en Laravel 12 (PHP 8.2+ y MariaDB/MySQL).
 1. `composer install`
 2. Copiar `.env.example` a `.env` y ajustar la base de datos.
 3. `php artisan key:generate`
-4. `php artisan migrate --seed` (solo en una instalación nueva **sin datos**; para recuperar la de Secretaría, ver [RESPALDO.md](RESPALDO.md))
+4. `php artisan migrate --seed` (solo en una instalación nueva **sin datos**; para recuperar la de Secretaría, ver [RESPALDO.md](RESPALDO.md)). En la terminal de Git, agregar `< /dev/null` al final si se queda esperando.
 5. `php artisan retiro:crear-admin` para la primera cuenta de administración.
+
+Para usarla durante el retiro (Llegada, agregar a quien llega sin inscribirse, impresiones, Santísimo), ver [GUIA.md](GUIA.md).
 
 Para publicarla en Hostinger, ver [DESPLIEGUE.md](DESPLIEGUE.md).
 

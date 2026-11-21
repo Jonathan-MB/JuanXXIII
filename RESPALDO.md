@@ -36,4 +36,5 @@ Desde el 20 de noviembre de 2026, la base `juanxxiii` de Secretaría tiene datos
 
 - no correr `DatosPruebaSeeder`, `migrate:fresh` ni `db:seed` sobre ella;
 - `php artisan datos-prueba:quitar` ya no hace falta allí;
-- antes de un cambio grande, sacar una copia (`mysqldump`) en `C:\JuanXXIII-documentos\respaldos-locales\`, que no se sube.
+- antes de un cambio grande, sacar una copia (`mysqldump`) en `C:\JuanXXIII-documentos\respaldos-locales\`, que no se sube;
+- después de bajar código nuevo (`git pull`), aplicar los cambios de la base con `php artisan migrate --force < /dev/null`: solo agrega lo nuevo y no borra datos. El 21 de noviembre de 2026 se aplicó así la que permite dejar pendientes la cédula, la fecha de nacimiento y la talla de quien Secretaría agrega en Llegada.
