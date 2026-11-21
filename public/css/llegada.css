@@ -963,3 +963,29 @@
     gap: 8px;
     margin: 14px 0 0;
 }
+
+.imagen-nombre-mesa {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.imagen-nombre-mesa img {
+    width: 34px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.subir-imagen-santo {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1c2f5e;
+    cursor: pointer;
+}
+
+.subir-imagen-santo input {
+    max-width: 110px;
+    font-size: 11px;
+}

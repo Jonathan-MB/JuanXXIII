@@ -12,10 +12,10 @@
     <p class="texto-ayuda texto-ayuda-mesas">
         El nombre (santo) de cada mesa según su número. Casi nunca cambia, así que sirve para todos los retiros:
         cuando se crea una mesa sin nombre, ya llega con el de aquí. Si agregan una mesa nueva, escribe su santo en el renglón de su número.
-        Dejar un renglón vacío quita ese nombre.
+        Dejar un renglón vacío quita ese nombre. La imagen sale en los rótulos de mesa; si un santo nuevo no tiene imagen, súbela aquí (JPG o PNG).
     </p>
 
-    <form method="POST" action="{{ route('mesas.guardarNombres') }}">
+    <form method="POST" action="{{ route('mesas.guardarNombres') }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -25,13 +25,23 @@
                     <h2 class="titulo-bloque-datos">{{ $grupo }}</h2>
                     <table class="tabla-general tabla-nombres-mesa">
                         <thead>
-                            <tr><th>Mesa</th><th>Nombre</th></tr>
+                            <tr><th>Mesa</th><th>Nombre</th><th>Imagen</th></tr>
                         </thead>
                         <tbody>
                             @foreach ($filas[$sexo] as $numero => $nombre)
                                 <tr>
                                     <td class="numero-nombre-mesa"><label for="nombre-{{ $sexo }}-{{ $numero }}">{{ $numero }}</label></td>
                                     <td><input type="text" id="nombre-{{ $sexo }}-{{ $numero }}" name="nombres[{{ $sexo }}][{{ $numero }}]" maxlength="60" value="{{ old('nombres.' . $sexo . '.' . $numero, $nombre) }}" placeholder="{{ $sexo === 'Femenino' ? 'Santa…' : 'San…' }}"></td>
+                                    <td class="imagen-nombre-mesa">
+                                        @php $imagenSanto = \App\Models\NombreMesa::urlImagen($nombre); @endphp
+                                        @if ($imagenSanto)
+                                            <img src="{{ $imagenSanto }}" alt="{{ $nombre }}">
+                                        @endif
+                                        <label class="subir-imagen-santo">
+                                            {{ $imagenSanto ? 'Cambiar' : 'Subir' }}
+                                            <input type="file" name="imagenes[{{ $sexo }}][{{ $numero }}]" accept="image/jpeg,image/png,image/webp">
+                                        </label>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

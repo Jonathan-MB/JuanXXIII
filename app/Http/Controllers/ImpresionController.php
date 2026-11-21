@@ -805,6 +805,41 @@ class ImpresionController extends Controller
 
 
 
+    //  Rótulos de mesa para pegar en la madera (30 × 4,4 cm): por cada mesa,
+    // una cara con el santo (imagen y nombre) y otra con «Mesa N.º». Dos
+    // mesas por hoja oficio horizontal, para cortar. Salen las mesas del
+    // retiro; si aún no hay, las de Nombres de mesas. ?mesas=1,3: solo esas.
+    public function rotulosMesa(Request $request)
+    {
+        $retiro  = Retiro::actual();
+        $sexo    = $this->sexoPedido($request);
+        $pedidas = $this->numerosPedidos((string) $request->mesas);
+
+        $grupos = collect($sexo ? [$sexo] : ['Masculino', 'Femenino'])->mapWithKeys(function ($grupo) use ($retiro, $pedidas) {
+            $catalogo = \App\Models\NombreMesa::where('sexo', $grupo)->orderBy('numero')->pluck('nombre', 'numero');
+            $delRetiro = $retiro ? $retiro->mesas()->where('sexo', $grupo)->orderBy('numero')->pluck('nombre', 'numero') : collect();
+
+            $numeros = $pedidas ?: ($delRetiro->isNotEmpty() ? $delRetiro->keys()->all() : $catalogo->keys()->all());
+
+            $mesas = collect($numeros)->sort()->values()->map(function ($numero) use ($catalogo, $delRetiro) {
+                $nombre = ($delRetiro[$numero] ?? null) ?: ($catalogo[$numero] ?? null);
+
+                return ['numero' => $numero, 'nombre' => $nombre, 'imagen' => \App\Models\NombreMesa::urlImagen($nombre)];
+            });
+
+            return [$grupo => $mesas];
+        })->filter(fn ($mesas) => $mesas->isNotEmpty());
+
+        return view('impresiones.rotulosMesa', [
+            'retiro' => $retiro,
+            'grupos' => $grupos,
+            'estilo' => 'css/rotulosMesa.css',
+            'titulo' => 'Rótulos de mesa',
+        ]);
+    }
+
+
+
     //  Hoja carta para escribir cartas a mano: membrete con el logo, marca de
     // agua suave y renglones tenues (?renglones=0, sin renglones). No depende
     // del retiro. ?cantidad: cuántas hojas (1 a 50).

@@ -36,6 +36,8 @@ En **Mesas › Nombres de mesas** se guarda el santo de cada mesa según su núm
 - cuando se crea una mesa sin nombre (en Llegada al escribir el puesto, o con «+ Agregar mesa»), ya llega con el nombre de su número;
 - si se agrega una mesa nueva, se escribe su santo en el renglón de su número; dejar un renglón vacío quita ese nombre;
 - la casilla «Poner también estos nombres…» se los pone de una vez a las mesas del retiro actual que están sin nombre (no cambia las que ya tienen).
+- Cada nombre puede tener su **imagen**: los diez santos de este retiro ya traen una (de dominio público). Para un santo nuevo, se sube con «Subir» en su renglón.
+- **Impresiones › Rótulos de mesa (santo y número)** saca las tiras de 30 × 4,4 cm para pegar en la madera de cada mesa: una cara con la imagen y el nombre del santo y la otra con «Mesa N.º». Van dos mesas por hoja oficio horizontal, con líneas punteadas para cortar. Como la Hoja de sacramentos, está hecha para la impresora de Secretaría (papel de 13 pulgadas aunque la impresora diga 14). Con `?mesas=1,3` salen solo esas mesas.
 
 ## Buscar personas
 

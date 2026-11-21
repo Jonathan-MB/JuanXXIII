@@ -68,6 +68,37 @@ class NombresMesaTest extends TestCase
 
 
 
+    public function test_los_rotulos_traen_santo_imagen_y_numero(): void
+    {
+        NombreMesa::create(['sexo' => 'Femenino', 'numero' => 1, 'nombre' => 'Santa Clara']);
+        NombreMesa::create(['sexo' => 'Femenino', 'numero' => 2, 'nombre' => 'Santa Inventada']);
+
+        //  Sin mesas en el retiro: salen las de Nombres de mesas. Santa Clara trae imagen de la app; la inventada no
+        $this->get(route('impresiones.rotulosMesa', ['sexo' => 'mujeres']))
+            ->assertOk()
+            ->assertSeeInOrder(['Santa Clara', 'Mesa <span>N.º 1</span>', 'Santa Inventada', 'Mesa <span>N.º 2</span>'], false)
+            ->assertSee('img/santos/santa-clara.jpg', false)
+            ->assertSee('sin-imagen', false);
+    }
+
+
+
+    public function test_se_sube_la_imagen_de_un_santo_nuevo(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake();
+
+        $this->put(route('mesas.guardarNombres'), [
+            'nombres'  => ['Masculino' => [9 => 'San Inventado']],
+            'imagenes' => ['Masculino' => [9 => new \Illuminate\Http\UploadedFile(public_path('img/santos/san-marcos.jpg'), 'santo.jpg', 'image/jpeg', null, true)]],
+        ])->assertRedirect(route('mesas.nombres'));
+
+        \Illuminate\Support\Facades\Storage::assertExists('santos/san-inventado.jpg');
+        $this->assertSame(route('mesas.imagenSanto', 'san-inventado'), NombreMesa::urlImagen('San Inventado'));
+        $this->get(route('mesas.imagenSanto', 'san-inventado'))->assertOk();
+    }
+
+
+
     public function test_puede_poner_el_nombre_a_las_mesas_de_este_retiro_que_no_tienen(): void
     {
         $sinNombre = Mesa::create(['retiro_id' => $this->retiro->id, 'sexo' => 'Femenino', 'numero' => 5, 'cantidad_sillas' => 8]);

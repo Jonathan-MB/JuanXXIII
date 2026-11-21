@@ -106,6 +106,12 @@ class CatalogoImpresiones
             'descripcion' => 'Hombres y mujeres por separado: los directivos arriba y, en cada mesa, el CT y el CA y luego los invitados en orden de silla, con ciudad, barrio y padrino. Letra grande.',
         ],
         [
+            'ruta'        => 'impresiones.rotulosMesa',
+            'nombre'      => 'Rótulos de mesa (santo y número)',
+            'cuando'      => 'Antes del retiro · para la madera de cada mesa',
+            'descripcion' => 'Tiras de 30 × 4,4 cm para pegar en la madera de cada mesa: una cara con la imagen y el nombre del santo, la otra con «Mesa N.º». Dos mesas por hoja oficio horizontal, con líneas para cortar. Los nombres e imágenes salen de Mesas › Nombres de mesas.',
+        ],
+        [
             'ruta'        => 'impresiones.sencilla',
             'nombre'      => 'Lista sencilla · floristería, secretaría, sobres',
             'cuando'      => 'Todo el retiro · para pasar lista',

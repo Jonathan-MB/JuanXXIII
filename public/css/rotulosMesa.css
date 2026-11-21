@@ -1,0 +1,141 @@
+/* ----------Rótulos de mesa: tiras de 30 × 4,4 cm para pegar en la madera-------------- */
+/*  Igual que Sacramentos: la impresora tiene puesto papel de 14 pulgadas y
+   el papel es oficio de 13, así que la pulgada que sobra cae a la izquierda.
+   Todo va en las 13 pulgadas de la derecha, con margen izquierdo ancho. */
+@page rotulos {
+    size: 14in 8.5in;
+    margin: 0.9cm 0.4cm 0.9cm 3.6cm;
+}
+
+.pagina-rotulos {
+    page: rotulos;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45cm;
+    font-family: 'Cinzel', Georgia, 'Times New Roman', serif;
+    color: #2b1d14;
+}
+
+@media screen {
+    .pagina.pagina-rotulos {
+        width: 35.56cm;
+        min-height: 21.59cm;
+        height: auto;
+        padding: 0.9cm 0.4cm 0.9cm 3.6cm;
+    }
+}
+
+/* Cada tira mide justo lo de la madera; la línea punteada es por donde se corta */
+.tira-mesa {
+    position: relative;
+    box-sizing: border-box;
+    width: 30cm;
+    height: 4.4cm;
+    flex: none;
+    outline: 1px dashed #9a9a9a;
+    outline-offset: 0;
+    padding: 0.18cm;
+}
+
+/* Marco doble fino en vino tinto, como la madera, con esquinas doradas */
+.marco-tira {
+    display: flex;
+    align-items: center;
+    gap: 0.6cm;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 0.15cm 0.6cm;
+    border: 2px solid #7a1f2b;
+    outline: 0.7px solid #c8a24a;
+    outline-offset: -5px;
+    border-radius: 3px;
+}
+
+.imagen-santo {
+    flex: none;
+    width: 2.8cm;
+    height: 3.6cm;
+    object-fit: cover;
+    object-position: top;
+    border: 1.5px solid #c8a24a;
+    border-radius: 1.4cm 1.4cm 0.2cm 0.2cm;
+}
+
+.sin-imagen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c8a24a;
+    font-size: 40pt;
+}
+
+.texto-tira {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+}
+
+.nombre-santo {
+    margin: 0;
+    font-family: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
+    font-size: 40pt;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    color: #2b1d14;
+}
+
+.adorno-tira {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3cm;
+    margin: 0.15cm 0 0.05cm;
+    color: #c8a24a;
+    font-size: 9pt;
+    line-height: 1;
+}
+
+.adorno-tira span {
+    width: 5cm;
+    border-top: 1px solid #c8a24a;
+}
+
+.movimiento-tira {
+    margin: 0;
+    font-size: 8.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #7a1f2b;
+}
+
+.logo-tira {
+    flex: none;
+    width: 2.7cm;
+    height: 2.7cm;
+    object-fit: contain;
+}
+
+.numero-mesa-tira {
+    margin: 0;
+    font-family: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
+    font-size: 54pt;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+
+.numero-mesa-tira span {
+    color: #7a1f2b;
+}
+
+.santo-pequeno {
+    margin: 0.12cm 0 0;
+    font-size: 11pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #7a1f2b;
+}

@@ -8,6 +8,7 @@ use App\Models\Mesa;
 use App\Models\NombreMesa;
 use App\Models\Retiro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MesaController extends Controller
 {
@@ -101,7 +102,30 @@ class MesaController extends Controller
             'nombres.*.*.max' => 'Un nombre de mesa es demasiado largo (máximo 60 letras).',
         ]);
 
+        //  Imagen del santo (opcional): se guarda con el nombre del santo
+        $request->validate([
+            'imagenes'     => ['array'],
+            'imagenes.*'   => ['array'],
+            'imagenes.*.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+        ], [
+            'imagenes.*.*.image' => 'La imagen del santo debe ser una foto (JPG, PNG o WEBP).',
+            'imagenes.*.*.mimes' => 'La imagen del santo debe ser JPG, PNG o WEBP.',
+            'imagenes.*.*.max'   => 'La imagen del santo pesa demasiado (máximo 5 MB).',
+        ]);
+
         foreach (['Masculino', 'Femenino'] as $sexo) {
+            foreach ($request->file('imagenes.' . $sexo, []) as $numero => $archivo) {
+                $nombre = trim((string) ($data['nombres'][$sexo][$numero] ?? ''));
+
+                if ($archivo && $nombre !== '') {
+                    if ($anterior = NombreMesa::rutaImagenSubida($nombre)) {
+                        Storage::delete($anterior);
+                    }
+
+                    $archivo->storeAs(NombreMesa::CARPETA_IMAGENES, NombreMesa::clave($nombre) . '.' . strtolower($archivo->extension()));
+                }
+            }
+
             foreach ($data['nombres'][$sexo] ?? [] as $numero => $nombre) {
                 $numero = (int) $numero;
                 $nombre = trim((string) $nombre);
@@ -135,6 +159,18 @@ class MesaController extends Controller
         }
 
         return redirect()->route('mesas.nombres')->with('mensajeActualizado', 'Nombres de mesas guardados.' . ($puestas ? ' ' . $puestas . ' ' . ($puestas === 1 ? 'mesa de este retiro tomó su nombre.' : 'mesas de este retiro tomaron su nombre.') : ''));
+    }
+
+
+
+    // La imagen que subió Secretaría para un santo
+    public function imagenSanto(string $clave)
+    {
+        $ruta = NombreMesa::rutaImagenSubida($clave);
+
+        abort_unless($ruta, 404);
+
+        return Storage::response($ruta);
     }
 
 

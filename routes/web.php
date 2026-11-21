@@ -150,6 +150,7 @@ Route::middleware('auth')->group(function () {
         //  Antes del resource: si no, «mesas/nombres» se tomaría como una mesa
         Route::get('/mesas/nombres', [MesaController::class, 'nombres'])->name('mesas.nombres');
         Route::put('/mesas/nombres', [MesaController::class, 'guardarNombres'])->name('mesas.guardarNombres');
+        Route::get('/mesas/santos/{clave}', [MesaController::class, 'imagenSanto'])->where('clave', '[a-z0-9-]+')->name('mesas.imagenSanto');
         Route::resource('mesas', MesaController::class)
             ->only(['index', 'store', 'update', 'destroy']);
 
@@ -237,6 +238,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/impresiones/sencilla', [ImpresionController::class, 'sencilla'])->name('impresiones.sencilla');
         Route::get('/impresiones/flores', [ImpresionController::class, 'flores'])->name('impresiones.flores');
         Route::get('/impresiones/hoja-carta', [ImpresionController::class, 'hojaCarta'])->name('impresiones.hojaCarta');
+        Route::get('/impresiones/rotulos-mesa', [ImpresionController::class, 'rotulosMesa'])->name('impresiones.rotulosMesa');
         Route::get('/impresiones/catequistas', [ImpresionController::class, 'catequistas'])->name('impresiones.catequistas');
         Route::get('/impresiones/informes/{formato}', [ImpresionController::class, 'informe'])->name('impresiones.informe');
         Route::get('/impresiones/carpetas/{cargo}', [ImpresionController::class, 'carpeta'])->name('impresiones.carpeta');
