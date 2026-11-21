@@ -232,7 +232,7 @@ formulario.addEventListener('submit', (evento) => {
 //  Si el servidor devolvió errores, se abre el paso del primer campo
 // con problema en vez de dejar a la persona en el paso 1.
 const pasoDeCampo = {
-    sexo: 1, nombres: 1, apellidos: 1, cedula: 1, fecha_nacimiento: 1, correo: 1, celular: 1, direccion: 1, barrio: 1, ciudad: 1,
+    sexo: 1, nombres: 1, apellidos: 1, cedula: 1, fecha_nacimiento: 1, celular: 1, barrio: 1, ciudad: 1,
     toma_medicamentos: 2, medicamentos: 2, eps: 2, talla_camiseta: 2, contactos_emergencia: 2,
     forma_pago: 3, comprobante: 3, tiene_padrino: 3, padrino_nombre: 3, acepta_datos: 3, declara_requisitos: 3,
 };

@@ -99,9 +99,10 @@ class InscritoController extends Controller
 
         $persona = $inscripcion->persona;
 
-        //  Lo que se deja vacío se guarda en blanco (la EPS y los contactos
+        //  Lo que se deja vacío se guarda en blanco (la EPS, la dirección y los contactos
         // no admiten nulo en la base), y un contacto del todo vacío no se guarda
         $data['eps']                  = (string) ($data['eps'] ?? '');
+        $data['direccion']            = (string) ($data['direccion'] ?? '');
         $data['contactos_emergencia'] = collect($data['contactos_emergencia'] ?? [])
             ->map(fn ($contacto) => [
                 'nombre'        => (string) ($contacto['nombre'] ?? ''),

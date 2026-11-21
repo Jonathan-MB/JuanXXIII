@@ -77,7 +77,7 @@
             <div class="linea-formulario">
                 <div class="elemento-formulario elemento-ancho">
                     <label class="titulo-elemento" for="direccion">Dirección</label>
-                    <input type="text" name="direccion" id="direccion" maxlength="100" value="{{ old('direccion', $persona->direccion) }}" required>
+                    <input type="text" name="direccion" id="direccion" maxlength="100" value="{{ old('direccion', $persona->direccion) }}">
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="barrio">Barrio</label>

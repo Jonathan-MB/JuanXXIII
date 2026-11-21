@@ -69,6 +69,12 @@ class InscripcionController extends Controller
 
             $datosPersona = collect($data)->only((new Persona)->getFillable())->except('cedula')->all();
 
+            //  La inscripción ya no pide dirección ni correo: a quien ya estaba
+            // registrado se le conservan los que tenía; a uno nuevo, en blanco.
+            if (! $persona) {
+                $datosPersona['direccion'] = '';
+            }
+
             // Si no asistió a un retiro anterior, se actualizan sus datos
             $persona = Persona::updateOrCreate(['cedula' => $data['cedula']], $datosPersona);
 
@@ -103,9 +109,9 @@ class InscripcionController extends Controller
 
         //  Solo si en Ajustes se pidió mandarlo apenas se inscribe. Si el correo
         // falla, la inscripción ya quedó guardada: se anota y se sigue.
-        if (Ajuste::valor(Ajuste::CORREO_AUTOMATICO) === '1' && $data['correo']) {
+        if (Ajuste::valor(Ajuste::CORREO_AUTOMATICO) === '1' && $resultado->persona->correo) {
             try {
-                Mail::to($data['correo'])->send(new ConfirmacionInscripcion($resultado));
+                Mail::to($resultado->persona->correo)->send(new ConfirmacionInscripcion($resultado));
                 $resultado->update(['confirmacion_enviada' => now()]);
             } catch (\Throwable $error) {
                 Log::error('No se pudo enviar la confirmación', ['inscripcion' => $resultado->id, 'error' => $error->getMessage()]);

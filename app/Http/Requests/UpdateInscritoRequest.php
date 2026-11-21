@@ -25,10 +25,11 @@ class UpdateInscritoRequest extends StoreInscripcionRequest
         $reglas['cedula'] = ['required', 'string', 'min:4', 'max:20', 'regex:/^[0-9A-Za-z]+$/', Rule::unique('personas', 'cedula')->ignore($personaId)];
 
         //  Secretaría corrige datos que llegaron incompletos (el formulario
-        // antiguo no los pedía): se puede guardar sin correo, sin EPS y con
+        // antiguo no los pedía): se puede guardar sin correo, sin dirección, sin EPS y con
         // contactos a medias, para no tener que inventar nada. La cédula
         // admite letras por los pasaportes.
         $reglas['correo']                            = ['nullable', 'email', 'max:100'];
+        $reglas['direccion']                         = ['nullable', 'string', 'max:100'];
         $reglas['eps']                               = ['nullable', 'string', 'max:60'];
         $reglas['contactos_emergencia']              = ['nullable', 'array', 'max:2'];
         $reglas['contactos_emergencia.*.nombre']     = ['nullable', 'string', 'max:100'];

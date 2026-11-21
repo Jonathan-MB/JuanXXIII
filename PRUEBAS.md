@@ -25,7 +25,7 @@ Correrlas (MySQL de XAMPP encendido):
 cd /c/xampp/htdocs/JuanXXIII && /c/xampp/php/php.exe artisan test
 ```
 
-Debe terminar en `Tests: 27 passed`. Si alguna sale con ⨯, el nombre de la prueba dice qué regla se rompió.
+Debe terminar en `Tests: 30 passed`. Si alguna sale con ⨯, el nombre de la prueba dice qué regla se rompió.
 
 | Archivo | Qué revisa |
 |---|---|

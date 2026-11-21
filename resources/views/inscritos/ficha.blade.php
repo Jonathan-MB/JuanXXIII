@@ -80,7 +80,7 @@
                 <dt>Nacimiento</dt><dd>{{ $persona->fecha_nacimiento->format('d/m/Y') }} ({{ (int) $persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }} años)</dd>
                 <dt>Celular</dt><dd>{{ $persona->celular }}</dd>
                 <dt>Correo</dt><dd>{{ $persona->correo ?? '—' }}</dd>
-                <dt>Dirección</dt><dd>{{ $persona->direccion }}</dd>
+                <dt>Dirección</dt><dd>{{ $persona->direccion ?: '—' }}</dd>
                 <dt>Barrio</dt><dd>{{ $persona->barrio }}</dd>
                 <dt>Ciudad</dt><dd>{{ $persona->ciudad }}</dd>
             </dl>

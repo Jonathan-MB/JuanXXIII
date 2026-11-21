@@ -103,18 +103,9 @@
 
                     <div class="linea-inscripcion">
                         <div class="elemento-formulario">
-                            <label class="titulo-elemento" for="correo">Correo electrónico</label>
-                            <input type="email" name="correo" id="correo" maxlength="100" autocomplete="email" value="{{ old('correo') }}" required>
-                        </div>
-                        <div class="elemento-formulario">
                             <label class="titulo-elemento" for="celular">Celular</label>
                             <input type="tel" inputmode="numeric" data-solo-numeros name="celular" id="celular" maxlength="20" autocomplete="tel" value="{{ old('celular') }}" required>
                         </div>
-                    </div>
-
-                    <div class="elemento-formulario">
-                        <label class="titulo-elemento" for="direccion">Dirección de tu residencia</label>
-                        <input type="text" name="direccion" id="direccion" maxlength="100" autocomplete="street-address" value="{{ old('direccion') }}" required>
                     </div>
 
                     <div class="linea-inscripcion">
