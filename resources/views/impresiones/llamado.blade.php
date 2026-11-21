@@ -6,6 +6,7 @@
         @endphp
         <section class="pagina">
             @include('partials.membrete', ['subtitulo' => 'Lista de llamado · Retiro N.º ' . $numero . ' ' . ($sexo === 'Femenino' ? 'Mujeres' : 'Hombres') . ' · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year])
+            <p class="grupo-sencilla">{{ $sexo === 'Femenino' ? 'Mujeres' : 'Hombres' }} <span>Retiro N.º {{ $numero }}</span></p>
             <p class="ayuda-llamado">Llama a cada persona por su nombre y marca la casilla cuando entre a sala. Si no responde, sigue con la siguiente.</p>
 
             <table class="tabla-impresion tabla-llamado">

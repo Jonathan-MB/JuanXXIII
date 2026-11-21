@@ -8,6 +8,8 @@
         <section class="pagina">
             @include('partials.membrete', ['subtitulo' => 'Llamadas familiares · Retiro N.º ' . $numero . ' ' . ($sexo === 'Femenino' ? 'Mujeres' : 'Hombres') . ' · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year])
 
+            <p class="grupo-sencilla">{{ $sexo === 'Femenino' ? 'Mujeres' : 'Hombres' }} <span>Retiro N.º {{ $numero }}</span></p>
+
             @foreach ($filas as $fila)
                 <table class="tabla-impresion bloque-mesa tabla-llamadas">
                     <caption>{{ $fila['titulo'] }}</caption>

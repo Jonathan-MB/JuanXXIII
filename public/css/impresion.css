@@ -2496,7 +2496,7 @@ p.preguntas-charla {
 
 
 /* ----------Lista sencilla: pequeña, dos columnas, para pasar lista-------------- */
-/* El grupo grande arriba, para no confundir las hojas */
+/* El grupo grande arriba, para no confundir las hojas (lista sencilla, llamado, llamadas) */
 .grupo-sencilla {
     margin: 0 0 8px;
     font-size: 20pt;
