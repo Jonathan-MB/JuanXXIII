@@ -2362,3 +2362,63 @@ p.preguntas-charla {
 .recorte-mesa .fila-catequista .casilla-llenar {
     height: 0.75cm;
 }
+
+/* Membrete pequeño de cada mesa en la hoja 3: logo, movimiento, retiro y número de mesa en una franja fina */
+.membrete-mesa {
+    display: flex;
+    align-items: center;
+    gap: 0.3cm;
+    padding-bottom: 0.12cm;
+    margin-bottom: 0.12cm;
+    border-bottom: 1px solid #333333;
+}
+
+.membrete-mesa-logo {
+    width: 1.05cm;
+    height: 1.05cm;
+    flex-shrink: 0;
+}
+
+.membrete-mesa-texto {
+    flex: 1;
+    line-height: 1.25;
+}
+
+.membrete-mesa-movimiento {
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.membrete-mesa-detalle {
+    font-size: 9pt;
+    color: #444444;
+}
+
+.membrete-mesa-detalle strong {
+    color: #111111;
+}
+
+.membrete-mesa-numero {
+    font-size: 17pt;
+    font-weight: 900;
+    line-height: 1;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.membrete-mesa-numero span {
+    display: block;
+    margin-top: 2px;
+    font-size: 9pt;
+    font-weight: 700;
+    color: #444444;
+}
+
+/* La primera mesa de la hoja no necesita línea de corte arriba */
+.pagina > .recorte-mesa:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+}

@@ -3,18 +3,22 @@
     @forelse ($grupos as $sexo => $grupo)
         @php
             $numero = $sexo === 'Femenino' ? $retiro->numero_mujeres : $retiro->numero_hombres;
+            $nombreGrupo = $sexo === 'Femenino' ? 'Mujeres' : 'Hombres';
         @endphp
         <section class="pagina pagina-horizontal">
-            @include('partials.membrete', ['subtitulo' => 'Hoja de correcciones · Retiro N.º ' . $numero . ' ' . ($sexo === 'Femenino' ? 'Mujeres' : 'Hombres') . ' · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year])
-
-            <p class="instruccion">Se corta por mesa (por la línea punteada) y cada catequista recibe la de su mesa. Lo que esté mal se corrige en rojo; lo que falte se escribe. Se devuelve a secretaría.</p>
-
             @foreach ($grupo['mesas'] as $fila)
-                {{-- Cada mesa es un recorte aparte: lleva el aviso y, en el título, el grupo y el retiro --}}
+                {{-- Cada mesa es un recorte aparte, con su propio membrete pequeño: al cortarla queda completa --}}
                 <div class="recorte-mesa">
+                <header class="membrete-mesa">
+                    <img class="membrete-mesa-logo" src="{{ asset('img/logo.png') }}" alt="Logo del Movimiento Juan XXIII">
+                    <div class="membrete-mesa-texto">
+                        <p class="membrete-mesa-movimiento">Movimiento de Retiros Parroquiales Juan XXIII · Arquidiócesis de Cali</p>
+                        <p class="membrete-mesa-detalle">Hoja de correcciones · <strong>Retiro N.º {{ $numero }} {{ $nombreGrupo }}</strong> · {{ $retiro->dias_texto }} de {{ $retiro->fecha_inicio->year }}</p>
+                    </div>
+                    <p class="membrete-mesa-numero">Mesa {{ $fila['mesa']->numero }}@if ($fila['mesa']->nombre)<span>{{ $fila['mesa']->nombre }}</span>@endif</p>
+                </header>
                 <p class="aviso-catequista">CATEQUISTA: POR FAVOR VERIFICAR QUE USTED Y TODOS LOS DE SU MESA LLENEN LA INFORMACIÓN COMPLETA</p>
                 <table class="tabla-impresion bloque-mesa">
-                    <caption>Mesa {{ $fila['mesa']->numero }}{{ $fila['mesa']->nombre ? ' · ' . $fila['mesa']->nombre : '' }} <span class="caption-grupo">{{ $sexo === 'Femenino' ? 'Mujeres' : 'Hombres' }} · Retiro N.º {{ $numero }}</span></caption>
                     <thead>
                         <tr>
                             <th class="columna-silla">Silla</th>
