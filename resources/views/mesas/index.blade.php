@@ -85,6 +85,7 @@
                                 <input type="tel" inputmode="numeric" data-solo-numeros name="titularCelular" maxlength="20" value="{{ $mesa->titular_celular }}" placeholder="Celular" aria-label="Celular del CT de la mesa {{ $mesa->numero }}">
                                 <input type="text" name="titularCiudad" maxlength="60" value="{{ $mesa->titular_ciudad }}" placeholder="Ciudad" aria-label="Ciudad del CT de la mesa {{ $mesa->numero }}">
                                 <input type="text" name="titularBarrio" maxlength="60" value="{{ $mesa->titular_barrio }}" placeholder="Barrio" aria-label="Barrio del CT de la mesa {{ $mesa->numero }}">
+                                <label class="cumple-catequista">Cumpleaños <input type="date" name="titularNacimiento" value="{{ $mesa->titular_nacimiento?->format('Y-m-d') }}" max="{{ now()->toDateString() }}" aria-label="Cumpleaños del CT de la mesa {{ $mesa->numero }}"></label>
                             </div>
                         </div>
                         <div class="elemento-formulario">
@@ -94,6 +95,7 @@
                                 <input type="tel" inputmode="numeric" data-solo-numeros name="auxiliarCelular" maxlength="20" value="{{ $mesa->auxiliar_celular }}" placeholder="Celular" aria-label="Celular del CA de la mesa {{ $mesa->numero }}">
                                 <input type="text" name="auxiliarCiudad" maxlength="60" value="{{ $mesa->auxiliar_ciudad }}" placeholder="Ciudad" aria-label="Ciudad del CA de la mesa {{ $mesa->numero }}">
                                 <input type="text" name="auxiliarBarrio" maxlength="60" value="{{ $mesa->auxiliar_barrio }}" placeholder="Barrio" aria-label="Barrio del CA de la mesa {{ $mesa->numero }}">
+                                <label class="cumple-catequista">Cumpleaños <input type="date" name="auxiliarNacimiento" value="{{ $mesa->auxiliar_nacimiento?->format('Y-m-d') }}" max="{{ now()->toDateString() }}" aria-label="Cumpleaños del CA de la mesa {{ $mesa->numero }}"></label>
                             </div>
                         </div>
                         <div class="elemento-formulario">

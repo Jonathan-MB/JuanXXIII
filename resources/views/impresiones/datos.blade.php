@@ -20,12 +20,12 @@
                 @method('PUT')
                 <input type="hidden" name="sexo" value="{{ $sexo }}">
                 <h2 class="titulo-bloque-datos">Rectorado de {{ $grupo }} · Retiro {{ $sexo === 'Femenino' ? $retiro->numero_mujeres : $retiro->numero_hombres }}</h2>
-                <p class="texto-ayuda texto-ayuda-arriba">Va en el encabezado del directorio. El CR (catequista rotativo) es opcional: deja el nombre vacío si no hay.</p>
+                <p class="texto-ayuda texto-ayuda-arriba">Va en el encabezado del directorio. El CR (catequista rotativo) es opcional: deja el nombre vacío si no hay. El cumpleaños sirve para la hoja de cumpleaños.</p>
 
                 <div class="contenedor-tabla">
                     <table class="tabla-general tabla-datos">
                         <thead>
-                            <tr><th>Cargo</th><th>Nombre</th><th>Ciudad / barrio</th><th>Teléfono</th></tr>
+                            <tr><th>Cargo</th><th>Nombre</th><th>Ciudad / barrio</th><th>Teléfono</th><th>Cumpleaños</th></tr>
                         </thead>
                         <tbody>
                             @foreach (\App\Models\Rectorado::CARGOS as $i => $cargo)
@@ -40,6 +40,7 @@
                                     <td><input type="text" name="cargos[{{ $i }}][nombre]" maxlength="100" value="{{ $fila?->nombre }}" aria-label="Nombre del {{ $cargo }}"></td>
                                     <td><input type="text" name="cargos[{{ $i }}][ciudad]" maxlength="60" value="{{ $fila?->ciudad }}" aria-label="Ciudad del {{ $cargo }}"></td>
                                     <td><input type="tel" inputmode="numeric" data-solo-numeros name="cargos[{{ $i }}][telefono]" maxlength="20" value="{{ $fila?->telefono }}" aria-label="Teléfono del {{ $cargo }}"></td>
+                                    <td><input type="date" name="cargos[{{ $i }}][fecha_nacimiento]" value="{{ $fila?->fecha_nacimiento?->format('Y-m-d') }}" max="{{ now()->toDateString() }}" aria-label="Cumpleaños del {{ $cargo }}"></td>
                                 </tr>
                             @endforeach
                         </tbody>

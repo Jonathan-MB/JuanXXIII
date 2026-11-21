@@ -2445,3 +2445,46 @@ p.preguntas-charla {
 .caja-rectorado-puertas .ciudad-directivo {
     width: 5cm;
 }
+
+
+/* ----------Cumpleaños: en orden de fecha, los del retiro resaltados-------------- */
+.ayuda-cumpleanos {
+    margin: 0 0 8px;
+    font-size: 10pt;
+}
+
+.tabla-cumpleanos td {
+    font-size: 11pt;
+}
+
+.columna-fecha-cumple {
+    width: 3.2cm;
+    white-space: nowrap;
+}
+
+.columna-anios-cumple {
+    width: 2.2cm;
+    text-align: center;
+}
+
+.nombre-cumple {
+    font-weight: 700;
+}
+
+.cumple-en-retiro td {
+    font-weight: 700;
+    background: #fff3c4;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.vacio-cumpleanos {
+    margin: 18px 0;
+    font-size: 12pt;
+}
+
+.falta-cumpleanos {
+    margin-top: 10px;
+    font-size: 8.5pt;
+    color: #444444;
+}

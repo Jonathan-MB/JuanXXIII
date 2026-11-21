@@ -14,6 +14,7 @@ use App\Models\Persona;
 use App\Models\Rectorado;
 use App\Models\Retiro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -24,6 +25,9 @@ class ImpresionController extends Controller
 
     //  Los formatos de las carpetas del rectorado que se llenan a mano
     // durante el retiro. La vista de cada uno está en impresiones/informes.
+    //  La hoja de cumpleaños trae desde estos días antes del retiro hasta estos días después
+    public const DIAS_CUMPLEANOS = 5;
+
     public const INFORMES = [
         'dirigente'     => 'Informe del dirigente responsable',
         'rector'        => 'Informe del rector(a)',
@@ -397,6 +401,105 @@ class ImpresionController extends Controller
             'servidores' => $request->boolean('servidores'),
             'titulo'     => $request->boolean('servidores') ? 'Directivos y catequistas por mesa' : 'Listado de invitados para puertas',
         ]);
+    }
+
+
+
+    //  Cumpleaños: retiristas, directivos (rectorado) y catequistas (CT y CA)
+    // que cumplen años desde 5 días antes del retiro hasta 5 días después.
+    // Hombres y mujeres por separado, en orden de fecha.
+    public function cumpleanos(Request $request)
+    {
+        $retiro = $this->retiroOFallar();
+        $sexo   = $this->sexoPedido($request);
+        $desde  = $retiro->fecha_inicio->copy()->subDays(self::DIAS_CUMPLEANOS)->startOfDay();
+        $hasta  = $retiro->fecha_fin->copy()->addDays(self::DIAS_CUMPLEANOS)->startOfDay();
+        $filas  = collect();
+
+        $agregar = function ($nacimiento, string $nombre, string $quien, string $sexoFila) use ($filas, $desde, $hasta) {
+            $fecha = $this->cumpleEntre($nacimiento, $desde, $hasta);
+
+            if ($fecha) {
+                $filas->push([
+                    'fecha'  => $fecha,
+                    'nombre' => $nombre,
+                    'quien'  => $quien,
+                    'sexo'   => $sexoFila,
+                    'anios'  => (int) $nacimiento->diffInYears($fecha),
+                ]);
+            }
+        };
+
+        foreach ($this->inscritos($retiro, $sexo) as $inscrito) {
+            if ($inscrito->persona->fecha_nacimiento) {
+                $puesto = $inscrito->mesa ? 'Mesa ' . $inscrito->mesa->numero . ' · Silla ' . $inscrito->silla : 'Sin mesa todavía';
+                $agregar($inscrito->persona->fecha_nacimiento, $inscrito->persona->nombre_completo, 'Retirista · ' . $puesto, $inscrito->persona->sexo);
+            }
+        }
+
+        $rectorados = $retiro->rectorados()->when($sexo, fn ($consulta) => $consulta->where('sexo', $sexo))->orderBy('orden')->get();
+
+        foreach ($rectorados as $miembro) {
+            if ($miembro->fecha_nacimiento) {
+                $agregar($miembro->fecha_nacimiento, $miembro->nombre, 'Directivo · ' . $miembro->cargo, $miembro->sexo);
+            }
+        }
+
+        $mesas = $retiro->mesas()->when($sexo, fn ($consulta) => $consulta->where('sexo', $sexo))->orderBy('numero')->get();
+
+        foreach ($mesas as $mesa) {
+            if ($mesa->catequista_titular && $mesa->titular_nacimiento) {
+                $agregar($mesa->titular_nacimiento, $mesa->catequista_titular, 'Catequista titular (CT) · Mesa ' . $mesa->numero, $mesa->sexo);
+            }
+
+            if ($mesa->catequista_auxiliar && $mesa->auxiliar_nacimiento) {
+                $agregar($mesa->auxiliar_nacimiento, $mesa->catequista_auxiliar, 'Catequista auxiliar (CA) · Mesa ' . $mesa->numero, $mesa->sexo);
+            }
+        }
+
+        //  Directivos y catequistas sin cumpleaños anotado, para completarlo
+        $sinFecha = $rectorados
+            ->filter(fn ($miembro) => $miembro->nombre && ! $miembro->fecha_nacimiento)
+            ->map(fn ($miembro) => ['sexo' => $miembro->sexo, 'nombre' => $miembro->nombre])
+            ->merge($mesas->flatMap(fn ($mesa) => collect([
+                [$mesa->catequista_titular, $mesa->titular_nacimiento],
+                [$mesa->catequista_auxiliar, $mesa->auxiliar_nacimiento],
+            ])->filter(fn ($par) => $par[0] && ! $par[1])->map(fn ($par) => ['sexo' => $mesa->sexo, 'nombre' => $par[0]])))
+            ->groupBy('sexo');
+
+        //  Siempre hombres primero y luego mujeres, cada grupo en su hoja
+        $grupos = collect($sexo ? [$sexo] : ['Masculino', 'Femenino'])
+            ->mapWithKeys(fn ($grupo) => [$grupo => $filas->where('sexo', $grupo)->sortBy([
+                fn ($a, $b) => $a['fecha'] <=> $b['fecha'],
+                fn ($a, $b) => strcmp($a['nombre'], $b['nombre']),
+            ])->values()]);
+
+        return view('impresiones.cumpleanos', [
+            'retiro'   => $retiro,
+            'grupos'   => $grupos,
+            'sinFecha' => $sinFecha,
+            'desde'    => $desde,
+            'hasta'    => $hasta,
+            'titulo'   => 'Cumpleaños',
+        ]);
+    }
+
+
+
+    //  El día en que cumple años dentro del rango, o null. Quien nació un
+    // 29 de febrero cumple el 28 en los años que no son bisiestos.
+    private function cumpleEntre($nacimiento, Carbon $desde, Carbon $hasta): ?Carbon
+    {
+        foreach (array_unique([$desde->year, $hasta->year]) as $anio) {
+            $dia   = min($nacimiento->day, Carbon::create($anio, $nacimiento->month, 1)->daysInMonth);
+            $fecha = Carbon::create($anio, $nacimiento->month, $dia)->startOfDay();
+
+            if ($fecha->between($desde, $hasta)) {
+                return $fecha;
+            }
+        }
+
+        return null;
     }
 
 

@@ -23,6 +23,7 @@ class GuardarRectoradoRequest extends FormRequest
             'cargos.*.nombre'   => ['required', 'string', 'max:100'],
             'cargos.*.ciudad'   => ['nullable', 'string', 'max:60'],
             'cargos.*.telefono' => ['nullable', 'string', 'max:20', 'regex:/^[0-9]+$/'],
+            'cargos.*.fecha_nacimiento' => ['nullable', 'date', 'before:today', 'after:1920-01-01'],
         ];
     }
 
@@ -48,6 +49,7 @@ class GuardarRectoradoRequest extends FormRequest
             'cargos.*.nombre.max'   => 'Un nombre del rectorado es demasiado largo.',
             'cargos.*.telefono.max'   => 'Un teléfono del rectorado es demasiado largo.',
             'cargos.*.telefono.regex' => 'Los teléfonos del rectorado solo pueden tener números.',
+            'cargos.*.fecha_nacimiento.*' => 'Revisa las fechas de cumpleaños del rectorado.',
         ];
     }
 }

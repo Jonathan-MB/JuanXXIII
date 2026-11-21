@@ -24,8 +24,15 @@ class Rectorado extends Model
         'nombre',
         'ciudad',
         'telefono',
+        'fecha_nacimiento',
         'orden',
         'retiro_id',
+    ];
+
+
+
+    protected $casts = [
+        'fecha_nacimiento' => 'date',
     ];
 
 

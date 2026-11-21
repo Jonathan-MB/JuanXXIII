@@ -920,3 +920,17 @@
     color: #c0392b;
     font-weight: 700;
 }
+
+/* Cumpleaños del catequista: debajo de celular, ciudad y barrio */
+.cumple-catequista {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--texto-suave, #555);
+}
+
+.cumple-catequista input {
+    flex: 1;
+}

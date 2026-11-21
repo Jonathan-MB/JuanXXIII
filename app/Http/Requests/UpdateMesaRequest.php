@@ -24,10 +24,12 @@ class UpdateMesaRequest extends FormRequest
             'titular_celular'     => ['nullable', 'string', 'max:20', 'regex:/^[0-9]+$/'],
             'titular_ciudad'      => ['nullable', 'string', 'max:60'],
             'titular_barrio'      => ['nullable', 'string', 'max:60'],
+            'titular_nacimiento'  => ['nullable', 'date', 'before:today', 'after:1920-01-01'],
             'catequista_auxiliar' => ['nullable', 'string', 'max:100'],
             'auxiliar_celular'    => ['nullable', 'string', 'max:20', 'regex:/^[0-9]+$/'],
             'auxiliar_ciudad'     => ['nullable', 'string', 'max:60'],
             'auxiliar_barrio'     => ['nullable', 'string', 'max:60'],
+            'auxiliar_nacimiento' => ['nullable', 'date', 'before:today', 'after:1920-01-01'],
         ];
     }
 
@@ -41,10 +43,12 @@ class UpdateMesaRequest extends FormRequest
             'titular_celular'     => Persona::normalizarTelefono($this->titularCelular),
             'titular_ciudad'      => $this->titularCiudad,
             'titular_barrio'      => $this->titularBarrio,
+            'titular_nacimiento'  => $this->titularNacimiento,
             'catequista_auxiliar' => $this->catequistaAuxiliar,
             'auxiliar_celular'    => Persona::normalizarTelefono($this->auxiliarCelular),
             'auxiliar_ciudad'     => $this->auxiliarCiudad,
             'auxiliar_barrio'     => $this->auxiliarBarrio,
+            'auxiliar_nacimiento' => $this->auxiliarNacimiento,
         ]);
     }
 
@@ -56,6 +60,8 @@ class UpdateMesaRequest extends FormRequest
             'cantidad_sillas.between' => 'Cada mesa puede tener entre 1 y ' . Mesa::MAXIMO_SILLAS . ' sillas.',
             'titular_celular.regex'   => 'El celular del CT solo puede tener números.',
             'auxiliar_celular.regex'  => 'El celular del CA solo puede tener números.',
+            'titular_nacimiento.*'    => 'Revisa la fecha de cumpleaños del CT.',
+            'auxiliar_nacimiento.*'   => 'Revisa la fecha de cumpleaños del CA.',
         ];
     }
 }

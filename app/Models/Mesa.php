@@ -22,11 +22,20 @@ class Mesa extends Model
         'titular_celular',
         'titular_ciudad',
         'titular_barrio',
+        'titular_nacimiento',
         'catequista_auxiliar',
         'auxiliar_celular',
         'auxiliar_ciudad',
         'auxiliar_barrio',
+        'auxiliar_nacimiento',
         'retiro_id',
+    ];
+
+
+
+    protected $casts = [
+        'titular_nacimiento'  => 'date',
+        'auxiliar_nacimiento' => 'date',
     ];
 
 

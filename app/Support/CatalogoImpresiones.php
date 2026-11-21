@@ -106,6 +106,12 @@ class CatalogoImpresiones
             'descripcion' => 'Hombres y mujeres por separado: los directivos arriba y, en cada mesa, el CT y el CA y luego los invitados en orden de silla, con ciudad, barrio y padrino. Letra grande.',
         ],
         [
+            'ruta'        => 'impresiones.cumpleanos',
+            'nombre'      => 'Cumpleaños',
+            'cuando'      => 'Todo el retiro · para saludarlos',
+            'descripcion' => 'Retiristas, directivos y catequistas que cumplen años desde 5 días antes hasta 5 días después del retiro, en orden de fecha y con los años que cumplen. Los de los días del retiro van resaltados. Hombres y mujeres por separado.',
+        ],
+        [
             'ruta'        => 'impresiones.familiares',
             'nombre'      => 'Lista para familiares',
             'cuando'      => 'Domingo · cuando llegan las familias',
