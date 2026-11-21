@@ -206,6 +206,15 @@ class ImpresionController extends Controller
 
 
 
+    //  Tabla de los sacramentos para la dinámica del sábado: una por
+    // invitado, dos por hoja oficio horizontal para cortar
+    public function sacramentos(Request $request)
+    {
+        return $this->hojasPorInvitado($request, 'impresiones.sacramentos', 'Sacramentos (dinámica)');
+    }
+
+
+
     //  Invocación al Espíritu Santo, Padre Nuestro y Credo: una por
     // invitado, dos por hoja carta para recortar
     public function oraciones(Request $request)

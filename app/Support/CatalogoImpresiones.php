@@ -52,6 +52,12 @@ class CatalogoImpresiones
             'descripcion' => 'Invocación al Espíritu Santo, Padre Nuestro y Credo con el número, el lugar y la fecha del retiro. Una por invitado, dos por hoja carta para recortar.',
         ],
         [
+            'ruta'        => 'impresiones.sacramentos',
+            'nombre'      => 'Sacramentos (dinámica)',
+            'cuando'      => 'Sábado · en la charla de sacramentos',
+            'descripcion' => 'La tabla de los siete sacramentos: citas, materia, forma, gracia y ministro. Una por invitado, dos por hoja oficio horizontal para cortar.',
+        ],
+        [
             'ruta'        => 'impresiones.carta',
             'nombre'      => 'Cartas al presbítero',
             'cuando'      => 'Domingo · al cierre del retiro',

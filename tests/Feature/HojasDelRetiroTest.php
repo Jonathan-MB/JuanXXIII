@@ -152,7 +152,7 @@ class HojasDelRetiroTest extends TestCase
             'impresiones.index', 'impresiones.llegada', 'impresiones.llamado', 'impresiones.nombresMesa', 'impresiones.mesasEnBlanco',
             'impresiones.correcciones', 'impresiones.carta', 'impresiones.directorio', 'impresiones.ubicacion', 'impresiones.camisetas',
             'impresiones.sobres', 'impresiones.llamadas', 'impresiones.puertas', 'impresiones.familiares', 'impresiones.catequistas',
-            'impresiones.membretes', 'impresiones.oraciones', 'impresiones.previstos', 'impresiones.flores', 'impresiones.letrerosMesa',
+            'impresiones.membretes', 'impresiones.oraciones', 'impresiones.sacramentos', 'impresiones.previstos', 'impresiones.flores', 'impresiones.letrerosMesa',
             'pagos.imprimir', 'inventario.imprimirTodos', 'letreros.index', 'cronograma.imprimir',
         ];
 

@@ -216,6 +216,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/impresiones/correcciones', [ImpresionController::class, 'correcciones'])->name('impresiones.correcciones');
         Route::get('/impresiones/membretes', [ImpresionController::class, 'membretes'])->name('impresiones.membretes');
         Route::get('/impresiones/oraciones', [ImpresionController::class, 'oraciones'])->name('impresiones.oraciones');
+        Route::get('/impresiones/sacramentos', [ImpresionController::class, 'sacramentos'])->name('impresiones.sacramentos');
         Route::get('/impresiones/previstos', [ImpresionController::class, 'previstos'])->name('impresiones.previstos');
         Route::get('/impresiones/directorio', [ImpresionController::class, 'directorio'])->name('impresiones.directorio');
         Route::get('/impresiones/ubicacion', [ImpresionController::class, 'ubicacion'])->name('impresiones.ubicacion');
