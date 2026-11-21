@@ -1007,6 +1007,11 @@ p {
     border-top-style: dotted;
 }
 
+/* Línea gruesa entre un invitado y el siguiente, con todos sus contactos */
+.tabla-llamadas .fila-nuevo-invitado td {
+    border-top: 2.5px solid #111111;
+}
+
 
 /* ----------Letreros para la pared: hoja carta horizontal, sobrios-------------- */
 @page letrero {

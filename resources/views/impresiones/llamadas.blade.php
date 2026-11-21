@@ -45,7 +45,7 @@
                                 @php
                                     $contacto = $aLlamar[$i] ?? null;
                                 @endphp
-                                <tr class="{{ $i === 0 ? '' : 'fila-segundo-contacto' }} {{ ($contacto['padrino'] ?? false) ? 'fila-padrino' : '' }}">
+                                <tr class="{{ $i === 0 ? 'fila-nuevo-invitado' : 'fila-segundo-contacto' }} {{ ($contacto['padrino'] ?? false) ? 'fila-padrino' : '' }}">
                                     @if ($i === 0)
                                         <td class="columna-silla" rowspan="{{ $filasPersona }}">{{ $inscrito->silla ?? '–' }}</td>
                                         <td rowspan="{{ $filasPersona }}">{{ $inscrito->persona->nombre_completo }}</td>
