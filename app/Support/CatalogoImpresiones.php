@@ -37,7 +37,7 @@ class CatalogoImpresiones
             'ruta'        => 'impresiones.correcciones',
             'nombre'      => 'Hoja 3 · Correcciones',
             'cuando'      => 'Sábado · última revisión de los datos',
-            'descripcion' => 'Ya impresa con los datos corregidos, por mesa: silla, nombre, documento, fecha de nacimiento, ciudad, barrio, celular y contactos de emergencia. La última revisión.',
+            'descripcion' => 'Ya impresa con los datos corregidos, por mesa: silla, nombre, documento, fecha de nacimiento, ciudad, barrio, celular, talla y contactos de emergencia. La última revisión.',
         ],
         [
             'ruta'        => 'impresiones.membretes',

@@ -43,7 +43,9 @@ class HojasDelRetiroTest extends TestCase
             ->assertOk()
             ->assertSee($juan->persona->cedula)
             ->assertSee($juan->persona->barrio)
-            ->assertSee($juan->contactosEmergencia[0]->nombre);
+            ->assertSee($juan->contactosEmergencia[0]->nombre)
+            ->assertSee('<th class="columna-talla">Talla</th>', false)
+            ->assertSee('<td class="columna-talla">' . $juan->persona->talla_camiseta . '</td>', false);
     }
 
 

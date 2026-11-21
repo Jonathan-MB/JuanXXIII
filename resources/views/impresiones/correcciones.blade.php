@@ -21,12 +21,13 @@
                             <th>Ciudad</th>
                             <th>Barrio</th>
                             <th>Celular</th>
+                            <th class="columna-talla">Talla</th>
                             <th>Contactos de emergencia</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="fila-catequista"><td>CT</td><td colspan="7">{{ $fila['mesa']->catequista_titular }}</td></tr>
-                        <tr class="fila-catequista"><td>CA</td><td colspan="7">{{ $fila['mesa']->catequista_auxiliar }}</td></tr>
+                        <tr class="fila-catequista"><td>CT</td><td colspan="8">{{ $fila['mesa']->catequista_titular }}</td></tr>
+                        <tr class="fila-catequista"><td>CA</td><td colspan="8">{{ $fila['mesa']->catequista_auxiliar }}</td></tr>
                         @foreach ($fila['inscritos'] as $inscrito)
                             <tr>
                                 <td class="columna-silla">{{ $inscrito->silla }}</td>
@@ -36,6 +37,7 @@
                                 <td>{{ $inscrito->persona->ciudad }}</td>
                                 <td>{{ $inscrito->persona->barrio }}</td>
                                 <td class="dato-sin-salto">{{ $inscrito->persona->celular }}</td>
+                                <td class="columna-talla">{{ $inscrito->persona->talla_camiseta }}</td>
                                 <td class="celda-contactos">
                                     @foreach ($inscrito->contactosEmergencia as $contacto)
                                         <span>{{ $contacto->nombre }} ({{ mb_strtolower($contacto->parentesco) }}) · {{ $contacto->celular }}</span>

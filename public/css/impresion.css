@@ -936,6 +936,13 @@ p {
     break-inside: avoid;
 }
 
+/* La talla en la hoja 3: angosta y centrada */
+.columna-talla {
+    width: 1.2cm;
+    text-align: center;
+    font-weight: 700;
+}
+
 .tabla-tallas .columna-talla {
     width: 14%;
     text-align: center;
