@@ -7,11 +7,14 @@
         <section class="pagina pagina-horizontal">
             @include('partials.membrete', ['subtitulo' => 'Hoja de correcciones · Retiro N.º ' . $numero . ' ' . ($sexo === 'Femenino' ? 'Mujeres' : 'Hombres') . ' · ' . $retiro->dias_texto . ' de ' . $retiro->fecha_inicio->year])
 
-            <p class="instruccion">Hermano(a) catequista: revisa los datos de tu mesa y corrige en rojo lo que esté mal antes de devolver la hoja a secretaría.</p>
+            <p class="instruccion">Se corta por mesa (por la línea punteada) y cada catequista recibe la de su mesa. Lo que esté mal se corrige en rojo; lo que falte se escribe. Se devuelve a secretaría.</p>
 
             @foreach ($grupo['mesas'] as $fila)
+                {{-- Cada mesa es un recorte aparte: lleva el aviso y, en el título, el grupo y el retiro --}}
+                <div class="recorte-mesa">
+                <p class="aviso-catequista">CATEQUISTA: POR FAVOR VERIFICAR QUE USTED Y TODOS LOS DE SU MESA LLENEN LA INFORMACIÓN COMPLETA</p>
                 <table class="tabla-impresion bloque-mesa">
-                    <caption>Mesa {{ $fila['mesa']->numero }}{{ $fila['mesa']->nombre ? ' · ' . $fila['mesa']->nombre : '' }}</caption>
+                    <caption>Mesa {{ $fila['mesa']->numero }}{{ $fila['mesa']->nombre ? ' · ' . $fila['mesa']->nombre : '' }} <span class="caption-grupo">{{ $sexo === 'Femenino' ? 'Mujeres' : 'Hombres' }} · Retiro N.º {{ $numero }}</span></caption>
                     <thead>
                         <tr>
                             <th class="columna-silla">Silla</th>
@@ -22,12 +25,20 @@
                             <th>Barrio</th>
                             <th>Celular</th>
                             <th class="columna-talla">Talla</th>
-                            <th>Contactos de emergencia</th>
+                            <th class="columna-contactos-h3">Contactos de emergencia</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="fila-catequista"><td>CT</td><td colspan="8">{{ $fila['mesa']->catequista_titular }}</td></tr>
-                        <tr class="fila-catequista"><td>CA</td><td colspan="8">{{ $fila['mesa']->catequista_auxiliar }}</td></tr>
+                        {{-- Los catequistas también llenan sus datos: casillas en blanco para escribir --}}
+                        @foreach (['CT' => $fila['mesa']->catequista_titular, 'CA' => $fila['mesa']->catequista_auxiliar] as $cargoMesa => $catequista)
+                            <tr class="fila-catequista">
+                                <td class="columna-silla">{{ $cargoMesa }}</td>
+                                <td>{{ $catequista }}</td>
+                                @for ($casilla = 0; $casilla < 7; $casilla++)
+                                    <td class="casilla-llenar"></td>
+                                @endfor
+                            </tr>
+                        @endforeach
                         @foreach ($fila['inscritos'] as $inscrito)
                             <tr>
                                 <td class="columna-silla">{{ $inscrito->silla }}</td>
@@ -47,6 +58,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                </div>
             @endforeach
         </section>
     @empty

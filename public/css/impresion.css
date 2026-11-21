@@ -2305,3 +2305,60 @@ p.preguntas-charla {
     margin: 0;
     padding-left: 0.32cm;
 }
+
+
+/* ----------Hoja 3: un recorte por mesa, con el aviso para el catequista-------------- */
+.recorte-mesa {
+    margin-top: 0.35cm;
+    padding-top: 0.3cm;
+    border-top: 1.5px dashed #888888;
+    break-inside: avoid;
+}
+
+.recorte-mesa:first-of-type {
+    margin-top: 0;
+}
+
+.aviso-catequista {
+    margin-bottom: 0.15cm;
+    color: #c0392b;
+    font-size: 12.5pt;
+    font-weight: 900;
+    line-height: 1.2;
+    text-align: center;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.caption-grupo {
+    margin-left: 0.3cm;
+    font-size: 9pt;
+    font-weight: 700;
+    color: #555555;
+}
+
+/* El catequista escribe a mano: casillas altas y en blanco */
+.fila-catequista .casilla-llenar {
+    height: 0.9cm;
+    background: #ffffff;
+}
+
+.recorte-mesa .aviso-catequista {
+    font-size: 11pt;
+    white-space: nowrap;
+}
+
+/* Contactos más anchos, para que cada uno quepa en un renglón */
+.recorte-mesa .columna-contactos-h3 {
+    width: 33%;
+}
+
+.recorte-mesa .tabla-impresion td,
+.recorte-mesa .tabla-impresion th {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.recorte-mesa .fila-catequista .casilla-llenar {
+    height: 0.75cm;
+}
