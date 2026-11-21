@@ -24,9 +24,9 @@
 
         {{-- --------------------RESUMEN------------------- --}}
         <section class="resumen-llegada">
-            <div class="cifra-llegada cifra-llegaron"><p class="cifra-numero">{{ $llegaron }} <small>de {{ $inscritosGrupo->count() }}</small></p><p>llegaron</p></div>
-            <div class="cifra-llegada cifra-faltan"><p class="cifra-numero">{{ $faltan }}</p><p>faltan por llegar</p></div>
-            <div class="cifra-llegada cifra-sin-puesto"><p class="cifra-numero">{{ $sinPuesto }}</p><p>sin mesa y silla</p></div>
+            <div class="cifra-llegada cifra-llegaron"><p class="cifra-numero" id="cifra-llegaron">{{ $llegaron }}</p><p>llegaron <small>(tienen mesa y silla)</small></p></div>
+            <div class="cifra-llegada cifra-faltan"><p class="cifra-numero" id="cifra-faltan">{{ $faltan }}</p><p>faltan por llegar</p></div>
+            <div class="cifra-llegada cifra-sin-puesto"><p class="cifra-numero" id="cifra-se-fueron">{{ $seFueron }}</p><p>se fueron</p></div>
         </section>
 
         {{-- --------------------INVITADOS------------------- --}}
@@ -43,9 +43,8 @@
 
             <ol class="pasos-llegada">
                 <li>Busca a la persona por su nombre o su documento.</li>
-                <li>Cuando llegue, oprime <strong>Llegó</strong>.</li>
-                <li>Corrige lo que haga falta y escribe la <strong>mesa</strong> y la <strong>silla</strong> ahí mismo, en su fila.</li>
-                <li>Oprime <strong>Guardar</strong> (o Enter). Lo demás (celular, EPS, talla, padrino…) está en <strong>Más datos</strong>.</li>
+                <li>Escribe su <strong>mesa</strong> y su <strong>silla</strong> (con eso queda como que llegó) y corrige lo que haga falta.</li>
+                <li>Oprime <strong>Guardar</strong> (o Enter). Si alguien se va, marca <strong>Se fue</strong>.</li>
             </ol>
 
             @if ($inscritosGrupo->isEmpty())
@@ -56,7 +55,7 @@
                     <div class="botones-filtro" role="group" aria-label="Mostrar">
                         <button type="button" class="boton-filtro boton-filtro-activo" data-filtro="todos">Todos</button>
                         <button type="button" class="boton-filtro" data-filtro="faltan">Faltan por llegar</button>
-                        <button type="button" class="boton-filtro" data-filtro="sin-puesto">Sin mesa y silla</button>
+                        <button type="button" class="boton-filtro" data-filtro="se-fueron">Se fueron</button>
                     </div>
                 </div>
                 <p class="texto-vacio" id="puestos-sin-resultados" hidden>Nadie coincide con la búsqueda.</p>
@@ -75,7 +74,6 @@
                                 <th>Nacimiento</th>
                                 <th>Contactos de emergencia <small>(nombre · parentesco · celular)</small></th>
                                 <th>Mesa · Silla</th>
-                                <th>Llegada</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -87,9 +85,10 @@
                                     $form      = 'fila-' . $inscrito->id;
                                     $contactos = $inscrito->contactosEmergencia->sortBy('id')->values();
                                 @endphp
-                                <tr class="fila-puesto {{ $inscrito->llegada_en ? 'fila-llego' : '' }}"
+                                @php $seFue = $inscrito->estado === \App\Models\Inscripcion::ABANDONO; @endphp
+                                <tr class="fila-puesto {{ $inscrito->mesa_id ? 'fila-llego' : '' }} {{ $seFue ? 'fila-se-fue' : '' }}"
                                     data-buscar="{{ mb_strtolower($persona->nombre_completo . ' ' . $persona->cedula . ' ' . $inscrito->padrino_nombre) }}"
-                                    data-llego="{{ $inscrito->llegada_en ? 1 : 0 }}"
+                                    data-se-fue="{{ $seFue ? 1 : 0 }}"
                                     data-puesto="{{ $inscrito->mesa_id ? 1 : 0 }}"
                                     data-form="{{ $form }}">
                                     <td data-titulo="Nombres"><input class="campo-fila" form="{{ $form }}" type="text" name="nombres" maxlength="60" value="{{ $persona->nombres }}" required aria-label="Nombres"></td>
@@ -113,12 +112,16 @@
                                         <input class="campo-fila campo-numero" form="{{ $form }}" type="number" name="mesa" min="1" max="99" inputmode="numeric" value="{{ $inscrito->mesa?->numero }}" placeholder="M" aria-label="Mesa de {{ $persona->nombres }}">
                                         <input class="campo-fila campo-numero" form="{{ $form }}" type="number" name="silla" min="1" max="{{ \App\Models\Mesa::MAXIMO_SILLAS }}" inputmode="numeric" value="{{ $inscrito->silla }}" placeholder="S" aria-label="Silla de {{ $persona->nombres }}">
                                     </td>
-                                    <td class="celda-llegada" data-titulo="Llegada">@include('llegada.celdaLlegada')</td>
                                     <td class="celda-guardar">
                                         <form id="{{ $form }}" class="formulario-fila" method="POST" action="{{ route('llegada.datos', $inscrito) }}">
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit" class="boton-guardar-fila">Guardar</button>
+                                        </form>
+                                        <form class="formulario-se-fue" method="POST" action="{{ route('llegada.seFue', $inscrito) }}" data-nombre="{{ $persona->nombre_completo }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <label class="casilla-se-fue"><input type="checkbox" @checked($seFue)> Se fue</label>
                                         </form>
                                         <a class="enlace-mas-datos" href="{{ route('inscritos.edit', ['inscripcion' => $inscrito, 'volver' => 'llegada']) }}">Más datos</a>
                                         <p class="mensaje-fila" role="status" hidden></p>

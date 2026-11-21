@@ -31,22 +31,24 @@ class LlegadaController extends Controller
             ->orderBy('numero')
             ->get();
 
-        //  Los de este grupo que siguen en la lista (no los que no asistieron).
-        // La búsqueda se hace en la misma página, mientras se escribe.
+        //  Los de este grupo, también los que se fueron (salen tachados); no
+        // los que no asistieron. La búsqueda se hace en la misma página.
         $grupo = Inscripcion::with(['persona', 'retiro', 'mesa', 'contactosEmergencia'])
             ->select('inscripcions.*')
             ->withSum('pagos', 'valor')
             ->where('retiro_id', $retiro->id)
-            ->whereNotIn('inscripcions.estado', Inscripcion::ESTADOS_FUERA)
+            ->where('inscripcions.estado', '!=', Inscripcion::NO_ASISTIO)
             ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
             ->where('personas.sexo', $sexo)
             ->orderBy('personas.nombres')
             ->orderBy('personas.apellidos')
             ->get();
 
-        $llegaron  = $grupo->whereNotNull('llegada_en')->count();
-        $faltan    = $grupo->whereNull('llegada_en')->count();
-        $sinPuesto = $grupo->whereNull('mesa_id')->count();
+        //  Quien tiene mesa y silla llegó; quien no, falta por llegar
+        $enLista  = $grupo->where('estado', '!=', Inscripcion::ABANDONO);
+        $llegaron = $enLista->whereNotNull('mesa_id')->count();
+        $faltan   = $enLista->whereNull('mesa_id')->count();
+        $seFueron = $grupo->where('estado', Inscripcion::ABANDONO)->count();
 
         //  El último día aparece el botón para marcar que terminaron: cuántos
         // de los dos grupos tienen puesto y todavía no están marcados
@@ -61,39 +63,34 @@ class LlegadaController extends Controller
 
         // Se manda como inscritosGrupo: en la vista, $grupo es "hombres" o "mujeres"
         return view('llegada.index', array_merge(
-            compact('retiro', 'sexo', 'mesas', 'llegaron', 'faltan', 'sinPuesto', 'esUltimoDia', 'porTerminar'),
+            compact('retiro', 'sexo', 'mesas', 'llegaron', 'faltan', 'seFueron', 'esUltimoDia', 'porTerminar'),
             ['inscritosGrupo' => $grupo]
         ));
     }
 
 
-    //  Solo marca que llegó. El puesto NO se da por orden de llegada:
-    // la mesa y la silla se escriben a mano aparte.
-    //  Desde la página llega por fetch: responde la casilla de llegada ya
-    // cambiada, para no recargar la lista.
-    public function marcar(Request $request, Inscripcion $inscripcion)
+
+    //  «Se fue»: marca que abandonó el retiro o, si ya lo estaba, lo
+    // devuelve (volvió). Quien se fue conserva su silla, que queda vacía:
+    // las sillas no se le dan a nadie más.
+    public function seFue(Request $request, Inscripcion $inscripcion)
     {
-        if ($inscripcion->estaFuera()) {
-            $error = 'Esta persona está marcada como que no asistió o abandonó. Devuélvela a la lista desde su ficha.';
+        $seFue = $inscripcion->estado !== Inscripcion::ABANDONO;
 
-            return $request->expectsJson() ? response()->json(['message' => $error], 422) : back()->with('error', $error);
+        if ($seFue) {
+            $inscripcion->update(['estado' => Inscripcion::ABANDONO]);
+        } else {
+            $inscripcion->update(['estado' => $inscripcion->mesa_id ? Inscripcion::LLEGO : Inscripcion::CONFIRMADO]);
         }
 
-        if (! $inscripcion->llegada_en) {
-            $inscripcion->update([
-                'estado'     => Inscripcion::LLEGO,
-                'llegada_en' => now(),
-            ]);
-        }
+        $nombre  = $inscripcion->persona->nombre_completo;
+        $mensaje = $seFue ? $nombre . ' se fue: su silla queda vacía.' : $nombre . ' volvió a la lista.';
 
         if ($request->expectsJson()) {
-            return response()->json([
-                'mensaje' => $inscripcion->persona->nombre_completo . ' llegó.',
-                'html'    => view('llegada.celdaLlegada', ['inscrito' => $inscripcion->loadSum('pagos', 'valor')])->render(),
-            ]);
+            return response()->json(['seFue' => $seFue, 'mensaje' => $mensaje]);
         }
 
-        return back()->with('mensajeCreado', $inscripcion->persona->nombre_completo . ' llegó.');
+        return back()->with('mensajeActualizado', $mensaje);
     }
 
 
@@ -131,10 +128,14 @@ class LlegadaController extends Controller
     //  Pone (o quita, con la mesa vacía) el puesto de una persona. Va dentro
     // de una transacción: si el puesto ya es de otra persona, lanza
     // PuestoOcupado y la transacción se deshace entera.
+    //  Tener mesa y silla es haber llegado: al ponerlas queda como que llegó
+    // y al quitarlas vuelve a faltar por llegar (quien se fue sigue igual).
     private function ponerPuesto(Inscripcion $inscripcion, ?int $numeroMesa, ?int $silla): void
     {
         if (! $numeroMesa) {
-            $inscripcion->update(['mesa_id' => null, 'silla' => null]);
+            $inscripcion->update(['mesa_id' => null, 'silla' => null] + ($inscripcion->estado === Inscripcion::LLEGO
+                ? ['estado' => Inscripcion::CONFIRMADO, 'llegada_en' => null]
+                : []));
 
             return;
         }
@@ -173,8 +174,12 @@ class LlegadaController extends Controller
             $mesa->update(['cantidad_sillas' => $silla]);
         }
 
+        $llego = in_array($inscripcion->estado, [Inscripcion::INSCRITO, Inscripcion::CONFIRMADO], true)
+            ? ['estado' => Inscripcion::LLEGO, 'llegada_en' => $inscripcion->llegada_en ?? now()]
+            : [];
+
         try {
-            $inscripcion->update(['mesa_id' => $mesa->id, 'silla' => $silla]);
+            $inscripcion->update(['mesa_id' => $mesa->id, 'silla' => $silla] + $llego);
         } catch (QueryException $choque) {
             // El índice único (mesa, silla) atajó un choque de último momento
             throw new PuestoOcupado('Ese puesto se acaba de ocupar. Intenta de nuevo.');
@@ -253,19 +258,6 @@ class LlegadaController extends Controller
             'buscar'  => mb_strtolower($persona->nombre_completo . ' ' . $persona->cedula . ' ' . $inscripcion->padrino_nombre),
             'puesto'  => $inscripcion->mesa_id !== null,
         ]);
-    }
-
-
-
-    // Por si se marcó la llegada de la persona equivocada. El puesto se conserva.
-    public function deshacer(Inscripcion $inscripcion)
-    {
-        $inscripcion->update([
-            'estado'     => Inscripcion::CONFIRMADO,
-            'llegada_en' => null,
-        ]);
-
-        return back()->with('mensajeActualizado', 'Se deshizo la llegada de ' . $inscripcion->persona->nombres . '.');
     }
 
 

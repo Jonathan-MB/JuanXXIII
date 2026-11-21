@@ -152,9 +152,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/llegada', [LlegadaController::class, 'index'])->name('llegada.index');
         Route::post('/llegada/terminar', [LlegadaController::class, 'terminar'])->name('llegada.terminar');
-        Route::post('/llegada/{inscripcion}', [LlegadaController::class, 'marcar'])->name('llegada.marcar');
+        Route::patch('/llegada/{inscripcion}/se-fue', [LlegadaController::class, 'seFue'])->name('llegada.seFue');
         Route::patch('/llegada/{inscripcion}/puesto', [LlegadaController::class, 'asignarPuesto'])->name('llegada.puesto');
-        Route::patch('/llegada/{inscripcion}/deshacer', [LlegadaController::class, 'deshacer'])->name('llegada.deshacer');
         Route::patch('/llegada/{inscripcion}/datos', [LlegadaController::class, 'corregirDatos'])->name('llegada.datos');
 
         Route::resource('archivos', ArchivoController::class)

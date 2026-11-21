@@ -1,6 +1,6 @@
 // ============ CONFIRMAR ACCIONES ============
 
-// Deshacer una llegada o marcar que terminaron pide confirmación
+// Marcar que terminaron pide confirmación
 document.addEventListener('submit', (evento) => {
     const formulario = evento.target.closest('.formulario-confirmar');
 
@@ -143,6 +143,8 @@ document.querySelectorAll('.fila-puesto').forEach((fila) => {
 
         fila.dataset.buscar = datos.buscar;
         fila.dataset.puesto = datos.puesto ? '1' : '0';
+        fila.classList.toggle('fila-llego', datos.puesto);
+        recontar();
         fila.querySelector('[data-edad]').textContent = datos.edad;
 
         revisarCambios(fila);
@@ -154,44 +156,69 @@ document.querySelectorAll('.fila-puesto').forEach((fila) => {
 });
 
 
-// ============ LLEGÓ ============
+// ============ CIFRAS DE ARRIBA ============
 
-//  «Llegó» se marca sin recargar: la casilla se cambia por la hora
-document.addEventListener('submit', async (evento) => {
-    const formulario = evento.target.closest('.formulario-llego');
+//  Llegaron (tienen mesa y silla), faltan por llegar y se fueron: se
+// recuentan en la página después de cada cambio.
+function recontar() {
+    const filas = [...document.querySelectorAll('.fila-puesto')];
+    const enLista = filas.filter((fila) => fila.dataset.seFue !== '1');
+    const cifras = {
+        'cifra-llegaron': enLista.filter((fila) => fila.dataset.puesto === '1').length,
+        'cifra-faltan': enLista.filter((fila) => fila.dataset.puesto !== '1').length,
+        'cifra-se-fueron': filas.length - enLista.length,
+    };
 
-    if (! formulario) {
-        return;
-    }
+    Object.entries(cifras).forEach(([id, valor]) => {
+        const cifra = document.getElementById(id);
+        if (cifra) {
+            cifra.textContent = valor;
+        }
+    });
+}
 
-    evento.preventDefault();
 
-    const boton = formulario.querySelector('button');
-    const celda = formulario.closest('.celda-llegada');
-    const fila  = formulario.closest('.fila-puesto');
+// ============ SE FUE ============
 
-    // En la llegada hay afán: un doble clic no debe enviar dos veces
-    boton.disabled = true;
+//  Marcar «Se fue» tacha el nombre; quitarlo lo devuelve a la lista.
+// Quien se fue conserva su silla, que queda vacía.
+document.querySelectorAll('.formulario-se-fue').forEach((formulario) => {
+    const casilla = formulario.querySelector('input[type="checkbox"]');
+    const fila    = formulario.closest('.fila-puesto');
 
-    const [ok, datos] = await enviar(formulario);
+    casilla.addEventListener('change', async () => {
+        const nombre    = formulario.dataset.nombre;
+        const pregunta  = casilla.checked
+            ? `¿${nombre} se fue del retiro? Su silla queda vacía y no se le da a nadie más.`
+            : `¿${nombre} volvió? Sale otra vez en la lista.`;
 
-    if (! ok) {
-        boton.disabled = false;
-        mensajeFila(fila, datos.message || 'No se pudo marcar la llegada.', 'error');
-        return;
-    }
+        if (! confirm(pregunta)) {
+            casilla.checked = ! casilla.checked;
+            return;
+        }
 
-    celda.innerHTML     = datos.html;
-    fila.dataset.llego  = '1';
-    fila.classList.add('fila-llego');
+        casilla.disabled = true;
+        const [ok, datos] = await enviar(formulario);
+        casilla.disabled = false;
+
+        if (! ok) {
+            casilla.checked = ! casilla.checked;
+            mensajeFila(fila, datos.message || 'No se pudo guardar.', 'error');
+            return;
+        }
+
+        fila.dataset.seFue = datos.seFue ? '1' : '0';
+        fila.classList.toggle('fila-se-fue', datos.seFue);
+        mensajeFila(fila, datos.seFue ? 'Se fue' : 'Volvió ✓', datos.seFue ? 'error' : 'ok');
+        recontar();
+    });
 });
-
 
 // ============ BUSCAR Y FILTRAR INVITADOS ============
 
 //  Filtra la tabla mientras se escribe (nombre, apellidos, documento y
-// padrino) y según el botón elegido: todos, los que faltan por llegar o
-// los que no tienen mesa y silla.
+// padrino) y según el botón elegido: todos, los que faltan por llegar
+// (sin mesa y silla) o los que se fueron.
 const buscarPuesto = document.getElementById('buscar-puesto');
 let filtro         = 'todos';
 
@@ -199,11 +226,11 @@ let filtro         = 'todos';
 
 function pasaFiltro(fila) {
     if (filtro === 'faltan') {
-        return fila.dataset.llego === '0';
+        return fila.dataset.puesto === '0' && fila.dataset.seFue !== '1';
     }
 
-    if (filtro === 'sin-puesto') {
-        return fila.dataset.puesto === '0';
+    if (filtro === 'se-fueron') {
+        return fila.dataset.seFue === '1';
     }
 
     return true;

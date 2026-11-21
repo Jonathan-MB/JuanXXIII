@@ -107,12 +107,37 @@ class HojasDelRetiroTest extends TestCase
 
 
 
-    public function test_llego_se_marca_sin_recargar(): void
+    public function test_con_mesa_y_silla_llego_y_sin_ellas_falta_por_llegar(): void
     {
-        $maria = $this->inscrito('Femenino', ['inscripcion' => ['estado' => \App\Models\Inscripcion::CONFIRMADO]]);
+        $maria = $this->inscrito('Femenino', ['inscripcion' => ['estado' => \App\Models\Inscripcion::CONFIRMADO, 'llegada_en' => null]]);
 
-        $this->postJson(route('llegada.marcar', $maria))->assertOk()->assertJsonFragment(['mensaje' => $maria->persona->nombre_completo . ' llegó.'])->assertSee('Deshacer');
-        $this->assertNotNull($maria->refresh()->llegada_en);
+        $this->patch(route('llegada.puesto', $maria), ['mesa' => 2, 'silla' => 5])->assertSessionHas('mensajeActualizado');
+        $maria->refresh();
+        $this->assertSame(\App\Models\Inscripcion::LLEGO, $maria->estado);
+        $this->assertNotNull($maria->llegada_en);
+
+        $this->patch(route('llegada.puesto', $maria), ['mesa' => '', 'silla' => '']);
+        $maria->refresh();
+        $this->assertSame(\App\Models\Inscripcion::CONFIRMADO, $maria->estado);
+        $this->assertNull($maria->llegada_en);
+    }
+
+
+
+    public function test_se_fue_tacha_conserva_la_silla_y_se_puede_deshacer(): void
+    {
+        $juan = $this->inscrito('Masculino', [], 3, 4);
+
+        $this->patchJson(route('llegada.seFue', $juan))->assertOk()->assertJsonPath('seFue', true);
+        $juan->refresh();
+        $this->assertSame(\App\Models\Inscripcion::ABANDONO, $juan->estado);
+        $this->assertSame(4, (int) $juan->silla, 'Conserva su silla, que queda vacía');
+
+        // Sigue en la lista de Llegada, tachado
+        $this->get(route('llegada.index'))->assertOk()->assertSee('fila-se-fue', false)->assertSee($juan->persona->nombres);
+
+        $this->patchJson(route('llegada.seFue', $juan))->assertOk()->assertJsonPath('seFue', false);
+        $this->assertSame(\App\Models\Inscripcion::LLEGO, $juan->refresh()->estado);
     }
 
 

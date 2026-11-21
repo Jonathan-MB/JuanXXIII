@@ -465,7 +465,6 @@
     }
 
     .tabla-puestos .celda-contacto,
-    .tabla-puestos .celda-llegada,
     .tabla-puestos .celda-guardar {
         grid-column: 1 / -1;
     }
@@ -575,27 +574,13 @@
     white-space: nowrap;
 }
 
-.celda-llegada {
-    min-width: 92px;
-}
-
-.boton-llego {
-    min-height: 36px;
-    padding: 6px 14px;
-}
-
-.boton-deshacer {
-    min-height: 24px;
-    font-size: 12px;
-}
-
 .celda-guardar {
     min-width: 96px;
     text-align: center;
 }
 
 .formulario-fila,
-.formulario-llego {
+.formulario-se-fue {
     margin: 0;
 }
 
@@ -667,7 +652,6 @@
     .tabla-puestos td:nth-child(1),
     .tabla-puestos td:nth-child(2),
     .celda-contacto,
-    .celda-llegada,
     .celda-guardar {
         min-width: 0;
     }
@@ -680,4 +664,38 @@
     .celda-guardar {
         text-align: left;
     }
+}
+
+/* «Se fue»: la fila queda gris y el nombre tachado; su silla queda vacía */
+.casilla-se-fue {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #922b25;
+    cursor: pointer;
+}
+
+.casilla-se-fue input {
+    width: 16px;
+    height: 16px;
+    accent-color: #922b25;
+    cursor: pointer;
+}
+
+.fila-puesto.fila-se-fue > td {
+    background: #f1f1f1;
+}
+
+.fila-se-fue .campo-fila {
+    color: #8a8a8a;
+}
+
+.fila-se-fue [name="nombres"],
+.fila-se-fue [name="apellidos"] {
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #922b25;
 }
