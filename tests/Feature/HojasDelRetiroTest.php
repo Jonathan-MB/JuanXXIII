@@ -45,6 +45,12 @@ class HojasDelRetiroTest extends TestCase
             ->assertOk()
             ->assertSeeInOrder(['Lista sencilla · Retiro N.º 90 Hombres', 'Directivos', 'Rector Inventado', 'Mesa 2', 'CT Mesa 2', 'CA Mesa 2', '>5<', $juan->persona->nombre_completo, 'Retiro N.º 89 Mujeres', 'Mesa 1', $maria->persona->nombre_completo], false);
 
+        //  Sin mesa y silla no vino: solo sale en llamado y tesorería
+        $sinPuesto = $this->inscrito('Masculino', ['persona' => ['nombres' => 'Nunca', 'apellidos' => 'Llegó', 'fecha_nacimiento' => '1990-' . $this->retiro->fecha_inicio->format('m-d')]]);
+        $this->get(route('impresiones.sencilla'))->assertDontSee('Nunca Llegó');
+        $this->get(route('impresiones.cumpleanos'))->assertDontSee('Nunca Llegó');
+        $this->get(route('impresiones.llamado'))->assertSee('Nunca Llegó');
+
         $this->get(route('impresiones.sencilla', ['sexo' => 'mujeres']))
             ->assertOk()->assertDontSee($juan->persona->nombre_completo);
     }

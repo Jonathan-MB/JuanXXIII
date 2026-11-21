@@ -308,13 +308,14 @@ class ImpresionController extends Controller
 
     //  Lista sencilla: para pasar lista en floristería, secretaría y sobres.
     // Primero los directivos y luego cada mesa (CT, CA y las sillas en
-    // orden), con una casilla para marcar. Quien aún no tiene puesto, al final.
+    // orden), con una casilla para marcar.
     public function sencilla(Request $request)
     {
         $retiro = $this->retiroOFallar();
         $sexo   = $this->sexoPedido($request);
 
-        $inscritos  = $this->inscritos($retiro, $sexo)->groupBy(fn ($inscrito) => $inscrito->persona->sexo);
+        //  Quien no tiene mesa y silla no vino: no sale (solo en llamado y tesorería)
+        $inscritos  = $this->inscritos($retiro, $sexo)->whereNotNull('mesa_id')->groupBy(fn ($inscrito) => $inscrito->persona->sexo);
         $mesas      = $retiro->mesas()->when($sexo, fn ($consulta) => $consulta->where('sexo', $sexo))->orderBy('numero')->get()->groupBy('sexo');
         $rectorados = $retiro->rectorados()->when($sexo, fn ($consulta) => $consulta->where('sexo', $sexo))->orderBy('orden')->get()->groupBy('sexo');
 
@@ -340,11 +341,6 @@ class ImpresionController extends Controller
                 if ($filas->isNotEmpty()) {
                     $bloques[] = ['titulo' => 'Mesa ' . $mesa->numero . ($mesa->nombre ? ' · ' . $mesa->nombre : ''), 'filas' => $filas->all()];
                 }
-            }
-
-            $sinPuesto = $delGrupo->whereNull('mesa_id');
-            if ($sinPuesto->isNotEmpty()) {
-                $bloques[] = ['titulo' => 'Sin mesa todavía', 'filas' => $sinPuesto->map(fn ($inscrito) => ['', $inscrito->persona->nombre_completo])->values()->all()];
             }
 
             return [$grupo => ['bloques' => $bloques, 'invitados' => $delGrupo->count()]];
@@ -498,9 +494,9 @@ class ImpresionController extends Controller
         };
 
         foreach ($this->inscritos($retiro, $sexo) as $inscrito) {
-            if ($inscrito->persona->fecha_nacimiento) {
-                $puesto = $inscrito->mesa ? 'Mesa ' . $inscrito->mesa->numero . ' · Silla ' . $inscrito->silla : 'Sin mesa todavía';
-                $agregar($inscrito->persona->fecha_nacimiento, $inscrito->persona->nombre_completo, 'Retirista · ' . $puesto, $inscrito->persona->sexo);
+            //  Sin mesa y silla no vino: no se cuenta
+            if ($inscrito->mesa && $inscrito->persona->fecha_nacimiento) {
+                $agregar($inscrito->persona->fecha_nacimiento, $inscrito->persona->nombre_completo, 'Retirista · Mesa ' . $inscrito->mesa->numero . ' · Silla ' . $inscrito->silla, $inscrito->persona->sexo);
             }
         }
 
@@ -934,12 +930,15 @@ class ImpresionController extends Controller
 
 
 
+    //  Cuántas copias: los que tienen mesa y silla (quien no la tiene no vino).
+    // Si todavía no se ha dado ningún puesto, los que siguen en la lista.
     private function invitadosActivos(Retiro $retiro, string $sexo): int
     {
-        $cantidad = $retiro->inscripciones()
+        $consulta = fn () => $retiro->inscripciones()
             ->whereIn('estado', [Inscripcion::INSCRITO, Inscripcion::CONFIRMADO, Inscripcion::LLEGO])
-            ->whereHas('persona', fn ($persona) => $persona->where('sexo', $sexo))
-            ->count();
+            ->whereHas('persona', fn ($persona) => $persona->where('sexo', $sexo));
+
+        $cantidad = $consulta()->whereNotNull('mesa_id')->count() ?: $consulta()->count();
 
         return max($cantidad, 1);
     }
