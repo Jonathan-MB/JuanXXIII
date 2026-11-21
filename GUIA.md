@@ -37,6 +37,7 @@ Todos los buscadores (Llegada, Inscritos, Pagos, Directivos, Historial, Document
 
 - Cada hoja tiene tres botones: **Hombres**, **Mujeres** y **Ambos**. «Ambos» no mezcla los grupos: imprime primero lo de hombres y después lo de mujeres, cada uno en sus propias hojas, para no tener que mandar a imprimir dos veces.
 - **Carpetas del rectorado** (rector, vicerrector, dirigente): cada carpeta sale completa con su rótulo al frente. Con «Ambos» sale la carpeta de hombres entera y luego la de mujeres. El segundo vicerrector tiene un enlace aparte, sin la evaluación de equipos.
+- **Listado de invitados para puertas**: arriba los **directivos** (rector, vicerrector, dirigente responsable y catequistas rotativos) con su ciudad; en cada mesa, primero el **CT** y el **CA** con su ciudad y barrio y después los invitados. La ciudad y el barrio de los catequistas se escriben en **Mesas**; la de los directivos, en **Impresiones › Datos para imprimir**. Si ya se imprimió el listado sin ellos, la dirección `impresiones/puertas?sexo=hombres&servidores=1` (o `mujeres`) saca solo directivos y catequistas, en el mismo formato.
 - **Hoja 3 · Correcciones** se corta por mesa, por la línea punteada, y cada catequista recibe la de su mesa:
   - cada recorte lleva su propio membrete pequeño: logo, número del retiro de hombres o mujeres, fechas y el número y nombre de la mesa, así queda completo al cortarlo;
   - arriba de la tabla, en rojo: «CATEQUISTA: POR FAVOR VERIFICAR QUE USTED Y TODOS LOS DE SU MESA LLENEN LA INFORMACIÓN COMPLETA»;
@@ -48,7 +49,8 @@ Todos los buscadores (Llegada, Inscritos, Pagos, Directivos, Historial, Document
 
 ## Letreros
 
-Los letreros de **bebidas** (hombres y mujeres) piden escribir la mesa y la silla del invitado: «M 1 – S 1».
+- Los letreros de **bebidas** (hombres y mujeres) piden escribir la mesa y la silla del invitado: «M 1 – S 1».
+- **Ayudas de Dios · caja** es para la caja donde se dejan las cartas. Tiene el mismo estilo del letrero de Ayudas de Dios (el del horario) y pide marcar cada carta con la mesa y la silla del retirista: «M 1 – S 1».
 
 ## Horario del Santísimo
 
