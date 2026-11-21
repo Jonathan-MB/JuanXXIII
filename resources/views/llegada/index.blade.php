@@ -45,7 +45,7 @@
                 <li>Busca a la persona por su nombre o su cédula.</li>
                 <li>Cuando llegue, oprime <strong>Llegó</strong>.</li>
                 <li>Escribe su <strong>mesa</strong> y su <strong>silla</strong> y oprime <strong>Guardar</strong>.</li>
-                <li>Si un dato está mal, oprime <strong>Editar datos</strong>.</li>
+                <li>Si un dato está mal, oprime <strong>Editar datos</strong>. Para cualquier otro dato (correo, dirección, EPS, talla, sacramentos, medicamentos, pago o padrino), ahí mismo está <strong>Todos los datos</strong>.</li>
             </ol>
 
             @if ($inscritosGrupo->isEmpty())
@@ -119,7 +119,7 @@
                                             @method('PATCH')
                                             <label>Nombres<input type="text" name="nombres" maxlength="60" value="{{ $persona->nombres }}" required></label>
                                             <label>Apellidos<input type="text" name="apellidos" maxlength="60" value="{{ $persona->apellidos }}" required></label>
-                                            <label>Cédula<input type="text" name="cedula" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $persona->cedula }}" required></label>
+                                            <label>Cédula<input type="text" name="cedula" maxlength="20" value="{{ $persona->cedula }}" required></label>
                                             <label>Fecha de nacimiento<input type="date" name="fechaNacimiento" value="{{ $persona->fecha_nacimiento->format('Y-m-d') }}" required></label>
                                             <label>Celular<input type="tel" name="celular" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $persona->celular }}" required></label>
                                             <label>Ciudad<input type="text" name="ciudad" maxlength="60" value="{{ $persona->ciudad }}" required></label>
@@ -130,12 +130,13 @@
                                                 $contactosPersona = $inscrito->contactosEmergencia->sortBy('id')->values();
                                             @endphp
                                             @foreach ([0, 1] as $c)
-                                                <label>Contacto {{ $c + 1 }} · nombre<input type="text" name="contactos[{{ $c }}][nombre]" maxlength="100" value="{{ $contactosPersona[$c]->nombre ?? '' }}" required></label>
-                                                <label>Parentesco<input type="text" name="contactos[{{ $c }}][parentesco]" maxlength="45" value="{{ $contactosPersona[$c]->parentesco ?? '' }}" required></label>
-                                                <label>Celular<input type="tel" name="contactos[{{ $c }}][celular]" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $contactosPersona[$c]->celular ?? '' }}" required></label>
+                                                <label>Contacto {{ $c + 1 }} · nombre<input type="text" name="contactos[{{ $c }}][nombre]" maxlength="100" value="{{ $contactosPersona[$c]->nombre ?? '' }}"></label>
+                                                <label>Parentesco<input type="text" name="contactos[{{ $c }}][parentesco]" maxlength="45" value="{{ $contactosPersona[$c]->parentesco ?? '' }}"></label>
+                                                <label>Celular<input type="tel" name="contactos[{{ $c }}][celular]" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $contactosPersona[$c]->celular ?? '' }}"></label>
                                             @endforeach
                                             <div class="acciones-corregir">
                                                 <button type="submit" class="boton-azul">Guardar datos</button>
+                                                <a class="boton-secundario" href="{{ route('inscritos.edit', ['inscripcion' => $inscrito, 'volver' => 'llegada']) }}">Todos los datos</a>
                                                 <button type="button" class="boton-texto" data-cerrar="editar-{{ $inscrito->id }}">Cancelar</button>
                                             </div>
                                         </form>

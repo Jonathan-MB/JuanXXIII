@@ -99,6 +99,21 @@ class InscritoController extends Controller
 
         $persona = $inscripcion->persona;
 
+        //  Lo que se deja vacío se guarda en blanco (la EPS y los contactos
+        // no admiten nulo en la base), y un contacto del todo vacío no se guarda
+        $data['eps']                  = (string) ($data['eps'] ?? '');
+        $data['contactos_emergencia'] = collect($data['contactos_emergencia'] ?? [])
+            ->map(fn ($contacto) => [
+                'nombre'        => (string) ($contacto['nombre'] ?? ''),
+                'celular'       => (string) ($contacto['celular'] ?? ''),
+                'telefono_fijo' => ($contacto['telefono_fijo'] ?? null) ?: null,
+                'correo'        => ($contacto['correo'] ?? null) ?: null,
+                'parentesco'    => (string) ($contacto['parentesco'] ?? ''),
+            ])
+            ->reject(fn ($contacto) => $contacto['nombre'] === '' && $contacto['celular'] === '' && ! $contacto['telefono_fijo'])
+            ->values()
+            ->all();
+
         // Cargar datos sin guardar
         $persona->fill(collect($data)->only($persona->getFillable())->all());
         $inscripcion->fill(collect($data)->only(['forma_pago', 'tiene_padrino', 'padrino_nombre', 'padrino_telefono', 'padrino_presente', 'padrino_parroquia'])->all());
@@ -127,7 +142,10 @@ class InscritoController extends Controller
             }
         });
 
-        return redirect()->route('inscritos.show', $inscripcion)->with('mensajeActualizado', 'Datos actualizados.');
+        //  Desde Llegada se vuelve a Llegada
+        $destino = $request->input('volver') === 'llegada' ? route('llegada.index') : route('inscritos.show', $inscripcion);
+
+        return redirect($destino)->with('mensajeActualizado', 'Datos actualizados: ' . $persona->nombre_completo . '.');
     }
 
 

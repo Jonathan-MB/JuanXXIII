@@ -21,13 +21,20 @@
 
 @include('partials.header')
 
-    <a class="enlace-volver" href="{{ route('inscritos.show', $inscripcion) }}">← Volver a la ficha</a>
+    @if (request('volver') === 'llegada')
+        <a class="enlace-volver" href="{{ route('llegada.index') }}">← Volver a Llegada</a>
+    @else
+        <a class="enlace-volver" href="{{ route('inscritos.show', $inscripcion) }}">← Volver a la ficha</a>
+    @endif
     <h1 class="vista-titulo">Editar a {{ $persona->nombre_completo }}</h1>
     @include('partials.mensaje')
 
     <form class="formulario-inscrito" method="POST" action="{{ route('inscritos.update', $inscripcion) }}">
         @csrf
         @method('PUT')
+        @if (request('volver') === 'llegada')
+            <input type="hidden" name="volver" value="llegada">
+        @endif
 
         {{-- --------------------DATOS PERSONALES------------------- --}}
         <fieldset class="bloque-formulario">
@@ -52,7 +59,7 @@
             <div class="linea-formulario">
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="cedula">Cédula</label>
-                    <input type="text" name="cedula" id="cedula" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ old('cedula', $persona->cedula) }}" required>
+                    <input type="text" name="cedula" id="cedula" maxlength="20" value="{{ old('cedula', $persona->cedula) }}" required>
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="fechaNacimiento">Fecha de nacimiento</label>
@@ -64,7 +71,7 @@
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="correo">Correo</label>
-                    <input type="email" name="correo" id="correo" maxlength="100" value="{{ old('correo', $persona->correo) }}" required>
+                    <input type="email" name="correo" id="correo" maxlength="100" value="{{ old('correo', $persona->correo) }}">
                 </div>
             </div>
             <div class="linea-formulario">
@@ -102,7 +109,7 @@
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="eps">EPS</label>
-                    <input type="text" name="eps" id="eps" maxlength="60" value="{{ old('eps', $persona->eps) }}" required>
+                    <input type="text" name="eps" id="eps" maxlength="60" value="{{ old('eps', $persona->eps) }}">
                 </div>
                 <div class="elemento-formulario">
                     <label class="titulo-elemento" for="tallaCamiseta">Talla</label>
@@ -126,15 +133,15 @@
                 <div class="linea-formulario {{ $i ? 'linea-separada' : '' }}">
                     <div class="elemento-formulario">
                         <label class="titulo-elemento" for="contacto{{ $i }}Nombre">Contacto {{ $i + 1 }}</label>
-                        <input type="text" name="contactosEmergencia[{{ $i }}][nombre]" id="contacto{{ $i }}Nombre" maxlength="100" value="{{ $contactos[$i]['nombre'] ?? '' }}" required>
+                        <input type="text" name="contactosEmergencia[{{ $i }}][nombre]" id="contacto{{ $i }}Nombre" maxlength="100" value="{{ $contactos[$i]['nombre'] ?? '' }}">
                     </div>
                     <div class="elemento-formulario">
                         <label class="titulo-elemento" for="contacto{{ $i }}Parentesco">Parentesco</label>
-                        <input type="text" name="contactosEmergencia[{{ $i }}][parentesco]" id="contacto{{ $i }}Parentesco" maxlength="45" value="{{ $contactos[$i]['parentesco'] ?? '' }}" required>
+                        <input type="text" name="contactosEmergencia[{{ $i }}][parentesco]" id="contacto{{ $i }}Parentesco" maxlength="45" value="{{ $contactos[$i]['parentesco'] ?? '' }}">
                     </div>
                     <div class="elemento-formulario">
                         <label class="titulo-elemento" for="contacto{{ $i }}Celular">Celular</label>
-                        <input type="tel" inputmode="numeric" data-solo-numeros name="contactosEmergencia[{{ $i }}][celular]" id="contacto{{ $i }}Celular" maxlength="20" value="{{ $contactos[$i]['celular'] ?? '' }}" required>
+                        <input type="tel" inputmode="numeric" data-solo-numeros name="contactosEmergencia[{{ $i }}][celular]" id="contacto{{ $i }}Celular" maxlength="20" value="{{ $contactos[$i]['celular'] ?? '' }}">
                     </div>
                     <div class="elemento-formulario">
                         <label class="titulo-elemento" for="contacto{{ $i }}Fijo">Fijo</label>

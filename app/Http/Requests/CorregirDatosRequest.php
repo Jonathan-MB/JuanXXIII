@@ -22,7 +22,7 @@ class CorregirDatosRequest extends FormRequest
         return [
             'nombres'          => ['required', 'string', 'max:60'],
             'apellidos'        => ['required', 'string', 'max:60'],
-            'cedula'           => ['required', 'string', 'min:4', 'max:20', 'regex:/^[0-9]+$/', Rule::unique('personas', 'cedula')->ignore($this->route('inscripcion')->persona_id)],
+            'cedula'           => ['required', 'string', 'min:4', 'max:20', 'regex:/^[0-9A-Za-z]+$/', Rule::unique('personas', 'cedula')->ignore($this->route('inscripcion')->persona_id)],
             'fecha_nacimiento' => ['required', 'date', 'before:today'],
             'celular'          => ['required', 'string', 'min:7', 'max:20', 'regex:/^[0-9]+$/'],
             'ciudad'           => ['required', 'string', 'max:60'],
@@ -31,10 +31,11 @@ class CorregirDatosRequest extends FormRequest
             'padrino_telefono' => ['nullable', 'string', 'min:7', 'max:20', 'regex:/^[0-9]+$/'],
 
             //  Los dos contactos de emergencia de la hoja de la mesa
+            //  Pueden quedar a medias: muchos llegaron así del formulario antiguo
             'contactos'              => ['required', 'array', 'size:2'],
-            'contactos.*.nombre'     => ['required', 'string', 'max:100'],
-            'contactos.*.parentesco' => ['required', 'string', 'max:45'],
-            'contactos.*.celular'    => ['required', 'string', 'min:7', 'max:20', 'regex:/^[0-9]+$/'],
+            'contactos.*.nombre'     => ['nullable', 'string', 'max:100'],
+            'contactos.*.parentesco' => ['nullable', 'string', 'max:45'],
+            'contactos.*.celular'    => ['nullable', 'string', 'min:7', 'max:20', 'regex:/^[0-9]+$/'],
         ];
     }
 
@@ -68,7 +69,7 @@ class CorregirDatosRequest extends FormRequest
             'nombres.required'          => 'Escribe los nombres.',
             'apellidos.required'        => 'Escribe los apellidos.',
             'cedula.required'           => 'Escribe la cédula.',
-            'cedula.regex'              => 'La cédula solo puede tener números.',
+            'cedula.regex'              => 'La cédula solo puede tener números (o letras y números si es un pasaporte).',
             'cedula.unique'             => 'Esa cédula ya pertenece a otra persona registrada.',
             'fecha_nacimiento.required' => 'Escribe la fecha de nacimiento.',
             'fecha_nacimiento.before'   => 'La fecha de nacimiento no es válida.',

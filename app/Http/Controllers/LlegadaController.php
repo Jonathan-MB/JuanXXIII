@@ -188,9 +188,12 @@ class LlegadaController extends Controller
         //  Los contactos se cambian en su sitio: así no se pierden el fijo
         // ni el correo que la persona dio al inscribirse
         $existentes = $inscripcion->contactosEmergencia()->orderBy('id')->get()->values();
+        // Un contacto puede quedar a medias (lo vacío se guarda en blanco); uno nuevo del todo vacío no se crea
         $contactos  = collect($request->validated('contactos'))->map(function ($datos, $i) use ($existentes) {
+            $datos = array_map(fn ($valor) => (string) $valor, $datos);
+
             return ($existentes[$i] ?? new ContactoEmergencia())->fill($datos);
-        });
+        })->reject(fn ($contacto) => ! $contacto->exists && $contacto->nombre === '' && $contacto->celular === '');
         $cambianContactos = $contactos->contains(fn ($contacto) => ! $contacto->exists || $contacto->isDirty());
 
         // No hubo cambios

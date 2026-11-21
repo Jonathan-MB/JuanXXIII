@@ -172,6 +172,66 @@ class HojasDelRetiroTest extends TestCase
 
 
 
+    //  Los datos del formulario antiguo llegaron incompletos: sin EPS, con
+    // pasaporte y con contactos a medias. Igual se pueden corregir y guardar.
+    public function test_se_pueden_editar_todos_los_datos_aunque_esten_incompletos(): void
+    {
+        $juan    = $this->inscrito('Masculino', [], 1, 1);
+        $persona = $juan->persona;
+
+        $this->get(route('inscritos.edit', ['inscripcion' => $juan, 'volver' => 'llegada']))->assertOk()->assertSee('Volver a Llegada');
+
+        $this->put(route('inscritos.update', $juan), [
+            'volver'              => 'llegada',
+            'sexo'                => 'Masculino',
+            'nombres'             => $persona->nombres,
+            'apellidos'           => $persona->apellidos,
+            'cedula'              => 'XP123456',
+            'fechaNacimiento'     => '1990-05-10',
+            'celular'             => '3105551234',
+            'correo'              => '',
+            'direccion'           => 'Calle 1',
+            'barrio'              => 'Centro',
+            'ciudad'              => 'Cali',
+            'confirmacion'        => '1',
+            'tomaMedicamentos'    => '0',
+            'eps'                 => '',
+            'tallaCamiseta'       => 'XL',
+            'contactosEmergencia' => [
+                ['nombre' => 'Jaime', 'parentesco' => '', 'celular' => ''],
+                ['nombre' => '', 'parentesco' => '', 'celular' => ''],
+            ],
+            'formaPago'           => 'Efectivo',
+            'tienePadrino'        => '0',
+        ])->assertRedirect(route('llegada.index'))->assertSessionHas('mensajeActualizado');
+
+        $persona->refresh();
+        $this->assertSame('XP123456', $persona->cedula);
+        $this->assertSame('', $persona->eps);
+        $this->assertSame('XL', $persona->talla_camiseta);
+        $this->assertTrue($persona->confirmacion);
+        $this->assertSame(['Jaime'], $juan->contactosEmergencia()->pluck('nombre')->all(), 'El contacto vacío no se guarda');
+
+        // Y la corrección rápida de Llegada acepta contactos a medias
+        $this->patch(route('llegada.datos', $juan), [
+            'nombres'         => $persona->nombres,
+            'apellidos'       => $persona->apellidos,
+            'cedula'          => 'XP123456',
+            'fechaNacimiento' => '1990-05-10',
+            'celular'         => '3105551234',
+            'ciudad'          => 'Cali',
+            'barrio'          => 'Centro',
+            'contactos'       => [
+                ['nombre' => 'Jaime Pérez', 'parentesco' => '', 'celular' => ''],
+                ['nombre' => '', 'parentesco' => '', 'celular' => ''],
+            ],
+        ])->assertSessionHasNoErrors()->assertSessionHas('mensajeActualizado');
+
+        $this->assertSame(['Jaime Pérez'], $juan->contactosEmergencia()->pluck('nombre')->all());
+    }
+
+
+
     public function test_todos_los_letreros_abren_con_el_numero_del_retiro(): void
     {
         foreach (array_keys(\App\Http\Controllers\LetreroController::LETREROS) as $clave) {
