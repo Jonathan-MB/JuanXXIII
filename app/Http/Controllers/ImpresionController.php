@@ -499,62 +499,74 @@ class ImpresionController extends Controller
         $retiro     = $this->retiroOFallar();
         $carpeta    = self::CARPETAS[$cargo];
         $sinEquipos = $request->query('equipos') === '0';
-        $partes     = [];
         $faltantes  = [];
 
-        foreach ($carpeta['documentos'] as $documento => $copias) {
-            if ($documento === 'equipos' && $sinEquipos) {
-                continue;
+        //  Con «Ambos» salen dos carpetas completas, una detrás de la otra:
+        // primero la de hombres entera y después la de mujeres, cada una con
+        // su rótulo. Nunca se intercalan las hojas de los dos grupos.
+        $grupos = match ($request->sexo) {
+            'mujeres' => ['mujeres' => 'Femenino'],
+            'hombres' => ['hombres' => 'Masculino'],
+            default   => ['hombres' => 'Masculino', 'mujeres' => 'Femenino'],
+        };
+
+        $cargoRectorado = ['rector' => 'Rector(a)', 'vicerrector' => 'Vicerrector(a)', 'dirigente' => 'Dirigente responsable'][$cargo];
+        $carpetas       = [];
+
+        foreach ($grupos as $grupo => $sexo) {
+            $delGrupo = Request::create('/', 'GET', ['sexo' => $grupo]);
+            $partes   = [];
+
+            foreach ($carpeta['documentos'] as $documento => $copias) {
+                if ($documento === 'equipos' && $sinEquipos) {
+                    continue;
+                }
+
+                $vista = match ($documento) {
+                    'desarrollo', 'charlistas', 'sala' => app(DesarrolloController::class)->imprimir(Request::create('/', 'GET', ['formato' => $documento, 'sexo' => $grupo])),
+                    'llamado'                          => $this->llamado($delGrupo),
+                    'catequistas'                      => $this->catequistas($delGrupo),
+                    default                            => $this->informe($delGrupo, $documento),
+                };
+
+                if (! $vista instanceof View) {
+                    $faltantes[] = mb_strtolower(self::PARTES_CARPETA[$documento]);
+                    continue;
+                }
+
+                $hoja = $vista->with('enCarpeta', true)->render();
+
+                for ($copia = 0; $copia < $copias; $copia++) {
+                    $partes[] = $hoja;
+                }
             }
 
-            $vista = match ($documento) {
-                'desarrollo', 'charlistas', 'sala' => app(DesarrolloController::class)->imprimir(Request::create('/', 'GET', ['formato' => $documento, 'sexo' => $request->sexo])),
-                'llamado'                          => $this->llamado($request),
-                'catequistas'                      => $this->catequistas($request),
-                default                            => $this->informe($request, $documento),
-            };
-
-            if (! $vista instanceof View) {
-                $faltantes[] = mb_strtolower(self::PARTES_CARPETA[$documento]);
-                continue;
-            }
-
-            $hoja = $vista->with('enCarpeta', true)->render();
-
-            for ($copia = 0; $copia < $copias; $copia++) {
-                $partes[] = $hoja;
-            }
+            //  Rótulo para el frente: el nombre de quien la lleva, su cargo y el número del retiro
+            $carpetas[] = [
+                'rotulo' => [
+                    'nombre' => $retiro->rectorados()->where('sexo', $sexo)->where('cargo', $cargoRectorado)->value('nombre'),
+                    'cargo'  => match ($cargo) {
+                        'rector'      => $sexo === 'Femenino' ? 'Rectora' : 'Rector',
+                        'vicerrector' => $sexo === 'Femenino' ? 'Vicerrectora' : 'Vicerrector',
+                        default       => 'Dirigente responsable',
+                    },
+                    'numero' => $retiro->numeroPara($sexo),
+                ],
+                'partes' => $partes,
+            ];
         }
 
-        $grupo = match ($request->sexo) {
+        $titulo = match ($request->sexo) {
             'mujeres' => ' · Mujeres',
             'hombres' => ' · Hombres',
             default   => '',
         };
 
-        //  Rótulo para el frente de la carpeta: el nombre de quien la lleva, su cargo y el número del retiro (uno por grupo)
-        $sexos     = match ($request->sexo) {
-            'mujeres' => ['Femenino'],
-            'hombres' => ['Masculino'],
-            default   => ['Masculino', 'Femenino'],
-        };
-        $cargoRectorado = ['rector' => 'Rector(a)', 'vicerrector' => 'Vicerrector(a)', 'dirigente' => 'Dirigente responsable'][$cargo];
-        $rotulos = collect($sexos)->map(fn ($sexo) => [
-            'nombre' => $retiro->rectorados()->where('sexo', $sexo)->where('cargo', $cargoRectorado)->value('nombre'),
-            'cargo'  => match ($cargo) {
-                'rector'      => $sexo === 'Femenino' ? 'Rectora' : 'Rector',
-                'vicerrector' => $sexo === 'Femenino' ? 'Vicerrectora' : 'Vicerrector',
-                default       => 'Dirigente responsable',
-            },
-            'numero' => $retiro->numeroPara($sexo),
-        ]);
-
         return view('impresiones.carpeta', [
             'retiro'    => $retiro,
-            'partes'    => $partes,
-            'rotulos'   => $rotulos,
+            'carpetas'  => $carpetas,
             'faltantes' => $faltantes,
-            'titulo'    => $carpeta['nombre'] . ($sinEquipos ? ' 2' : '') . $grupo,
+            'titulo'    => $carpeta['nombre'] . ($sinEquipos ? ' 2' : '') . $titulo,
         ]);
     }
 
