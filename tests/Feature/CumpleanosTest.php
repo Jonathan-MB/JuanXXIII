@@ -75,6 +75,12 @@ class CumpleanosTest extends TestCase
             //  Hombres primero, después mujeres
             ->assertSeeInOrder(['Retiro N.º 90 Hombres', 'Rector Inventado', 'Retiro N.º 89 Mujeres', 'Cumple Cinco después']);
 
+        //  La Hoja 3 trae los datos del catequista que ya están en Mesas
+        $mesa->update(['titular_celular' => '3009998877', 'titular_ciudad' => 'Palmira', 'titular_barrio' => 'Barrio Inventado']);
+        $this->get(route('impresiones.correcciones', ['sexo' => 'hombres']))
+            ->assertOk()
+            ->assertSeeInOrder(['Catequista Inventado', $fin->format('d/m') . '/1990', 'Palmira', 'Barrio Inventado', '3009998877', 'Auxiliar Sin Fecha']);
+
         $this->get(route('impresiones.cumpleanos', ['sexo' => 'hombres']))
             ->assertOk()->assertSee('Rector Inventado')->assertDontSee('Cumple Cinco después');
     }

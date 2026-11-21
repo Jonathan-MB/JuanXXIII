@@ -42,7 +42,7 @@ Todos los buscadores (Llegada, Inscritos, Pagos, Directivos, Historial, Document
 - **Hoja 3 · Correcciones** se corta por mesa, por la línea punteada, y cada catequista recibe la de su mesa:
   - cada recorte lleva su propio membrete pequeño: logo, número del retiro de hombres o mujeres, fechas y el número y nombre de la mesa, así queda completo al cortarlo;
   - arriba de la tabla, en rojo: «CATEQUISTA: POR FAVOR VERIFICAR QUE USTED Y TODOS LOS DE SU MESA LLENEN LA INFORMACIÓN COMPLETA»;
-  - el CT y el CA tienen casillas en blanco para escribir sus propios datos (la aplicación solo tiene su nombre);
+  - en las filas del CT y el CA sale lo que ya está en **Mesas** (cumpleaños, ciudad, barrio y celular); lo que falta, más el documento, la talla y los contactos, queda en blanco para que lo escriban;
   - trae la talla de cada persona;
   - lo que se corrija se pasa después a la aplicación en Llegada.
 - **Sacramentos (dinámica)** está hecha para el papel oficio de la impresora de Secretaría. Si una hoja oficio horizontal se corta a la izquierda, el motivo suele ser que la impresora tiene puesto papel de 14 pulgadas y el papel real es de 13.

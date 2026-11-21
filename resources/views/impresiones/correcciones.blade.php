@@ -33,14 +33,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- Los catequistas también llenan sus datos: casillas en blanco para escribir --}}
-                        @foreach (['CT' => $fila['mesa']->catequista_titular, 'CA' => $fila['mesa']->catequista_auxiliar] as $cargoMesa => $catequista)
+                        {{--  Los catequistas también revisan sus datos: sale lo que ya está en
+                             Mesas (cumpleaños, ciudad, barrio, celular) y lo que falta queda en
+                             blanco para escribirlo. Documento, talla y contactos no se guardan --}}
+                        @php
+                            $mesaH3 = $fila['mesa'];
+                            $catequistasH3 = [
+                                'CT' => [$mesaH3->catequista_titular, $mesaH3->titular_nacimiento, $mesaH3->titular_ciudad, $mesaH3->titular_barrio, $mesaH3->titular_celular],
+                                'CA' => [$mesaH3->catequista_auxiliar, $mesaH3->auxiliar_nacimiento, $mesaH3->auxiliar_ciudad, $mesaH3->auxiliar_barrio, $mesaH3->auxiliar_celular],
+                            ];
+                        @endphp
+                        @foreach ($catequistasH3 as $cargoMesa => [$catequista, $nacimiento, $ciudad, $barrio, $celular])
+                            @php
+                                $casillas = [null, $nacimiento?->format('d/m/Y'), $ciudad, $barrio, $celular, null, null];
+                            @endphp
                             <tr class="fila-catequista">
                                 <td class="columna-silla">{{ $cargoMesa }}</td>
                                 <td>{{ $catequista }}</td>
-                                @for ($casilla = 0; $casilla < 7; $casilla++)
-                                    <td class="casilla-llenar"></td>
-                                @endfor
+                                @foreach ($casillas as $dato)
+                                    <td class="{{ filled($dato) ? 'dato-sin-salto' : 'casilla-llenar' }}">{{ $dato }}</td>
+                                @endforeach
                             </tr>
                         @endforeach
                         @foreach ($fila['inscritos'] as $inscrito)
