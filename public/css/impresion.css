@@ -1753,22 +1753,22 @@ p.preguntas-charla {
     break-inside: avoid;
 }
 
+/* Sin fondo negro, para ahorrar tinta: letra negra, gruesa y grande, con una raya debajo */
 .titulo-caja-puertas {
     display: flex;
     align-items: baseline;
     gap: 12px;
-    padding: 5px 12px;
-    background: #111111;
-    color: #ffffff;
-    font-size: 16pt;
-    font-weight: 800;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    padding: 4px 12px;
+    border-bottom: 2.5px solid #111111;
+    background: #ffffff;
+    color: #111111;
+    font-size: 19pt;
+    font-weight: 900;
 }
 
 .titulo-caja-puertas span {
-    font-size: 11pt;
-    font-weight: 600;
+    font-size: 12pt;
+    font-weight: 800;
 }
 
 .titulo-caja-puertas .grupo-caja-puertas {
