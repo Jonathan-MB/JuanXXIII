@@ -15,6 +15,7 @@ class LetreroController extends Controller
         'silencio'          => ['Silencio, estamos en oración', 'Para la capilla y los pasillos cerca de las salas.', 'Viernes · al arreglar la casa'],
         'santisimo'         => ['Adoración al Santísimo', 'Para la puerta de la capilla del Santísimo.', 'Viernes · al arreglar la casa'],
         'ayudasDeDios'      => ['Ayudas de Dios', 'Para las canastas: horario de recepción y qué cartas no se reciben. Trae el número del retiro.', 'Viernes · en las canastas'],
+        'ayudasCaja'        => ['Ayudas de Dios · caja', 'Para marcar la caja donde se dejan las cartas: pide escribir en cada una la mesa y la silla del retirista (M 1 – S 1).', 'Sábado · en la caja de las cartas'],
         'nequi'             => ['Pago por Nequi', 'Una hoja para Librería, Cafetería y Floristería. El número y el titular se cambian en Ajustes.', 'Viernes · en Librería, Cafetería y Floristería'],
         'noCepillarse'      => ['No cepillarse aquí', 'Para los lavamanos donde no se deben cepillar los dientes.', 'Viernes · al arreglar los baños'],
         'residuos'          => ['Residuos de comida', 'Para la caneca de los restos de comida.', 'Viernes · al arreglar el comedor'],

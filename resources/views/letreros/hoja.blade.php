@@ -64,6 +64,21 @@
             </section>
             @break
 
+        {{-- --------------------AYUDAS DE DIOS: LA CAJA------------------- --}}
+        {{-- Para la caja donde se dejan las cartas: cada carta marcada con la mesa y la silla del retirista --}}
+        @case('ayudasCaja')
+            <section class="pagina letrero-pared">
+                @include('letreros.icono', ['icono' => 'sobre', 'clase' => 'icono-grande'])
+                <div class="texto-letrero">
+                    <p class="antetitulo-letrero">Caja de</p>
+                    <p class="titulo-letrero titulo-gigante">Ayudas de Dios</p>
+                    <p class="retiro-letrero">{{ $retiroCorto }}</p>
+                    <p class="aviso-puesto aviso-puesto-grande"><span>Por favor marca cada carta</span><span>con la <strong>mesa</strong> y la <strong>silla</strong></span><span>del retirista</span><span class="ejemplo-puesto">M 1 – S 1</span></p>
+                </div>
+                @include('letreros.pie')
+            </section>
+            @break
+
         {{-- --------------------NEQUI: una hoja por equipo------------------- --}}
         @case('nequi')
             @foreach ($equipos as $equipo)

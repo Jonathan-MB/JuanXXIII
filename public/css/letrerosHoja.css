@@ -356,3 +356,12 @@
     font-size: 30pt;
     font-weight: 800;
 }
+
+/* Caja de Ayudas de Dios: el aviso más grande, para leerlo de lejos */
+.aviso-puesto-grande {
+    font-size: 23pt;
+}
+
+.aviso-puesto-grande .ejemplo-puesto {
+    font-size: 36pt;
+}
