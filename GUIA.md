@@ -37,7 +37,12 @@ Todos los buscadores (Llegada, Inscritos, Pagos, Directivos, Historial, Document
 
 - Cada hoja tiene tres botones: **Hombres**, **Mujeres** y **Ambos**. «Ambos» no mezcla los grupos: imprime primero lo de hombres y después lo de mujeres, cada uno en sus propias hojas, para no tener que mandar a imprimir dos veces.
 - **Carpetas del rectorado** (rector, vicerrector, dirigente): cada carpeta sale completa con su rótulo al frente. Con «Ambos» sale la carpeta de hombres entera y luego la de mujeres. El segundo vicerrector tiene un enlace aparte, sin la evaluación de equipos.
-- **Hoja 3 · Correcciones** trae la talla de cada persona.
+- **Hoja 3 · Correcciones** se corta por mesa, por la línea punteada, y cada catequista recibe la de su mesa:
+  - cada recorte lleva su propio membrete pequeño: logo, número del retiro de hombres o mujeres, fechas y el número y nombre de la mesa, así queda completo al cortarlo;
+  - arriba de la tabla, en rojo: «CATEQUISTA: POR FAVOR VERIFICAR QUE USTED Y TODOS LOS DE SU MESA LLENEN LA INFORMACIÓN COMPLETA»;
+  - el CT y el CA tienen casillas en blanco para escribir sus propios datos (la aplicación solo tiene su nombre);
+  - trae la talla de cada persona;
+  - lo que se corrija se pasa después a la aplicación en Llegada.
 - **Sacramentos (dinámica)** está hecha para el papel oficio de la impresora de Secretaría. Si una hoja oficio horizontal se corta a la izquierda, el motivo suele ser que la impresora tiene puesto papel de 14 pulgadas y el papel real es de 13.
 - Para descargar cualquier hoja en PDF: **Imprimir** y elegir **Guardar como PDF**. Conviene quitar «Encabezado y pie de página» en «Ver más».
 
