@@ -1,0 +1,140 @@
+/* ----------Hoja para cartas a mano: carta, suave, poca tinta-------------- */
+@page hoja-carta {
+    size: letter;
+    margin: 0;
+}
+
+.hoja-carta {
+    page: hoja-carta;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 21.59cm;
+    height: 27.94cm;
+    padding: 1.4cm 2cm 1.2cm;
+    overflow: hidden;
+    color: #8a7a4a;
+    font-family: Georgia, 'Times New Roman', serif;
+}
+
+@media screen {
+    .hoja-carta {
+        min-height: 27.94cm;
+        padding: 1.4cm 2cm 1.2cm;
+    }
+}
+
+/* Marca de agua: el logo en gris muy claro, detrás de todo */
+.marca-agua-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 13cm;
+    transform: translate(-50%, -42%);
+    opacity: 0.06;
+    filter: grayscale(1);
+    pointer-events: none;
+}
+
+.rama-esquina {
+    position: absolute;
+    width: 6.5cm;
+    height: 2.4cm;
+    color: #c9bb8a;
+    opacity: 0.55;
+}
+
+.rama-arriba {
+    top: 0.5cm;
+    right: 0.4cm;
+    transform: scaleY(-1) rotate(-8deg);
+}
+
+.rama-abajo {
+    bottom: 0.6cm;
+    left: 0.4cm;
+    transform: scaleX(-1) rotate(172deg);
+}
+
+/* Membrete centrado y pequeño */
+.membrete-carta {
+    position: relative;
+    text-align: center;
+}
+
+.logo-carta {
+    width: 1.9cm;
+    height: 1.9cm;
+    object-fit: contain;
+}
+
+.movimiento-carta {
+    margin: 6px 0 0;
+    color: #3d4a6b;
+    font-size: 12.5pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.arquidiocesis-carta {
+    margin: 2px 0 0;
+    color: #8a7a4a;
+    font-size: 9.5pt;
+    font-style: italic;
+    letter-spacing: 0.06em;
+}
+
+.adorno-carta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.linea-adorno {
+    flex: 1;
+    height: 0;
+    border-top: 0.8px solid #d8cda6;
+}
+
+.rama-adorno {
+    width: 1.6cm;
+    height: 0.6cm;
+    color: #c9bb8a;
+}
+
+.rama-izquierda {
+    transform: scaleX(-1);
+}
+
+.cruz-adorno {
+    color: #b9a565;
+    font-size: 13pt;
+    line-height: 1;
+}
+
+/* Espacio para escribir: renglones grises muy tenues */
+.cuerpo-carta {
+    position: relative;
+    flex: 1;
+    margin-top: 0.9cm;
+}
+
+.con-renglones .cuerpo-carta {
+    background-image: linear-gradient(to top, #d6d6d6 0.8px, transparent 0.8px);
+    background-size: 100% 0.9cm;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.pie-carta {
+    position: relative;
+    margin-top: 0.4cm;
+    color: #a99a6a;
+    font-size: 9pt;
+    font-style: italic;
+    text-align: center;
+    letter-spacing: 0.04em;
+}

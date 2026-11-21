@@ -805,6 +805,21 @@ class ImpresionController extends Controller
 
 
 
+    //  Hoja carta para escribir cartas a mano: membrete con el logo, marca de
+    // agua suave y renglones tenues (?renglones=0, sin renglones). No depende
+    // del retiro. ?cantidad: cuántas hojas (1 a 50).
+    public function hojaCarta(Request $request)
+    {
+        return view('impresiones.hojaCarta', [
+            'renglones' => $request->query('renglones') !== '0',
+            'cantidad'  => max(1, min(50, (int) ($request->query('cantidad') ?: 1))),
+            'estilo'    => 'css/hojaCarta.css',
+            'titulo'    => 'Hoja para cartas',
+        ]);
+    }
+
+
+
     //  Rótulos para marcar los sobres de "Ayudas de Dios": uno por
     // persona con puesto, en orden de mesa y silla, para recortar y pegar.
     public function sobres(Request $request)

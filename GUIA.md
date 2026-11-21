@@ -50,6 +50,8 @@ Todos los buscadores (Llegada, Inscritos, Pagos, Directivos, Historial, Document
 - **Sacramentos (dinámica)** está hecha para el papel oficio de la impresora de Secretaría. Si una hoja oficio horizontal se corta a la izquierda, el motivo suele ser que la impresora tiene puesto papel de 14 pulgadas y el papel real es de 13.
 - Para descargar cualquier hoja en PDF: **Imprimir** y elegir **Guardar como PDF**. Conviene quitar «Encabezado y pie de página» en «Ver más».
 
+- **Hoja para cartas**: hoja carta para escribir cartas a mano, con el logo arriba, el logo grande como marca de agua muy suave y ramitas de olivo. Tiene dos botones: con renglones y sin renglones. No depende del retiro.
+
 ## Letreros
 
 - Los letreros de **bebidas** (hombres y mujeres) piden escribir la mesa y la silla del invitado: «M 1 – S 1».

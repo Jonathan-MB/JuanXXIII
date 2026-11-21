@@ -97,6 +97,17 @@
                 </article>
             @endforeach
 
+            {{-- Papel para cartas a mano: no depende del grupo ni del retiro --}}
+            <article class="tarjeta-impresion" id="hoja-para-cartas">
+                <h2 class="nombre-impresion">Hoja para cartas</h2>
+                <p class="cuando-impresion">Cuando se necesite · cartas a mano</p>
+                <p class="descripcion-impresion">Hoja carta bonita y suave para escribir cartas a mano: el logo arriba, el logo grande como marca de agua muy clara y ramitas de olivo. Gasta poca tinta.</p>
+                <div class="botones-impresion">
+                    <a class="boton-azul" href="{{ route('impresiones.hojaCarta') }}" target="_blank" rel="noopener">Con renglones</a>
+                    <a class="boton-azul" href="{{ route('impresiones.hojaCarta', ['renglones' => 0]) }}" target="_blank" rel="noopener">Sin renglones</a>
+                </div>
+            </article>
+
             {{-- Tarjetas en blanco: no dependen del grupo sino del papel --}}
             <article class="tarjeta-impresion">
                 <h2 class="nombre-impresion">Tarjetas De / Para (flores)</h2>
