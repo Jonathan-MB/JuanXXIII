@@ -109,7 +109,7 @@ class CatalogoImpresiones
             'ruta'        => 'impresiones.sencilla',
             'nombre'      => 'Lista sencilla · floristería, secretaría, sobres',
             'cuando'      => 'Todo el retiro · para pasar lista',
-            'descripcion' => 'Una lista sencilla para pasar lista en floristería, secretaría y sobres: solo el nombre, la mesa y la silla, y una casilla para marcar. Pequeña, en orden alfabético y en dos columnas por hoja.',
+            'descripcion' => 'Una lista sencilla para pasar lista en floristería, secretaría y sobres: los directivos y luego cada mesa con su CT, su CA y las sillas en orden, con una casilla para marcar. Pequeña, en dos columnas por hoja.',
         ],
         [
             'ruta'        => 'impresiones.cumpleanos',

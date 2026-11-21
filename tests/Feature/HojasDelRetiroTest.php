@@ -35,14 +35,15 @@ class HojasDelRetiroTest extends TestCase
 
 
 
-    public function test_la_lista_sencilla_trae_nombre_y_puesto_por_grupo(): void
+    public function test_la_lista_sencilla_va_por_mesa_y_silla_con_directivos(): void
     {
         $juan  = $this->inscrito('Masculino', [], 2, 5);
         $maria = $this->inscrito('Femenino', [], 1, 3);
+        $this->retiro->rectorados()->create(['sexo' => 'Masculino', 'cargo' => 'Rector(a)', 'nombre' => 'Rector Inventado', 'orden' => 1]);
 
         $this->get(route('impresiones.sencilla'))
             ->assertOk()
-            ->assertSeeInOrder(['Lista sencilla · Retiro N.º 90 Hombres', $juan->persona->nombre_completo, '2 – 5', 'Retiro N.º 89 Mujeres', $maria->persona->nombre_completo, '1 – 3']);
+            ->assertSeeInOrder(['Lista sencilla · Retiro N.º 90 Hombres', 'Directivos', 'Rector Inventado', 'Mesa 2', 'CT Mesa 2', 'CA Mesa 2', '>5<', $juan->persona->nombre_completo, 'Retiro N.º 89 Mujeres', 'Mesa 1', $maria->persona->nombre_completo], false);
 
         $this->get(route('impresiones.sencilla', ['sexo' => 'mujeres']))
             ->assertOk()->assertDontSee($juan->persona->nombre_completo);

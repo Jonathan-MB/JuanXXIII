@@ -306,17 +306,69 @@ class ImpresionController extends Controller
 
 
 
-    //  Lista sencilla: solo nombre, mesa y silla, y una casilla, para pasar
-    // lista en floristería, secretaría y sobres. En orden alfabético.
+    //  Lista sencilla: para pasar lista en floristería, secretaría y sobres.
+    // Primero los directivos y luego cada mesa (CT, CA y las sillas en
+    // orden), con una casilla para marcar. Quien aún no tiene puesto, al final.
     public function sencilla(Request $request)
     {
         $retiro = $this->retiroOFallar();
+        $sexo   = $this->sexoPedido($request);
+
+        $inscritos  = $this->inscritos($retiro, $sexo)->groupBy(fn ($inscrito) => $inscrito->persona->sexo);
+        $mesas      = $retiro->mesas()->when($sexo, fn ($consulta) => $consulta->where('sexo', $sexo))->orderBy('numero')->get()->groupBy('sexo');
+        $rectorados = $retiro->rectorados()->when($sexo, fn ($consulta) => $consulta->where('sexo', $sexo))->orderBy('orden')->get()->groupBy('sexo');
+
+        $grupos = collect($sexo ? [$sexo] : ['Masculino', 'Femenino'])->mapWithKeys(function ($grupo) use ($inscritos, $mesas, $rectorados) {
+            $delGrupo = $inscritos[$grupo] ?? collect();
+            $bloques  = [];
+
+            $directivos = ($rectorados[$grupo] ?? collect())->filter(fn ($miembro) => $miembro->nombre);
+            if ($directivos->isNotEmpty()) {
+                $bloques[] = [
+                    'titulo' => 'Directivos',
+                    'filas'  => $directivos->map(fn ($miembro) => [self::cargoCorto($miembro->cargo), $miembro->nombre])->values()->all(),
+                ];
+            }
+
+            foreach ($mesas[$grupo] ?? [] as $mesa) {
+                $filas = collect([['CT', $mesa->catequista_titular], ['CA', $mesa->catequista_auxiliar]])->filter(fn ($fila) => $fila[1])->values();
+
+                foreach ($delGrupo->where('mesa_id', $mesa->id) as $inscrito) {
+                    $filas->push([$inscrito->silla, $inscrito->persona->nombre_completo]);
+                }
+
+                if ($filas->isNotEmpty()) {
+                    $bloques[] = ['titulo' => 'Mesa ' . $mesa->numero . ($mesa->nombre ? ' · ' . $mesa->nombre : ''), 'filas' => $filas->all()];
+                }
+            }
+
+            $sinPuesto = $delGrupo->whereNull('mesa_id');
+            if ($sinPuesto->isNotEmpty()) {
+                $bloques[] = ['titulo' => 'Sin mesa todavía', 'filas' => $sinPuesto->map(fn ($inscrito) => ['', $inscrito->persona->nombre_completo])->values()->all()];
+            }
+
+            return [$grupo => ['bloques' => $bloques, 'invitados' => $delGrupo->count()]];
+        })->filter(fn ($grupo) => $grupo['bloques'] !== []);
 
         return view('impresiones.sencilla', [
             'retiro' => $retiro,
-            'grupos' => $this->enOrdenAlfabetico($retiro, $this->sexoPedido($request)),
+            'grupos' => $grupos,
             'titulo' => 'Lista sencilla',
         ]);
+    }
+
+
+
+    // Rector(a) → Rector, Catequista rotativo (CR) → CR… para la columna angosta
+    private static function cargoCorto(string $cargo): string
+    {
+        return match (true) {
+            str_starts_with($cargo, 'Rector')      => 'Rector',
+            str_starts_with($cargo, 'Vicerrector') => 'Vice',
+            str_starts_with($cargo, 'Dirigente')   => 'Dirig.',
+            str_contains($cargo, '(CR)')           => 'CR',
+            default                                => $cargo,
+        };
     }
 
 

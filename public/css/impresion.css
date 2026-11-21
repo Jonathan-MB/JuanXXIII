@@ -2504,14 +2504,16 @@ p.preguntas-charla {
 }
 
 .columnas-sencilla {
-    display: flex;
-    gap: 0.5cm;
-    align-items: flex-start;
+    column-count: 2;
+    column-gap: 0.6cm;
 }
 
+/* Cada mesa entera en una columna: no se parte */
 .tabla-sencilla {
-    flex: 1;
-    width: 50%;
+    width: 100%;
+    margin-bottom: 6px;
+    break-inside: avoid;
+    page-break-inside: avoid;
 }
 
 .tabla-sencilla th,
@@ -2520,13 +2522,28 @@ p.preguntas-charla {
     font-size: 9pt;
 }
 
+.titulo-bloque-sencilla {
+    text-align: left;
+    font-size: 9.5pt;
+}
+
+.fila-catequista-sencilla td {
+    font-weight: 700;
+}
+
 .tabla-sencilla .casilla-papel {
     width: 0.4cm;
     height: 0.4cm;
 }
 
+.tabla-sencilla .columna-check {
+    width: 0.8cm;
+    text-align: center;
+}
+
 .puesto-sencilla {
-    width: 1.4cm;
+    width: 1.2cm;
     text-align: center;
     white-space: nowrap;
+    font-weight: 700;
 }
