@@ -934,3 +934,32 @@
 .cumple-catequista input {
     flex: 1;
 }
+
+/* ----------Nombres de mesas: dos columnas, hombres y mujeres-------------- */
+.rejilla-nombres-mesa {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.tabla-nombres-mesa input {
+    width: 100%;
+    min-height: 38px;
+    padding: 7px 10px;
+    border: 1px solid #c9d1e3;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.numero-nombre-mesa {
+    width: 60px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.opcion-nombres-mesa {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0 0;
+}

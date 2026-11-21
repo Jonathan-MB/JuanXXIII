@@ -29,6 +29,14 @@ Botón **«+ Agregar persona que llegó sin inscribirse»**, encima de la lista.
 - Si el documento ya está en la lista, avisa en vez de repetir a la persona. Si esa cédula ya vivió el retiro, no la deja agregar.
 - **Esto es solo para Secretaría.** La inscripción pública de la página sigue pidiendo todos los datos obligatorios.
 
+## Nombres de mesas
+
+En **Mesas › Nombres de mesas** se guarda el santo de cada mesa según su número, para hombres y para mujeres. Casi nunca cambia, así que sirve para todos los retiros:
+
+- cuando se crea una mesa sin nombre (en Llegada al escribir el puesto, o con «+ Agregar mesa»), ya llega con el nombre de su número;
+- si se agrega una mesa nueva, se escribe su santo en el renglón de su número; dejar un renglón vacío quita ese nombre;
+- la casilla «Poner también estos nombres…» se los pone de una vez a las mesas del retiro actual que están sin nombre (no cambia las que ya tienen).
+
 ## Buscar personas
 
 Todos los buscadores (Llegada, Inscritos, Pagos, Directivos, Historial, Documentos, Inventario y el buscador general) **no distinguen tildes ni mayúsculas**: «cesar», «CÉSAR» y «César» encuentran a la misma persona, y «munoz» encuentra a «Muñoz».

@@ -40,6 +40,18 @@ class Mesa extends Model
 
 
 
+    //  Una mesa nueva sin nombre toma el de su número (Mesas › Nombres de mesas)
+    protected static function booted(): void
+    {
+        static::creating(function (Mesa $mesa) {
+            if (blank($mesa->nombre) && $mesa->sexo && $mesa->numero) {
+                $mesa->nombre = NombreMesa::para($mesa->sexo, (int) $mesa->numero);
+            }
+        });
+    }
+
+
+
     public function retiro(): BelongsTo
     {
         return $this->belongsTo(Retiro::class, 'retiro_id');

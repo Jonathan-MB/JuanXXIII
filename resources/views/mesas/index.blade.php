@@ -18,6 +18,7 @@
                 <a class="boton-secundario" href="{{ route('impresiones.catequistas', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir catequistas por mesa</a>
                 <a class="boton-secundario" href="{{ route('impresiones.directorio', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir directorio</a>
                 <a class="boton-secundario" href="{{ route('impresiones.ubicacion', ['sexo' => $grupo]) }}" target="_blank" rel="noopener">Imprimir hojas de ubicación</a>
+                <a class="boton-secundario" href="{{ route('mesas.nombres') }}">Nombres de mesas</a>
                 <a class="boton-secundario" href="{{ route('llegada.index', ['sexo' => $grupo]) }}">Ir a la llegada</a>
             </div>
         </div>
@@ -28,7 +29,7 @@
             <a class="pestana {{ $grupo === 'mujeres' ? 'pestana-activa' : '' }}" href="{{ route('mesas.index', ['sexo' => 'mujeres']) }}">Mujeres · Retiro {{ $retiro->numero_mujeres }}</a>
         </nav>
 
-        <p class="texto-ayuda texto-ayuda-mesas">Las mesas aparecen solas cuando, en <strong>Llegada</strong>, escribes la mesa y la silla de cada persona, o las agregas aquí. Aquí también les pones nombre y los catequistas: CT (titular) y CA (auxiliar).</p>
+        <p class="texto-ayuda texto-ayuda-mesas">Las mesas aparecen solas cuando, en <strong>Llegada</strong>, escribes la mesa y la silla de cada persona, o las agregas aquí. Aquí también les pones los catequistas: CT (titular) y CA (auxiliar). Cada mesa nueva llega con el nombre de su número que está en <a href="{{ route('mesas.nombres') }}">Nombres de mesas</a>.</p>
 
         {{-- --------------------AGREGAR MESA------------------- --}}
         <details class="agregar-mesa" {{ $errors->any() ? 'open' : '' }}>
@@ -45,7 +46,7 @@
                     <input type="number" name="cantidadSillas" id="sillasNueva" min="1" max="{{ \App\Models\Mesa::MAXIMO_SILLAS }}" value="{{ old('cantidadSillas', $mesas->last()?->cantidad_sillas ?? 8) }}" required>
                 </div>
                 <div class="elemento-formulario">
-                    <label class="titulo-elemento" for="nombreNueva">Nombre <small>(opcional)</small></label>
+                    <label class="titulo-elemento" for="nombreNueva">Nombre <small>(vacío: el de «Nombres de mesas»)</small></label>
                     <input type="text" name="nombre" id="nombreNueva" maxlength="60" value="{{ old('nombre') }}">
                 </div>
                 <div class="elemento-formulario">

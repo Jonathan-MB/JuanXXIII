@@ -147,6 +147,9 @@ Route::middleware('auth')->group(function () {
 
         //  Las mesas se crean solas al escribir el puesto de cada persona,
         // o a mano aquí cuando hace falta una más.
+        //  Antes del resource: si no, «mesas/nombres» se tomaría como una mesa
+        Route::get('/mesas/nombres', [MesaController::class, 'nombres'])->name('mesas.nombres');
+        Route::put('/mesas/nombres', [MesaController::class, 'guardarNombres'])->name('mesas.guardarNombres');
         Route::resource('mesas', MesaController::class)
             ->only(['index', 'store', 'update', 'destroy']);
 
