@@ -89,7 +89,9 @@ class SantisimoRepartoController extends Controller
                 return back()->with('error', 'No hay un retiro próximo.');
             }
 
-            $franjas = $retiro->santisimoFranjas()->orderBy('inicio')->get();
+            //  Con el retiro andando, lo que ya pasó (o está pasando) no se
+            // toca: solo se reparten las franjas que todavía no empiezan.
+            $franjas = $retiro->santisimoFranjas()->where('inicio', '>', now())->orderBy('inicio')->get();
 
             //  La franja de las 0:30 del sábado es del sábado: aquí cuenta el
             // día del calendario, igual que en las reglas.
@@ -103,7 +105,7 @@ class SantisimoRepartoController extends Controller
         }
 
         if ($franjas->isEmpty()) {
-            return back()->with('error', $destino === 'retiro' ? 'Este retiro todavía no tiene horario: primero cópialo de la base.' : 'El horario base está vacío.');
+            return back()->with('error', $destino === 'retiro' ? 'Este retiro no tiene franjas por delante (o todavía no tiene horario: primero cópialo de la base).' : 'El horario base está vacío.');
         }
 
         $asignacion = $this->calcularReparto($franjas, $posicion, $turno);
