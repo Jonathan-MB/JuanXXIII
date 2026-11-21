@@ -473,7 +473,7 @@
 
 /* ----------Cada invitado: una fila lista para corregir-------------- */
 .tabla-puestos {
-    min-width: 1120px;
+    min-width: 1100px;
     font-size: 14px;
 }
 
@@ -489,10 +489,35 @@
     color: #8a92a6;
 }
 
-/* Nombres y apellidos con espacio para leerse completos */
-.tabla-puestos td:nth-child(1),
-.tabla-puestos td:nth-child(2) {
-    min-width: 140px;
+/* Dos datos por casilla, uno encima del otro */
+.celda-doble .campo-fila + .campo-fila,
+.celda-doble .talla-edad {
+    margin-top: 4px;
+}
+
+.tabla-puestos .celda-nombre {
+    min-width: 170px;
+}
+
+.tabla-puestos .celda-lugar {
+    min-width: 130px;
+}
+
+.talla-edad {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.campo-talla {
+    width: 72px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.talla-edad .edad-fila {
+    margin-top: 0;
+    white-space: nowrap;
 }
 
 .tabla-puestos th {
@@ -649,8 +674,8 @@
         min-width: 0;
     }
 
-    .tabla-puestos td:nth-child(1),
-    .tabla-puestos td:nth-child(2),
+    .tabla-puestos .celda-nombre,
+    .tabla-puestos .celda-lugar,
     .celda-contacto,
     .celda-guardar {
         min-width: 0;

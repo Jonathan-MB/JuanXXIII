@@ -8,8 +8,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 //  La fila de cada invitado en Llegada: lo que más se corrige en la puerta
-// (nombres, apellidos, documento, fecha de nacimiento, los dos contactos de
-// emergencia) y su mesa y silla. Lo demás está en «Todos los datos».
+// (nombres, apellidos, documento, celular, fecha de nacimiento, talla,
+// ciudad, barrio y los dos contactos de emergencia) y su mesa y silla.
+// Lo demás está en «Más datos».
 class CorregirDatosRequest extends FormRequest
 {
     public function authorize(): bool
@@ -26,6 +27,10 @@ class CorregirDatosRequest extends FormRequest
             'apellidos'        => ['required', 'string', 'max:60'],
             'cedula'           => ['required', 'string', 'min:4', 'max:20', 'regex:/^[0-9A-Za-z]+$/', Rule::unique('personas', 'cedula')->ignore($this->route('inscripcion')->persona_id)],
             'fecha_nacimiento' => ['required', 'date', 'before:today'],
+            'celular'          => ['nullable', 'string', 'min:7', 'max:20', 'regex:/^[0-9]+$/'],
+            'ciudad'           => ['nullable', 'string', 'max:60'],
+            'barrio'           => ['nullable', 'string', 'max:60'],
+            'talla_camiseta'   => ['required', Rule::in(Persona::TALLAS)],
 
             //  Pueden quedar a medias: muchos llegaron así del formulario antiguo
             'contactos'              => ['required', 'array', 'size:2'],
@@ -48,6 +53,10 @@ class CorregirDatosRequest extends FormRequest
             'apellidos'        => trim((string) $this->apellidos),
             'cedula'           => Persona::normalizarCedula($this->cedula),
             'fecha_nacimiento' => $this->fechaNacimiento,
+            'celular'          => (string) Persona::normalizarTelefono($this->celular),
+            'ciudad'           => trim((string) $this->ciudad),
+            'barrio'           => trim((string) $this->barrio),
+            'talla_camiseta'   => $this->tallaCamiseta,
             'contactos'        => collect($this->contactos ?? [])->map(fn ($contacto) => [
                 'nombre'     => trim((string) ($contacto['nombre'] ?? '')),
                 'parentesco' => trim((string) ($contacto['parentesco'] ?? '')),
@@ -70,6 +79,10 @@ class CorregirDatosRequest extends FormRequest
             'fecha_nacimiento.required' => 'Escribe la fecha de nacimiento.',
             'fecha_nacimiento.date'     => 'La fecha de nacimiento no es válida.',
             'fecha_nacimiento.before'   => 'La fecha de nacimiento no es válida.',
+            'celular.min'               => 'El celular parece incompleto.',
+            'celular.regex'             => 'El celular solo puede tener números.',
+            'talla_camiseta.required'   => 'Elige la talla.',
+            'talla_camiseta.in'         => 'Esa talla no existe.',
             'contactos.size'            => 'Faltan los dos contactos de emergencia.',
             'contactos.*.celular.min'   => 'El celular del contacto parece incompleto.',
             'contactos.*.celular.regex' => 'El celular del contacto solo puede tener números.',

@@ -43,7 +43,7 @@
 
             <ol class="pasos-llegada">
                 <li>Busca a la persona por su nombre o su documento.</li>
-                <li>Escribe su <strong>mesa</strong> y su <strong>silla</strong> (con eso queda como que llegó) y corrige lo que haga falta.</li>
+                <li>Escribe su <strong>mesa</strong> y su <strong>silla</strong> (con eso queda como que llegó) y corrige lo que haga falta. Lo demás (EPS, padrino, sacramentos…) está en <strong>Más datos</strong>.</li>
                 <li>Oprime <strong>Guardar</strong> (o Enter). Si alguien se va, marca <strong>Se fue</strong>.</li>
             </ol>
 
@@ -68,10 +68,10 @@
                     <table class="tabla-general tabla-puestos">
                         <thead>
                             <tr>
-                                <th>Nombres</th>
-                                <th>Apellidos</th>
-                                <th>Documento</th>
-                                <th>Nacimiento</th>
+                                <th>Nombres · Apellidos</th>
+                                <th>Documento · Celular</th>
+                                <th>Nacimiento · Talla</th>
+                                <th>Ciudad · Barrio</th>
                                 <th>Contactos de emergencia <small>(nombre · parentesco · celular)</small></th>
                                 <th>Mesa · Silla</th>
                                 <th></th>
@@ -91,12 +91,29 @@
                                     data-se-fue="{{ $seFue ? 1 : 0 }}"
                                     data-puesto="{{ $inscrito->mesa_id ? 1 : 0 }}"
                                     data-form="{{ $form }}">
-                                    <td data-titulo="Nombres"><input class="campo-fila" form="{{ $form }}" type="text" name="nombres" maxlength="60" value="{{ $persona->nombres }}" required aria-label="Nombres"></td>
-                                    <td data-titulo="Apellidos"><input class="campo-fila" form="{{ $form }}" type="text" name="apellidos" maxlength="60" value="{{ $persona->apellidos }}" required aria-label="Apellidos de {{ $persona->nombres }}"></td>
-                                    <td data-titulo="Documento"><input class="campo-fila campo-documento" form="{{ $form }}" type="text" name="cedula" maxlength="20" value="{{ $persona->cedula }}" required aria-label="Documento de {{ $persona->nombres }}"></td>
-                                    <td data-titulo="Nacimiento">
+                                    {{-- Cada casilla lleva dos datos, uno encima del otro --}}
+                                    <td class="celda-doble celda-nombre" data-titulo="Nombres y apellidos">
+                                        <input class="campo-fila" form="{{ $form }}" type="text" name="nombres" maxlength="60" value="{{ $persona->nombres }}" required placeholder="Nombres" aria-label="Nombres">
+                                        <input class="campo-fila" form="{{ $form }}" type="text" name="apellidos" maxlength="60" value="{{ $persona->apellidos }}" required placeholder="Apellidos" aria-label="Apellidos de {{ $persona->nombres }}">
+                                    </td>
+                                    <td class="celda-doble" data-titulo="Documento y celular">
+                                        <input class="campo-fila campo-documento" form="{{ $form }}" type="text" name="cedula" maxlength="20" value="{{ $persona->cedula }}" required placeholder="Documento" aria-label="Documento de {{ $persona->nombres }}">
+                                        <input class="campo-fila campo-documento" form="{{ $form }}" type="tel" name="celular" maxlength="20" inputmode="numeric" data-solo-numeros value="{{ $persona->celular }}" placeholder="Celular" aria-label="Celular de {{ $persona->nombres }}">
+                                    </td>
+                                    <td class="celda-doble" data-titulo="Nacimiento y talla">
                                         <input class="campo-fila campo-fecha" form="{{ $form }}" type="date" name="fechaNacimiento" value="{{ $persona->fecha_nacimiento->format('Y-m-d') }}" required aria-label="Fecha de nacimiento de {{ $persona->nombres }}">
-                                        <span class="edad-fila"><span data-edad>{{ (int) $persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</span> años</span>
+                                        <div class="talla-edad">
+                                            <select class="campo-fila campo-talla" form="{{ $form }}" name="tallaCamiseta" aria-label="Talla de camiseta de {{ $persona->nombres }}">
+                                                @foreach (\App\Models\Persona::TALLAS as $talla)
+                                                    <option value="{{ $talla }}" @selected($persona->talla_camiseta === $talla)>{{ $talla }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="edad-fila"><span data-edad>{{ (int) $persona->fecha_nacimiento->diffInYears($retiro->fecha_inicio) }}</span> años</span>
+                                        </div>
+                                    </td>
+                                    <td class="celda-doble celda-lugar" data-titulo="Ciudad y barrio">
+                                        <input class="campo-fila" form="{{ $form }}" type="text" name="ciudad" maxlength="60" value="{{ $persona->ciudad }}" placeholder="Ciudad" aria-label="Ciudad de {{ $persona->nombres }}">
+                                        <input class="campo-fila" form="{{ $form }}" type="text" name="barrio" maxlength="60" value="{{ $persona->barrio }}" placeholder="Barrio" aria-label="Barrio de {{ $persona->nombres }}">
                                     </td>
                                     {{-- Un renglón por contacto: nombre, parentesco y celular --}}
                                     <td class="celda-contacto" data-titulo="Contactos de emergencia">

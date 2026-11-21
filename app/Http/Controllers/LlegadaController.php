@@ -188,15 +188,16 @@ class LlegadaController extends Controller
 
 
 
-    //  La fila de cada invitado: nombres, apellidos, documento, fecha de
-    // nacimiento, los dos contactos de emergencia y la mesa y la silla, todo
+    //  La fila de cada invitado: nombres, apellidos, documento, celular,
+    // fecha de nacimiento, talla, ciudad, barrio, los dos contactos de
+    // emergencia y la mesa y la silla, todo
     // con un solo «Guardar». Desde la página llega por fetch y responde JSON:
     // así no se recarga ni se pierde la búsqueda. Si el puesto está ocupado,
     // no se guarda nada de la fila.
     public function corregirDatos(CorregirDatosRequest $request, Inscripcion $inscripcion)
     {
         $persona = $inscripcion->persona;
-        $persona->fill($request->safe()->only(['nombres', 'apellidos', 'cedula', 'fecha_nacimiento']));
+        $persona->fill($request->safe()->only(['nombres', 'apellidos', 'cedula', 'fecha_nacimiento', 'celular', 'ciudad', 'barrio', 'talla_camiseta']));
 
         //  Los contactos se cambian en su sitio: así no se pierden el fijo
         // ni el correo que la persona dio al inscribirse. Uno nuevo del todo

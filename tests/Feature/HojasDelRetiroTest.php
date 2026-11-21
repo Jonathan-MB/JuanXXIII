@@ -55,13 +55,17 @@ class HojasDelRetiroTest extends TestCase
         $primero = $juan->contactosEmergencia()->orderBy('id')->first();
 
         $this->getJson(route('llegada.index'))->assertOk();
-        $this->get(route('llegada.index'))->assertOk()->assertSee('name="contactos[1][celular]"', false)->assertSee('Más datos');
+        $this->get(route('llegada.index'))->assertOk()->assertSee('name="contactos[1][celular]"', false)->assertSee('name="tallaCamiseta"', false)->assertSee('Más datos');
 
         $this->patchJson(route('llegada.datos', $juan), [
             'nombres'         => 'Juan Carlos',
             'apellidos'       => $persona->apellidos,
             'cedula'          => '1.130.456.221',
             'fechaNacimiento' => '1985-05-10',
+            'celular'         => '311 222 3344',
+            'ciudad'          => 'Jamundí',
+            'barrio'          => 'Centro',
+            'tallaCamiseta'   => 'XL',
             'contactos'       => [
                 ['nombre' => 'Rosa Corregida', 'parentesco' => 'Esposa', 'celular' => '300 111 2233'],
                 ['nombre' => 'Luis Corregido', 'parentesco' => 'Hijo', 'celular' => '3004445566'],
@@ -74,6 +78,10 @@ class HojasDelRetiroTest extends TestCase
         $this->assertSame('Juan Carlos', $persona->nombres);
         $this->assertSame('1130456221', $persona->cedula);
         $this->assertSame('1985-05-10', $persona->fecha_nacimiento->format('Y-m-d'));
+        $this->assertSame('3112223344', $persona->celular);
+        $this->assertSame('Jamundí', $persona->ciudad);
+        $this->assertSame('Centro', $persona->barrio);
+        $this->assertSame('XL', $persona->talla_camiseta);
         $this->assertSame(4, $juan->refresh()->mesa->numero);
         $this->assertSame(2, (int) $juan->silla);
 
@@ -96,6 +104,7 @@ class HojasDelRetiroTest extends TestCase
             'apellidos'       => $juan->persona->apellidos,
             'cedula'          => $juan->persona->cedula,
             'fechaNacimiento' => '1990-05-10',
+            'tallaCamiseta'   => 'M',
             'contactos'       => [['nombre' => 'A'], ['nombre' => 'B']],
             'mesa'            => 1,
             'silla'           => 1,
@@ -278,6 +287,7 @@ class HojasDelRetiroTest extends TestCase
             'apellidos'       => $persona->apellidos,
             'cedula'          => 'XP123456',
             'fechaNacimiento' => '1990-05-10',
+            'tallaCamiseta'   => 'M',
             'contactos'       => [
                 ['nombre' => 'Jaime Pérez', 'parentesco' => '', 'celular' => ''],
                 ['nombre' => '', 'parentesco' => '', 'celular' => ''],

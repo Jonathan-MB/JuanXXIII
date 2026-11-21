@@ -57,8 +57,20 @@ function mensajeFila(fila, texto, tipo) {
 
 
 
+//  El valor con que llegó la casilla (en una lista, la opción marcada al cargar)
+function valorInicial(campo) {
+    if (campo.tagName === 'SELECT') {
+        const inicial = [...campo.options].find((opcion) => opcion.defaultSelected);
+        return inicial ? inicial.value : campo.options[0].value;
+    }
+
+    return campo.defaultValue;
+}
+
+
+
 function revisarCambios(fila) {
-    const cambiada = camposDe(fila).some((campo) => campo.value !== campo.defaultValue);
+    const cambiada = camposDe(fila).some((campo) => campo.value !== valorInicial(campo));
 
     fila.classList.toggle('fila-cambiada', cambiada);
     fila.querySelector('.boton-guardar-fila').disabled = ! cambiada;
@@ -75,7 +87,7 @@ document.querySelectorAll('.fila-puesto').forEach((fila) => {
     boton.disabled = true;
 
     camposDe(fila).forEach((campo) => {
-        campo.addEventListener('input', () => {
+        campo.addEventListener(campo.tagName === 'SELECT' ? 'change' : 'input', () => {
             campo.classList.remove('campo-con-error');
             mensajeFila(fila, '', 'ok');
             revisarCambios(fila);
@@ -138,7 +150,13 @@ document.querySelectorAll('.fila-puesto').forEach((fila) => {
 
         // Lo guardado pasa a ser el valor de partida de cada casilla
         camposDe(fila).forEach((campo) => {
-            campo.defaultValue = campo.value;
+            if (campo.tagName === 'SELECT') {
+                [...campo.options].forEach((opcion) => {
+                    opcion.defaultSelected = opcion.selected;
+                });
+            } else {
+                campo.defaultValue = campo.value;
+            }
         });
 
         fila.dataset.buscar = datos.buscar;
