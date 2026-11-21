@@ -101,7 +101,7 @@
             <article class="tarjeta-impresion" id="hoja-para-cartas">
                 <h2 class="nombre-impresion">Hoja para cartas</h2>
                 <p class="cuando-impresion">Cuando se necesite · cartas a mano</p>
-                <p class="descripcion-impresion">Hoja carta bonita y suave para escribir cartas a mano: el logo arriba, el logo grande como marca de agua muy clara y ramitas de olivo. Gasta poca tinta.</p>
+                <p class="descripcion-impresion">Dos cartas por hoja carta horizontal, con línea de corte punteada en la mitad. Bonita y suave para escribir a mano: el logo arriba, el logo grande como marca de agua muy clara y ramitas de olivo. Gasta poca tinta.</p>
                 <div class="botones-impresion">
                     <a class="boton-azul" href="{{ route('impresiones.hojaCarta') }}" target="_blank" rel="noopener">Con renglones</a>
                     <a class="boton-azul" href="{{ route('impresiones.hojaCarta', ['renglones' => 0]) }}" target="_blank" rel="noopener">Sin renglones</a>

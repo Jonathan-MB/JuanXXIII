@@ -60,7 +60,7 @@ class HojasDelRetiroTest extends TestCase
     public function test_la_hoja_para_cartas_sale_con_y_sin_renglones(): void
     {
         $this->get(route('impresiones.index'))->assertOk()->assertSee('Hoja para cartas');
-        $this->get(route('impresiones.hojaCarta'))->assertOk()->assertSee('hoja-carta con-renglones', false)->assertSee('marca-agua-logo', false);
+        $this->get(route('impresiones.hojaCarta'))->assertOk()->assertSee('hoja-carta-doble con-renglones', false)->assertSee('corte-carta', false)->assertSee('marca-agua-logo', false);
         $this->get(route('impresiones.hojaCarta', ['renglones' => 0]))->assertOk()->assertDontSee('con-renglones', false);
     }
 

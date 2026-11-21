@@ -24,31 +24,39 @@
         </defs>
     </svg>
 
+    {{-- Hoja carta horizontal con dos cartas (media carta cada una) y la línea de corte en la mitad --}}
     @for ($hoja = 1; $hoja <= $cantidad; $hoja++)
-        <section class="pagina hoja-carta {{ $renglones ? 'con-renglones' : '' }}">
-            {{-- Marca de agua: el logo grande y muy suave en el centro --}}
-            <img class="marca-agua-logo" src="{{ asset('img/logo.png') }}" alt="">
+        <section class="pagina hoja-carta-doble {{ $renglones ? 'con-renglones' : '' }}">
+            @foreach (['izquierda', 'derecha'] as $lado)
+                <div class="media-carta media-{{ $lado }}">
+                    {{-- Marca de agua: el logo grande y muy suave en el centro --}}
+                    <img class="marca-agua-logo" src="{{ asset('img/logo.png') }}" alt="">
 
-            {{-- Ramas finas en dos esquinas opuestas --}}
-            <svg class="rama-esquina rama-arriba" aria-hidden="true"><use href="#rama-olivo"/></svg>
-            <svg class="rama-esquina rama-abajo" aria-hidden="true"><use href="#rama-olivo"/></svg>
+                    {{-- Ramas finas en dos esquinas opuestas --}}
+                    <svg class="rama-esquina rama-arriba" aria-hidden="true"><use href="#rama-olivo"/></svg>
+                    <svg class="rama-esquina rama-abajo" aria-hidden="true"><use href="#rama-olivo"/></svg>
 
-            <header class="membrete-carta">
-                <img class="logo-carta" src="{{ asset('img/logo.png') }}" alt="Logo del Movimiento Juan XXIII">
-                <p class="movimiento-carta">Movimiento de Retiros Parroquiales Juan XXIII</p>
-                <p class="arquidiocesis-carta">Arquidiócesis de Cali</p>
-                <div class="adorno-carta" aria-hidden="true">
-                    <span class="linea-adorno"></span>
-                    <svg class="rama-adorno rama-izquierda"><use href="#rama-olivo"/></svg>
-                    <span class="cruz-adorno">✝</span>
-                    <svg class="rama-adorno"><use href="#rama-olivo"/></svg>
-                    <span class="linea-adorno"></span>
+                    <header class="membrete-carta">
+                        <img class="logo-carta" src="{{ asset('img/logo.png') }}" alt="Logo del Movimiento Juan XXIII">
+                        <p class="movimiento-carta">Movimiento de Retiros Parroquiales Juan XXIII</p>
+                        <p class="arquidiocesis-carta">Arquidiócesis de Cali</p>
+                        <div class="adorno-carta" aria-hidden="true">
+                            <span class="linea-adorno"></span>
+                            <svg class="rama-adorno rama-izquierda"><use href="#rama-olivo"/></svg>
+                            <span class="cruz-adorno">✝</span>
+                            <svg class="rama-adorno"><use href="#rama-olivo"/></svg>
+                            <span class="linea-adorno"></span>
+                        </div>
+                    </header>
+
+                    <div class="cuerpo-carta"></div>
+
+                    <footer class="pie-carta">«Con Cristo todo y sin Cristo nada»</footer>
                 </div>
-            </header>
+            @endforeach
 
-            <div class="cuerpo-carta"></div>
-
-            <footer class="pie-carta">«Con Cristo todo y sin Cristo nada»</footer>
+            {{-- Por aquí se corta: dos cartas de media hoja --}}
+            <div class="corte-carta" aria-hidden="true"><span>✂</span></div>
         </section>
     @endfor
 

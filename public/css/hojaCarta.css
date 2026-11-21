@@ -1,28 +1,60 @@
-/* ----------Hoja para cartas a mano: carta, suave, poca tinta-------------- */
+/* ----------Hoja para cartas a mano: carta horizontal con dos cartas de media hoja, suave, poca tinta-------------- */
 @page hoja-carta {
-    size: letter;
+    size: letter landscape;
     margin: 0;
 }
 
-.hoja-carta {
+.hoja-carta-doble {
     page: hoja-carta;
     position: relative;
     display: flex;
-    flex-direction: column;
     box-sizing: border-box;
-    width: 21.59cm;
-    height: 27.94cm;
-    padding: 1.4cm 2cm 1.2cm;
+    width: 27.94cm;
+    height: 21.59cm;
+    padding: 0;
     overflow: hidden;
     color: #8a7a4a;
     font-family: Georgia, 'Times New Roman', serif;
 }
 
 @media screen {
-    .hoja-carta {
-        min-height: 27.94cm;
-        padding: 1.4cm 2cm 1.2cm;
+    .hoja-carta-doble {
+        width: 27.94cm;
+        min-height: 21.59cm;
+        padding: 0;
     }
+}
+
+/* Cada mitad es una carta completa de 13,97 × 21,59 cm */
+.media-carta {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 50%;
+    height: 100%;
+    padding: 1cm 1.3cm 0.8cm;
+    overflow: hidden;
+}
+
+/* Línea de corte punteada en la mitad, con las tijeras */
+.corte-carta {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 1px dashed #9a9a9a;
+}
+
+.corte-carta span {
+    position: absolute;
+    top: 0.3cm;
+    left: -0.22cm;
+    color: #9a9a9a;
+    font-size: 10pt;
+    line-height: 1;
+    background: #ffffff;
+    transform: rotate(90deg);
 }
 
 /* Marca de agua: el logo en gris muy claro, detrás de todo */
@@ -30,7 +62,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 13cm;
+    width: 9cm;
     transform: translate(-50%, -42%);
     opacity: 0.06;
     filter: grayscale(1);
@@ -39,21 +71,21 @@
 
 .rama-esquina {
     position: absolute;
-    width: 6.5cm;
-    height: 2.4cm;
+    width: 4.4cm;
+    height: 1.6cm;
     color: #c9bb8a;
     opacity: 0.55;
 }
 
 .rama-arriba {
-    top: 0.5cm;
-    right: 0.4cm;
+    top: 0.3cm;
+    right: 0.2cm;
     transform: scaleY(-1) rotate(-8deg);
 }
 
 .rama-abajo {
-    bottom: 0.6cm;
-    left: 0.4cm;
+    bottom: 0.35cm;
+    left: 0.2cm;
     transform: scaleX(-1) rotate(172deg);
 }
 
@@ -64,33 +96,33 @@
 }
 
 .logo-carta {
-    width: 1.9cm;
-    height: 1.9cm;
+    width: 1.4cm;
+    height: 1.4cm;
     object-fit: contain;
 }
 
 .movimiento-carta {
-    margin: 6px 0 0;
+    margin: 4px 0 0;
     color: #3d4a6b;
-    font-size: 12.5pt;
-    letter-spacing: 0.08em;
+    font-size: 9pt;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
 }
 
 .arquidiocesis-carta {
-    margin: 2px 0 0;
+    margin: 1px 0 0;
     color: #8a7a4a;
-    font-size: 9.5pt;
+    font-size: 8pt;
     font-style: italic;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
 }
 
 .adorno-carta {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    margin-top: 8px;
+    gap: 4px;
+    margin-top: 5px;
 }
 
 .linea-adorno {
@@ -100,8 +132,8 @@
 }
 
 .rama-adorno {
-    width: 1.6cm;
-    height: 0.6cm;
+    width: 1.2cm;
+    height: 0.45cm;
     color: #c9bb8a;
 }
 
@@ -111,7 +143,7 @@
 
 .cruz-adorno {
     color: #b9a565;
-    font-size: 13pt;
+    font-size: 10pt;
     line-height: 1;
 }
 
@@ -119,21 +151,21 @@
 .cuerpo-carta {
     position: relative;
     flex: 1;
-    margin-top: 0.9cm;
+    margin-top: 0.6cm;
 }
 
 .con-renglones .cuerpo-carta {
     background-image: linear-gradient(to top, #d6d6d6 0.8px, transparent 0.8px);
-    background-size: 100% 0.9cm;
+    background-size: 100% 0.8cm;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
 }
 
 .pie-carta {
     position: relative;
-    margin-top: 0.4cm;
+    margin-top: 0.3cm;
     color: #a99a6a;
-    font-size: 9pt;
+    font-size: 7.5pt;
     font-style: italic;
     text-align: center;
     letter-spacing: 0.04em;
