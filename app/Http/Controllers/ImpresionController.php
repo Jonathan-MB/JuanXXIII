@@ -322,8 +322,11 @@ class ImpresionController extends Controller
         $mesas      = $retiro->mesas()->when($sexo, fn ($consulta) => $consulta->where('sexo', $sexo))->orderBy('numero')->get()->groupBy('sexo');
         $rectorados = $retiro->rectorados()->when($sexo, fn ($consulta) => $consulta->where('sexo', $sexo))->orderBy('orden')->get()->groupBy('sexo');
 
-        $grupos = collect($sexo ? [$sexo] : ['Masculino', 'Femenino'])->mapWithKeys(function ($grupo) use ($inscritos, $mesas, $rectorados) {
+        $sillasVacias = $this->sillasDeLosQueSeFueron($retiro, $sexo)->groupBy(fn ($vacia) => $vacia->persona->sexo);
+
+        $grupos = collect($sexo ? [$sexo] : ['Masculino', 'Femenino'])->mapWithKeys(function ($grupo) use ($inscritos, $mesas, $rectorados, $sillasVacias) {
             $delGrupo = $inscritos[$grupo] ?? collect();
+            $vacias   = $sillasVacias[$grupo] ?? collect();
             $bloques  = [];
 
             $directivos = ($rectorados[$grupo] ?? collect())->filter(fn ($miembro) => $miembro->nombre);
@@ -337,8 +340,9 @@ class ImpresionController extends Controller
             foreach ($mesas[$grupo] ?? [] as $mesa) {
                 $filas = collect([['CT', $mesa->catequista_titular], ['CA', $mesa->catequista_auxiliar]])->filter(fn ($fila) => $fila[1])->values();
 
-                foreach ($delGrupo->where('mesa_id', $mesa->id) as $inscrito) {
-                    $filas->push([$inscrito->silla, $inscrito->persona->nombre_completo]);
+                //  La silla de quien se fue queda en blanco
+                foreach ($delGrupo->where('mesa_id', $mesa->id)->concat($vacias->where('mesa_id', $mesa->id))->sortBy('silla') as $inscrito) {
+                    $filas->push([$inscrito->silla, $inscrito->silla_vacia ? '' : $inscrito->persona->nombre_completo]);
                 }
 
                 if ($filas->isNotEmpty()) {
@@ -382,7 +386,8 @@ class ImpresionController extends Controller
 
         return view('impresiones.llamado', [
             'retiro' => $retiro,
-            'grupos' => $this->enOrdenAlfabetico($retiro, $this->sexoPedido($request)),
+            //  Se imprime antes de empezar: también quien después se fue
+            'grupos' => $this->enOrdenAlfabetico($retiro, $this->sexoPedido($request), conLosQueSeFueron: true),
             'titulo' => 'Lista de llamado',
         ]);
     }
@@ -525,6 +530,7 @@ class ImpresionController extends Controller
 
         //  Directivos y catequistas sin cumpleaños anotado, para completarlo
         $sinFecha = $rectorados
+            ->toBase()
             ->filter(fn ($miembro) => $miembro->nombre && ! $miembro->fecha_nacimiento)
             ->map(fn ($miembro) => ['sexo' => $miembro->sexo, 'nombre' => $miembro->nombre])
             ->merge($mesas->flatMap(fn ($mesa) => collect([
@@ -1049,12 +1055,12 @@ class ImpresionController extends Controller
 
     //  Quienes siguen en la lista, por grupo y por apellido, tengan o no
     // puesto: para las listas de antes de dar las mesas (llegada y llamado).
-    private function enOrdenAlfabetico(Retiro $retiro, ?string $sexo): Collection
+    private function enOrdenAlfabetico(Retiro $retiro, ?string $sexo, bool $conLosQueSeFueron = false): Collection
     {
         return Inscripcion::with(['persona', 'mesa'])
             ->select('inscripcions.*')
             ->where('inscripcions.retiro_id', $retiro->id)
-            ->whereNotIn('inscripcions.estado', Inscripcion::ESTADOS_FUERA)
+            ->whereNotIn('inscripcions.estado', $conLosQueSeFueron ? [Inscripcion::NO_ASISTIO] : Inscripcion::ESTADOS_FUERA)
             ->join('personas', 'personas.id', '=', 'inscripcions.persona_id')
             ->when($sexo, fn ($consulta) => $consulta->where('personas.sexo', $sexo))
             ->orderByRaw("personas.sexo = 'Femenino'")
@@ -1078,7 +1084,11 @@ class ImpresionController extends Controller
             ->get()
             ->groupBy('sexo');
 
+        //  Quien se fue no sale, pero su silla queda como fila en blanco
         return $this->inscritos($retiro, $sexo)
+            ->toBase()
+            ->concat($this->sillasDeLosQueSeFueron($retiro, $sexo))
+            ->sortBy('silla')
             ->groupBy(fn ($inscrito) => $inscrito->persona->sexo)
             ->map(fn ($delGrupo, $sexoGrupo) => [
                 'mesas' => ($mesas[$sexoGrupo] ?? collect())->map(fn ($mesa) => [
@@ -1087,6 +1097,30 @@ class ImpresionController extends Controller
                 ])->filter(fn ($fila) => $fila['inscritos']->isNotEmpty())->values(),
             ])
             ->filter(fn ($grupo) => $grupo['mesas']->isNotEmpty());
+    }
+
+
+
+    //  La silla de cada persona que se fue, como fila en blanco: misma mesa
+    // y silla, sin nombre ni datos. La silla no se le da a nadie más.
+    private function sillasDeLosQueSeFueron(Retiro $retiro, ?string $sexo): Collection
+    {
+        return Inscripcion::with(['persona', 'mesa'])
+            ->where('retiro_id', $retiro->id)
+            ->where('estado', Inscripcion::ABANDONO)
+            ->whereNotNull('mesa_id')
+            ->whereHas('persona', fn ($persona) => $persona->when($sexo, fn ($consulta) => $consulta->where('sexo', $sexo)))
+            ->get()
+            ->map(function ($seFue) {
+                $vacia = (new Inscripcion)->forceFill(['mesa_id' => $seFue->mesa_id, 'silla' => $seFue->silla, 'estado' => Inscripcion::ABANDONO]);
+                $vacia->setRelation('persona', (new Persona)->forceFill(['sexo' => $seFue->persona->sexo, 'nombres' => '', 'apellidos' => '']));
+                $vacia->setRelation('mesa', $seFue->mesa);
+                $vacia->setRelation('contactosEmergencia', collect());
+                $vacia->setRelation('pagos', collect());
+                $vacia->silla_vacia = true;
+
+                return $vacia;
+            });
     }
 
 

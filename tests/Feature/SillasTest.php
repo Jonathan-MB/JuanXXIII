@@ -92,12 +92,26 @@ class SillasTest extends TestCase
         $this->inscrito('Masculino', ['persona' => ['nombres' => 'Sigue']], 1, 1);
         $this->inscrito('Masculino', ['persona' => ['nombres' => 'Seefue'], 'inscripcion' => ['estado' => Inscripcion::ABANDONO]], 1, 2);
 
-        foreach (['impresiones.correcciones', 'impresiones.carta', 'impresiones.directorio', 'impresiones.previstos'] as $ruta) {
+        //  Ninguna hoja lo trae (su silla queda en blanco), salvo el llamado y Tesorería
+        $hojas = ['impresiones.correcciones', 'impresiones.carta', 'impresiones.directorio', 'impresiones.previstos',
+            'impresiones.sencilla', 'impresiones.puertas', 'impresiones.familiares', 'impresiones.llamadas',
+            'impresiones.camisetas', 'impresiones.ubicacion', 'impresiones.sobres', 'impresiones.llegada'];
+
+        foreach ($hojas as $ruta) {
             // La carta escribe los nombres en mayúsculas: se compara sin importar eso
             $pagina = mb_strtolower($this->get(route($ruta, ['sexo' => 'hombres']))->assertOk()->getContent());
             $this->assertStringContainsString('sigue', $pagina, "En $ruta debe salir quien sigue");
             $this->assertStringNotContainsString('seefue', $pagina, "En $ruta no debe salir quien se fue");
         }
+
+        $this->assertStringNotContainsString('Seefue', $this->get(route('impresiones.cumpleanos'))->assertOk()->getContent());
+
+        foreach (['impresiones.llamado', 'pagos.imprimir'] as $ruta) {
+            $this->assertStringContainsString('Seefue', $this->get(route($ruta, ['sexo' => 'hombres']))->assertOk()->getContent(), "En $ruta sí sale quien se fue");
+        }
+
+        //  La lista sencilla deja la silla 2 en blanco
+        $this->assertMatchesRegularExpression('/>\s*2\s*<\/td>\s*<td[^>]*>\s*<\/td>/', $this->get(route('impresiones.sencilla', ['sexo' => 'hombres']))->getContent());
     }
 
 

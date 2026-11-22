@@ -88,7 +88,7 @@
                 </div>
             @endforeach
             @unless ($servidores)
-                <p class="pie-lista">{{ $grupo['mesas']->sum(fn ($fila) => $fila['inscritos']->count()) }} invitados {{ mb_strtolower($nombre) }}</p>
+                <p class="pie-lista">{{ $grupo['mesas']->sum(fn ($fila) => $fila['inscritos']->reject->silla_vacia->count()) }} invitados {{ mb_strtolower($nombre) }}</p>
             @endunless
         </section>
     @empty

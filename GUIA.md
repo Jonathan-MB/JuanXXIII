@@ -15,7 +15,7 @@ Menú **Llegada**, con una pestaña para Hombres y otra para Mujeres.
   - mesa y silla.
 - Al cambiar algo, la fila se pone **amarilla**. Se guarda con **Guardar** o con Enter, sin recargar la página.
 - **Tener mesa y silla es haber llegado.** No hay botón «Llegó»: al guardar la mesa y la silla, la persona cuenta como llegada; si se le borran, vuelve a «faltan por llegar».
-- **Se fue**: la casilla de cada fila marca que la persona abandonó el retiro. La fila queda gris y el nombre tachado. Conserva su silla, que queda vacía y no se le da a nadie más. Se puede desmarcar si volvió.
+- **Se fue**: la casilla de cada fila marca que la persona abandonó el retiro. La fila queda gris y el nombre tachado. Conserva su silla, que queda vacía y no se le da a nadie más. Desde ese momento solo sale en la Lista de llamado y en Tesorería; en las demás hojas su silla sale en blanco. Se puede desmarcar si volvió.
 - Arriba se ve cuántos **llegaron**, cuántos **faltan por llegar** y cuántos **se fueron**. Los filtros muestran todos, solo los que faltan o solo los que se fueron.
 - **Más datos** abre el formulario completo: correo, dirección, EPS, medicamentos, sacramentos, forma de pago, padrino. Al guardar, vuelve a Llegada.
 - En pantallas de portátil, cada persona se ve como una tarjeta en vez de la tabla ancha, para no tener que achicar la pantalla.
@@ -46,6 +46,7 @@ Todos los buscadores (Llegada, Inscritos, Pagos, Directivos, Historial, Document
 ## Impresiones
 
 - **Quien no tiene mesa y silla no hizo el retiro**: solo sale en la **Lista de llamado** y en **Tesorería**, que se imprimen antes de dar los puestos. No aparece ni se cuenta en ninguna otra hoja.
+- **Quien se fue tampoco terminó el retiro**: sale en la **Lista de llamado** y en **Tesorería**, y en ninguna otra hoja (directorio, lista sencilla, floristería, camisetas, puertas, llamadas, cartas, cumpleaños…). En las listas por mesa su silla queda como **fila en blanco**, con el número de silla y sin nombre; no se le da a nadie más.
 - Cada hoja tiene tres botones: **Hombres**, **Mujeres** y **Ambos**. «Ambos» no mezcla los grupos: imprime primero lo de hombres y después lo de mujeres, cada uno en sus propias hojas, para no tener que mandar a imprimir dos veces.
 - **Carpetas del rectorado** (rector, vicerrector, dirigente): cada carpeta sale completa con su rótulo al frente. Con «Ambos» sale la carpeta de hombres entera y luego la de mujeres. El segundo vicerrector tiene un enlace aparte, sin la evaluación de equipos.
 - **Listado de invitados para puertas**: arriba los **directivos** (rector, vicerrector, dirigente responsable y catequistas rotativos) con su ciudad; en cada mesa, primero el **CT** y el **CA** con su ciudad y barrio y después los invitados. La ciudad y el barrio de los catequistas se escriben en **Mesas**; la de los directivos, en **Impresiones › Datos para imprimir**. Si ya se imprimió el listado sin ellos, la dirección `impresiones/puertas?sexo=hombres&servidores=1` (o `mujeres`) saca solo directivos y catequistas, en el mismo formato.
