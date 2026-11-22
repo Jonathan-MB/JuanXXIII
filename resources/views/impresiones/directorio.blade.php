@@ -98,18 +98,41 @@
                 @if ($perseverancias->isNotEmpty())
                     <div class="bloque-perseverancias">
                         <p class="titulo-perseverancias">Hermano retirista, persevera y fórmate. Asiste a:</p>
-                        <div class="rejilla-perseverancias">
-                            @foreach ($perseverancias as $perseverancia)
-                                <div class="perseverancia">
-                                    <p class="perseverancia-tipo">{{ $perseverancia->tipo }}</p>
-                                    <p class="dato-negrita">{{ $perseverancia->dia }} · {{ $perseverancia->hora }}</p>
-                                    <p>{{ $perseverancia->parroquia }}</p>
-                                    @if ($perseverancia->direccion)
-                                        <p class="perseverancia-direccion">{{ $perseverancia->direccion }}</p>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
+                        @php
+                            //  Cuarto día y escuela van destacados; las perseverancias, cada una con su barrio de título
+                            [$especiales, $gruposPerseverancia] = $perseverancias->partition(fn ($item) => mb_strtolower($item->tipo) !== 'perseverancia');
+                        @endphp
+                        @if ($especiales->isNotEmpty())
+                            <div class="especiales-perseverancias">
+                                @foreach ($especiales as $perseverancia)
+                                    <div class="perseverancia-especial">
+                                        <p class="tipo-especial">{{ $perseverancia->tipo }}</p>
+                                        <p class="cuando-perseverancia">{{ $perseverancia->dia }} · {{ $perseverancia->hora }}</p>
+                                        <p class="lugar-perseverancia">
+                                            <strong>{{ $perseverancia->parroquia }}</strong>
+                                            @if ($perseverancia->direccion)
+                                                <span>{{ $perseverancia->direccion }}</span>
+                                            @endif
+                                        </p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                        @if ($gruposPerseverancia->isNotEmpty())
+                            <p class="subtitulo-perseverancias">Grupos de perseverancia</p>
+                            <div class="rejilla-perseverancias">
+                                @foreach ($gruposPerseverancia as $perseverancia)
+                                    <div class="perseverancia">
+                                        <p class="sector-perseverancia">{{ $perseverancia->sector ?: $perseverancia->parroquia }}</p>
+                                        <p class="cuando-perseverancia">{{ $perseverancia->dia }} · {{ $perseverancia->hora }}</p>
+                                        <p class="parroquia-perseverancia">{{ $perseverancia->parroquia }}</p>
+                                        @if ($perseverancia->direccion)
+                                            <p class="perseverancia-direccion">{{ $perseverancia->direccion }}</p>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 @endif
 

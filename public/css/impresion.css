@@ -595,31 +595,97 @@ p {
     text-transform: uppercase;
 }
 
+.especiales-perseverancias {
+    display: flex;
+    gap: 0.35em;
+    padding: 0.35em 0.35em 0;
+    background: #fff8d1;
+}
+
+/* Cuarto día y escuela diocesana: destacados, con el tipo en grande */
+.perseverancia-especial {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.3em 0.6em;
+    border: 1.5px solid #1c2f5e;
+    border-radius: 0.3em;
+    background: #ffffff;
+    font-size: 0.9em;
+}
+
+.tipo-especial {
+    flex: none;
+    padding: 0.15em 0.5em;
+    border-radius: 0.2em;
+    background: #1c2f5e;
+    color: #ffd400;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.lugar-perseverancia span {
+    display: block;
+    color: #444444;
+    font-size: 0.9em;
+}
+
+.subtitulo-perseverancias {
+    padding: 0.35em 0.6em 0;
+    background: #fff8d1;
+    color: #1c2f5e;
+    font-size: 0.8em;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
 .rejilla-perseverancias {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 0.3em;
-    padding: 0.35em;
+    padding: 0.25em 0.35em 0.35em;
     background: #fff8d1;
     font-size: 0.85em;
 }
 
+/* Cada grupo: el barrio de título, luego día y hora, parroquia y dirección */
 .perseverancia {
-    padding: 0.25em 0.4em;
-    border-left: 0.3em solid #e3c400;
+    padding: 0.25em 0.45em 0.3em;
+    border-top: 0.25em solid #e3c400;
     border-radius: 0.2em;
     background: #ffffff;
+    line-height: 1.2;
 }
 
-.perseverancia-tipo {
+.sector-perseverancia {
     color: #1c2f5e;
-    font-size: 0.85em;
+    font-size: 1.15em;
     font-weight: 800;
     text-transform: uppercase;
 }
 
+.cuando-perseverancia {
+    display: inline-block;
+    margin: 0.1em 0;
+    font-weight: 800;
+    color: #7a5b00;
+}
+
+.perseverancia-especial .cuando-perseverancia {
+    flex: none;
+    font-size: 1.05em;
+}
+
+.parroquia-perseverancia {
+    font-weight: 600;
+}
+
 .perseverancia-direccion {
-    color: #444444;
+    color: #555555;
+    font-size: 0.92em;
 }
 
 .hoja-directorio .bloque-whatsapp {
