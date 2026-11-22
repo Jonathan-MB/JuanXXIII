@@ -98,6 +98,8 @@
                 @if ($perseverancias->isNotEmpty())
                     <div class="bloque-perseverancias">
                         <p class="titulo-perseverancias">Hermano retirista, persevera y fórmate. Asiste a:</p>
+                        <div class="cuerpo-perseverancias">
+                        <div class="lista-perseverancias">
                         @php
                             //  Cuarto día y escuela van destacados; las perseverancias, cada una con su barrio de título
                             [$especiales, $gruposPerseverancia] = $perseverancias->partition(fn ($item) => mb_strtolower($item->tipo) !== 'perseverancia');
@@ -133,11 +135,22 @@
                                 @endforeach
                             </div>
                         @endif
+                        </div>
+                        {{-- El QR de WhatsApp va aquí mismo, a la derecha, para no robarle espacio a las mesas --}}
+                        @if ($tieneQr)
+                            <div class="whatsapp-perseverancias">
+                                <p class="titulo-whatsapp">WhatsApp</p>
+                                <img class="qr-whatsapp" src="{{ $qrWhatsapp }}" alt="Código QR del grupo de WhatsApp">
+                                <p>Escanéalo para unirte al grupo del movimiento</p>
+                            </div>
+                        @endif
+                        </div>
                     </div>
                 @endif
 
                 {{-- --------------------WHATSAPP------------------- --}}
-                @if ($whatsapp || $tieneQr)
+                {{-- Aparte solo si no hay perseverancias donde ponerlo (o hay enlace sin QR) --}}
+                @if (($whatsapp && ! $tieneQr) || ($tieneQr && $perseverancias->isEmpty()))
                     <div class="bloque-whatsapp">
                         @if ($tieneQr)
                             <img class="qr-whatsapp" src="{{ $qrWhatsapp }}" alt="Código QR del grupo de WhatsApp">

@@ -2664,3 +2664,42 @@ p.preguntas-charla {
     font-size: 26pt;
     text-align: center;
 }
+
+/* Perseverancias y, a la derecha, el QR de WhatsApp en el mismo recuadro */
+.cuerpo-perseverancias {
+    display: flex;
+    background: #fff8d1;
+}
+
+.lista-perseverancias {
+    flex: 1;
+    min-width: 0;
+}
+
+.whatsapp-perseverancias {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 3.5cm;
+    margin: 0.35em 0.35em 0.35em 0;
+    padding: 0.2em;
+    border: 2px solid #1fa463;
+    border-radius: 0.3em;
+    background: #ffffff;
+    font-size: 0.75em;
+    line-height: 1.15;
+    text-align: center;
+}
+
+.whatsapp-perseverancias .titulo-whatsapp {
+    font-size: 1.4em;
+}
+
+/* 3 cm: el tamaño mínimo para que el celular lo lea sin problema */
+.whatsapp-perseverancias .qr-whatsapp {
+    width: 3cm;
+    height: 3cm;
+    image-rendering: pixelated;
+}
