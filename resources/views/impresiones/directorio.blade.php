@@ -140,14 +140,18 @@
                 @if ($whatsapp || $tieneQr)
                     <div class="bloque-whatsapp">
                         @if ($tieneQr)
-                            <img class="qr-whatsapp" src="{{ route('ajustes.qr') }}" alt="Código QR del grupo de WhatsApp">
+                            <img class="qr-whatsapp" src="{{ $qrWhatsapp }}" alt="Código QR del grupo de WhatsApp">
                         @endif
-                        <p>
-                            Únete al grupo de WhatsApp del movimiento{{ $tieneQr ? ': escanea el código' : '' }}
-                            @if ($whatsapp)
-                                <br><strong>{{ $whatsapp }}</strong>
+                        <div class="texto-whatsapp">
+                            <p class="titulo-whatsapp">Grupo de WhatsApp</p>
+                            <p class="nombre-grupo-whatsapp">Movimiento Juan XXIII · Arquidiócesis de Cali</p>
+                            @if ($tieneQr)
+                                <p>Escanea este código con la cámara de WhatsApp para unirte al grupo.</p>
                             @endif
-                        </p>
+                            @if ($whatsapp)
+                                <p class="enlace-whatsapp">{{ $whatsapp }}</p>
+                            @endif
+                        </div>
                     </div>
                 @endif
             </div>

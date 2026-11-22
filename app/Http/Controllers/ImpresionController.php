@@ -270,7 +270,9 @@ class ImpresionController extends Controller
             'rectorados'     => $retiro->rectorados()->orderBy('orden')->get()->groupBy('sexo'),
             'perseverancias' => Perseverancia::orderBy('orden')->get(),
             'whatsapp'       => Ajuste::valor(Ajuste::WHATSAPP),
-            'tieneQr'        => (bool) Ajuste::valor(Ajuste::WHATSAPP_QR),
+            //  El QR va dentro de la hoja (no por enlace): así sale siempre al imprimir o guardar en PDF
+            'tieneQr'        => (bool) ($qr = $this->qrWhatsapp()),
+            'qrWhatsapp'     => $qr,
             'titulo'         => 'Directorio',
         ]);
     }
@@ -946,6 +948,20 @@ class ImpresionController extends Controller
         sort($numeros);
 
         return array_slice($numeros, 0, 60);
+    }
+
+
+
+    //  El QR del grupo de WhatsApp (Ajustes) como imagen incrustada, o null
+    private function qrWhatsapp(): ?string
+    {
+        $ruta = Ajuste::valor(Ajuste::WHATSAPP_QR);
+
+        if (! $ruta || ! \Illuminate\Support\Facades\Storage::exists($ruta)) {
+            return null;
+        }
+
+        return 'data:' . \Illuminate\Support\Facades\Storage::mimeType($ruta) . ';base64,' . base64_encode(\Illuminate\Support\Facades\Storage::get($ruta));
     }
 
 
