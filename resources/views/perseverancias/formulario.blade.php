@@ -26,7 +26,6 @@
                     <input type="text" name="tipo" id="tipo" maxlength="40" list="tipos" value="{{ old('tipo', $perseverancia->tipo) }}" required>
                     <datalist id="tipos">
                         <option value="Perseverancia"></option>
-                        <option value="Cuarto día"></option>
                         <option value="Escuela diocesana"></option>
                     </datalist>
                 </div>

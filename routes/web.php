@@ -166,6 +166,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/archivos/{archivo}/vista-previa', [ArchivoController::class, 'vistaPrevia'])
             ->name('archivos.vistaPrevia');
 
+        //  Antes del resource: «cuarto-dia» no es una perseverancia
+        Route::put('/perseverancias/cuarto-dia', [PerseveranciaController::class, 'guardarCuartoDia'])->name('perseverancias.cuartoDia');
         Route::resource('perseverancias', PerseveranciaController::class)
             ->parameters(['perseverancias' => 'perseverancia'])
             ->except(['show']);

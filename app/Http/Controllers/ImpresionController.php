@@ -269,6 +269,7 @@ class ImpresionController extends Controller
             'grupos'         => $this->porGrupoYMesa($retiro, $sexo),
             'rectorados'     => $retiro->rectorados()->orderBy('orden')->get()->groupBy('sexo'),
             'perseverancias' => Perseverancia::orderBy('orden')->get(),
+            'cuartoDia'      => PerseveranciaController::cuartoDia(),
             'whatsapp'       => Ajuste::valor(Ajuste::WHATSAPP),
             //  El QR va dentro de la hoja (no por enlace): así sale siempre al imprimir o guardar en PDF
             'tieneQr'        => (bool) ($qr = $this->qrWhatsapp()),

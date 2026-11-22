@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Storage;
 class PerseveranciaSeeder extends Seeder
 {
     //  Las del directorio de junio de 2026, con los días y horarios de los
-    // afiches de noviembre de 2026. Se cambian desde Perseverancias.
+    // afiches de noviembre de 2026. Se cambian desde Perseverancias. El
+    // Cuarto día no va aquí: está en Ajustes (Perseverancias › Cuarto día).
     public const PERSEVERANCIAS = [
-        ['tipo' => 'Cuarto día',        'sector' => 'Alfonso Bonilla Aragón', 'dia' => 'Jueves',    'hora' => '6:30 p. m.', 'parroquia' => 'Nuestra Señora de la Candelaria',                 'direccion' => 'Calle 81 # 27B-45, B/ Alfonso Bonilla Aragón', 'mapa' => null, 'actividades' => null],
         ['tipo' => 'Escuela diocesana', 'sector' => 'Virtual',                'dia' => 'Sábado',    'hora' => '7:00 p. m.', 'parroquia' => 'Virtual',                                         'direccion' => null, 'mapa' => null, 'actividades' => null],
         ['tipo' => 'Perseverancia',     'sector' => 'El Rodeo',               'dia' => 'Martes',    'hora' => '7:00 p. m.', 'parroquia' => 'Parroquia La Natividad del Señor',                'direccion' => 'Cra 25A # 39-36, B/ El Rodeo', 'mapa' => null, 'actividades' => "7:00 p. m. Sagrada Eucaristía\n7:40 p. m. Perseverancia"],
         ['tipo' => 'Perseverancia',     'sector' => 'Gaitán',                 'dia' => 'Martes',    'hora' => '6:00 p. m.', 'parroquia' => 'Parroquia Nuestra Señora de Nazaret',             'direccion' => 'Cl 71A # 1H-106, B/ Gaitán', 'mapa' => null, 'actividades' => null],

@@ -152,3 +152,63 @@
     width: 20px;
     height: 20px;
 }
+
+
+/* ----------Cuarto día: aparte y de otro color (vino tinto y dorado)-------------- */
+.cuarto-dia {
+    margin: 0 0 24px;
+    padding: 16px 18px;
+    border: 2px solid #7a1f2b;
+    border-radius: 14px;
+    background: #fbf1ee;
+}
+
+.cabecera-cuarto-dia h2 {
+    margin: 0;
+    color: #7a1f2b;
+    font-size: 22px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.cabecera-cuarto-dia p {
+    margin: 4px 0 12px;
+    color: #6b4a45;
+    font-size: 14px;
+}
+
+.campos-cuarto-dia {
+    display: grid;
+    grid-template-columns: minmax(160px, 1fr) minmax(120px, 0.7fr) minmax(220px, 2fr) auto;
+    gap: 12px;
+    align-items: end;
+}
+
+.campos-cuarto-dia input {
+    width: 100%;
+    border-color: #d8b6ae;
+}
+
+.boton-cuarto-dia {
+    padding: 11px 22px;
+    border: none;
+    border-radius: 10px;
+    background: #7a1f2b;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.titulo-seccion-perseverancias {
+    margin: 0 0 12px;
+    color: #1c2f5e;
+    font-size: 18px;
+}
+
+@media (max-width: 760px) {
+    .campos-cuarto-dia {
+        grid-template-columns: 1fr;
+    }
+}

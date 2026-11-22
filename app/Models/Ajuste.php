@@ -25,6 +25,12 @@ class Ajuste extends Model
     public const ROSARIO_HORA      = 'rosario_hora';
     public const ROSARIO_PEDIDOS   = 'rosario_pedidos';
 
+    //  El Cuarto día: no es una perseverancia, solo sale en el directorio.
+    // Los tres pueden quedar vacíos (en el directorio quedan para escribir).
+    public const CUARTO_DIA_FECHA  = 'cuarto_dia_fecha';
+    public const CUARTO_DIA_HORA   = 'cuarto_dia_hora';
+    public const CUARTO_DIA_LUGAR  = 'cuarto_dia_lugar';
+
     //  Hasta qué versión de la lista de tareas se cargó (CronogramaSeeder)
     public const CRONOGRAMA_VERSION = 'cronograma_version';
 

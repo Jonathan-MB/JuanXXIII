@@ -10,7 +10,35 @@
         <a class="boton-azul" href="{{ route('perseverancias.create') }}">+ Nueva perseverancia</a>
     </div>
     @include('partials.mensaje')
-    <p class="texto-ayuda texto-ayuda-arriba">Salen al pie del directorio en este orden, y en el inicio (carrusel y mapa) las que tienen «Sale en el inicio». Cuando cambie un día o un horario, cámbialo aquí.</p>
+    <p class="texto-ayuda texto-ayuda-arriba">Salen al pie del directorio en este orden, y en el inicio (carrusel y mapa) las que tienen «Sale en el inicio». Cuando cambie un día o un horario, cámbialo aquí. El Cuarto día va aparte, en su recuadro.</p>
+
+    {{-- --------------------CUARTO DÍA------------------- --}}
+    {{-- Especial: solo sale en el directorio. Sin imagen, nunca en el carrusel ni en el mapa --}}
+    <form class="cuarto-dia" method="POST" action="{{ route('perseverancias.cuartoDia') }}">
+        @csrf
+        @method('PUT')
+        <div class="cabecera-cuarto-dia">
+            <h2>Cuarto día</h2>
+            <p>Sale solo en el directorio, destacado arriba de las perseverancias. Todo puede quedar en blanco: en el directorio queda el espacio para escribirlo a mano.</p>
+        </div>
+        <div class="campos-cuarto-dia">
+            <div class="elemento-formulario">
+                <label class="titulo-elemento" for="cuartoFecha">Fecha</label>
+                <input type="text" name="fecha" id="cuartoFecha" maxlength="80" value="{{ old('fecha', $cuartoDia['fecha']) }}" placeholder="Jueves 26 de noviembre">
+            </div>
+            <div class="elemento-formulario">
+                <label class="titulo-elemento" for="cuartoHora">Hora</label>
+                <input type="text" name="hora" id="cuartoHora" maxlength="40" value="{{ old('hora', $cuartoDia['hora']) }}" placeholder="6:30 p. m.">
+            </div>
+            <div class="elemento-formulario campo-lugar-cuarto">
+                <label class="titulo-elemento" for="cuartoLugar">Lugar</label>
+                <input type="text" name="lugar" id="cuartoLugar" maxlength="200" value="{{ old('lugar', $cuartoDia['lugar']) }}" placeholder="Parroquia y dirección">
+            </div>
+            <button type="submit" class="boton-cuarto-dia">Guardar</button>
+        </div>
+    </form>
+
+    <h2 class="titulo-seccion-perseverancias">Perseverancias y escuela</h2>
 
     @if ($perseverancias->isEmpty())
         <p class="texto-vacio">Todavía no hay perseverancias. Agrega la primera con <strong>+ Nueva perseverancia</strong>.</p>

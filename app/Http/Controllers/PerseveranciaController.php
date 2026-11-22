@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PerseveranciaRequest;
+use App\Models\Ajuste;
 use App\Models\Perseverancia;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PerseveranciaController extends Controller
@@ -14,8 +16,43 @@ class PerseveranciaController extends Controller
     public function index()
     {
         $perseverancias = Perseverancia::orderBy('orden')->get();
+        $cuartoDia      = self::cuartoDia();
 
-        return view('perseverancias.index', compact('perseverancias'));
+        return view('perseverancias.index', compact('perseverancias', 'cuartoDia'));
+    }
+
+
+
+    //  El Cuarto día: fecha, hora y lugar, los tres opcionales. Solo sale en
+    // el directorio (nunca en el carrusel ni en el mapa del inicio).
+    public static function cuartoDia(): array
+    {
+        return [
+            'fecha' => Ajuste::valor(Ajuste::CUARTO_DIA_FECHA),
+            'hora'  => Ajuste::valor(Ajuste::CUARTO_DIA_HORA),
+            'lugar' => Ajuste::valor(Ajuste::CUARTO_DIA_LUGAR),
+        ];
+    }
+
+
+
+    public function guardarCuartoDia(Request $request)
+    {
+        $data = $request->validate([
+            'fecha' => ['nullable', 'string', 'max:80'],
+            'hora'  => ['nullable', 'string', 'max:40'],
+            'lugar' => ['nullable', 'string', 'max:200'],
+        ]);
+
+        foreach (['fecha' => Ajuste::CUARTO_DIA_FECHA, 'hora' => Ajuste::CUARTO_DIA_HORA, 'lugar' => Ajuste::CUARTO_DIA_LUGAR] as $campo => $clave) {
+            $valor = trim((string) ($data[$campo] ?? ''));
+
+            $valor === ''
+                ? Ajuste::where('clave', $clave)->delete()
+                : Ajuste::updateOrCreate(['clave' => $clave], ['valor' => $valor]);
+        }
+
+        return redirect()->route('perseverancias.index')->with('mensajeActualizado', 'Cuarto día guardado.');
     }
 
 

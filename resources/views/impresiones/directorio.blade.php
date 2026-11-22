@@ -95,17 +95,34 @@
                 @endforeach
 
                 {{-- --------------------PERSEVERANCIAS------------------- --}}
-                @if ($perseverancias->isNotEmpty())
+                {{-- Siempre sale: aunque no haya perseverancias, va el Cuarto día --}}
                     <div class="bloque-perseverancias">
                         <p class="titulo-perseverancias">Hermano retirista, persevera y fórmate. Asiste a:</p>
                         <div class="cuerpo-perseverancias">
                         <div class="lista-perseverancias">
                         @php
-                            //  Cuarto día y escuela van destacados; las perseverancias, cada una con su barrio de título
+                            //  La escuela va destacada junto al Cuarto día; las perseverancias, cada una con su barrio de título
                             [$especiales, $gruposPerseverancia] = $perseverancias->partition(fn ($item) => mb_strtolower($item->tipo) !== 'perseverancia');
                         @endphp
-                        @if ($especiales->isNotEmpty())
-                            <div class="especiales-perseverancias">
+                        {{-- El Cuarto día siempre sale; lo que falte queda en blanco para escribirlo --}}
+                        <div class="especiales-perseverancias">
+                                <div class="perseverancia-especial cuarto-dia-directorio">
+                                    <p class="tipo-especial">Cuarto día</p>
+                                    <p class="cuando-perseverancia">
+                                        @if ($cuartoDia['fecha'] || $cuartoDia['hora'])
+                                            {{ collect([$cuartoDia['fecha'], $cuartoDia['hora']])->filter()->join(' · ') }}
+                                        @else
+                                            <span class="espacio-cuarto-dia"></span>
+                                        @endif
+                                    </p>
+                                    <p class="lugar-perseverancia">
+                                        @if ($cuartoDia['lugar'])
+                                            <strong>{{ $cuartoDia['lugar'] }}</strong>
+                                        @else
+                                            <span class="espacio-cuarto-dia espacio-largo-cuarto"></span>
+                                        @endif
+                                    </p>
+                                </div>
                                 @foreach ($especiales as $perseverancia)
                                     <div class="perseverancia-especial">
                                         <p class="tipo-especial">{{ $perseverancia->tipo }}</p>
@@ -118,8 +135,7 @@
                                         </p>
                                     </div>
                                 @endforeach
-                            </div>
-                        @endif
+                        </div>
                         @if ($gruposPerseverancia->isNotEmpty())
                             <p class="subtitulo-perseverancias">Grupos de perseverancia</p>
                             <div class="rejilla-perseverancias">
@@ -146,11 +162,10 @@
                         @endif
                         </div>
                     </div>
-                @endif
 
                 {{-- --------------------WHATSAPP------------------- --}}
-                {{-- Aparte solo si no hay perseverancias donde ponerlo (o hay enlace sin QR) --}}
-                @if (($whatsapp && ! $tieneQr) || ($tieneQr && $perseverancias->isEmpty()))
+                {{-- Aparte solo si hay enlace pero no QR (el QR va en el recuadro de perseverancias) --}}
+                @if ($whatsapp && ! $tieneQr)
                     <div class="bloque-whatsapp">
                         @if ($tieneQr)
                             <img class="qr-whatsapp" src="{{ $qrWhatsapp }}" alt="Código QR del grupo de WhatsApp">
