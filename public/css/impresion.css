@@ -2714,3 +2714,11 @@ p.preguntas-charla {
 .espacio-largo-cuarto {
     width: 6cm;
 }
+
+/* Cuarto día y escuela guardan siempre su tamaño, aunque estén en blanco */
+.especiales-perseverancias .perseverancia-especial {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 1.35cm;
+    box-sizing: border-box;
+}

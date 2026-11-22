@@ -63,10 +63,8 @@
                         <tbody>
                             <tr class="fila-catequista">
                                 <td class="celda-mesa" rowspan="{{ $fila['inscritos']->count() + 2 }}">
+                                    {{-- Solo el número: el nombre del santo no va en el directorio --}}
                                     <span class="numero-mesa-directorio">{{ $mesa->numero }}</span>
-                                    @if ($mesa->nombre)
-                                        <span class="nombre-mesa-directorio">{{ $mesa->nombre }}</span>
-                                    @endif
                                 </td>
                                 <td>CT</td>
                                 <td>{{ $mesa->catequista_titular }}</td>
