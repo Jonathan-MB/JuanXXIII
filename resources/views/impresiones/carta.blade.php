@@ -7,8 +7,8 @@
 
     {{-- Solo en pantalla: sin próximo retiro la carta no puede anunciarlo, y al imprimir se vuelve a preguntar --}}
     @unless ($proximo)
-        <div class="aviso-carpeta aviso-falta" data-confirmar-impresion="Falta crear el próximo retiro: en la carta, la línea del próximo retiro saldrá con espacios en blanco para llenar a mano. ¿Imprimir de todas formas?">
-            <p><strong>Falta crear el próximo retiro.</strong> La carta anuncia sola la fecha y el lugar del próximo retiro; como no hay ninguno creado, esa línea sale en blanco.
+        <div class="aviso-carpeta aviso-falta" data-confirmar-impresion="Falta crear el próximo retiro: en la carta, en vez de la fecha del próximo retiro saldrá «Estaremos anunciando con anticipación la fecha y el lugar de nuestro próximo retiro». ¿Imprimir de todas formas?">
+            <p><strong>Falta crear el próximo retiro.</strong> La carta anuncia sola la fecha y el lugar del próximo retiro; como no hay ninguno creado, en su lugar dirá que lo estaremos anunciando con anticipación.
                 <a href="{{ route('retiros.create') }}">Crear el próximo retiro</a></p>
         </div>
     @endunless
@@ -36,7 +36,8 @@
             @if ($proximo)
                 <p>Nuestro próximo retiro de conversión simultáneo será los días {{ $proximo->dias_texto }} en el {{ mb_strtoupper($proximo->lugar) }} en la ciudad de {{ $proximo->ciudad }}.</p>
             @else
-                <p class="parrafo-con-espacios">Nuestro próximo retiro de conversión simultáneo será los días <span class="espacio-mano"></span> en <span class="espacio-mano espacio-largo"></span>.</p>
+                {{-- Sin próximo retiro creado: se anuncia que la fecha se dará a conocer --}}
+                <p>Estaremos anunciando con anticipación la fecha y el lugar de nuestro próximo retiro de conversión simultáneo.</p>
             @endif
 
             <p>Si la parroquia requiere cupos para vivir esta experiencia u otra información, no dude en comunicarse con nosotros.</p>

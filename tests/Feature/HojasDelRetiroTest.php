@@ -236,6 +236,20 @@ class HojasDelRetiroTest extends TestCase
 
 
 
+    public function test_sin_proximo_retiro_la_carta_dice_que_se_anunciara(): void
+    {
+        $this->inscrito('Femenino', [], 1, 1);
+
+        $this->get(route('impresiones.carta', ['sexo' => 'mujeres']))
+            ->assertOk()
+            ->assertSee('Falta crear el próximo retiro')
+            ->assertSee('Estaremos anunciando con anticipación la fecha y el lugar de nuestro próximo retiro')
+            ->assertSee('Si la parroquia requiere cupos para vivir esta experiencia')
+            ->assertDontSee('espacio-mano', false);
+    }
+
+
+
     public function test_entrega_de_previstos_e_inventario_dicen_el_retiro(): void
     {
         $this->get(route('impresiones.previstos', ['sexo' => 'mujeres']))

@@ -28,7 +28,7 @@
                 $avisos['rectoradoM'] === 0   ? 'Falta el rectorado de mujeres (va en el directorio).' : null,
                 $avisos['mesasSinCt'] > 0     ? $avisos['mesasSinCt'] . ' ' . ($avisos['mesasSinCt'] === 1 ? 'mesa no tiene' : 'mesas no tienen') . ' CT escrito.' : null,
                 $avisos['firmantes'] === 0    ? 'La carta no tiene firmas configuradas.' : null,
-                ! $avisos['proximoRetiro']    ? 'No hay un próximo retiro creado: en la carta, la línea del próximo retiro sale con espacios en blanco.' : null,
+                ! $avisos['proximoRetiro']    ? 'No hay un próximo retiro creado: en la carta, en vez de la fecha del próximo retiro dirá que lo estaremos anunciando con anticipación.' : null,
             ])->filter();
         @endphp
 

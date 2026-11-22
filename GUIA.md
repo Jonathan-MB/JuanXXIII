@@ -57,6 +57,7 @@ Todos los buscadores (Llegada, Inscritos, Pagos, Directivos, Historial, Document
   - en las filas del CT y el CA sale lo que ya está en **Mesas** (cumpleaños, ciudad, barrio y celular); lo que falta, más el documento, la talla y los contactos, queda en blanco para que lo escriban;
   - trae la talla de cada persona;
   - lo que se corrija se pasa después a la aplicación en Llegada.
+- **Cartas al presbítero**: una por cada persona con mesa y silla (no a quien se fue), hombres primero y luego mujeres, en orden de mesa y silla. La carta anuncia sola la fecha y el lugar del próximo retiro. Si todavía no se ha creado, la página avisa, y si se imprime de todas formas, en vez de la fecha dice «Estaremos anunciando con anticipación la fecha y el lugar de nuestro próximo retiro de conversión simultáneo». El párrafo de los cupos para la parroquia sale siempre.
 - **Sacramentos (dinámica)** está hecha para el papel oficio de la impresora de Secretaría. Si una hoja oficio horizontal se corta a la izquierda, el motivo suele ser que la impresora tiene puesto papel de 14 pulgadas y el papel real es de 13.
 - Para descargar cualquier hoja en PDF: **Imprimir** y elegir **Guardar como PDF**. Conviene quitar «Encabezado y pie de página» en «Ver más».
 
