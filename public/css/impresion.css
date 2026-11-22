@@ -2704,11 +2704,10 @@ p.preguntas-charla {
     image-rendering: pixelated;
 }
 
-/* Cuarto día en el directorio: igual que la escuela; lo que falte, una línea para escribir */
+/* Cuarto día en el directorio: lo que falte queda en blanco, sin líneas (el recuadro guarda su tamaño) */
 .espacio-cuarto-dia {
     display: inline-block;
     width: 3.5cm;
-    border-bottom: 1px solid #1c2f5e;
 }
 
 .espacio-largo-cuarto {
