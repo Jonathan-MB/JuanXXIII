@@ -11,7 +11,8 @@
     @isset($estilo)
         <link rel="stylesheet" href="{{ recurso($estilo) }}">
     @endisset
-    <title>{{ $titulo }}{{ isset($retiro) ? ' · ' . $retiro->nombre : '' }}</title>
+    {{-- El título es el nombre del PDF al guardarlo; $nombrePdf lo cambia (directorio de un solo grupo) --}}
+    <title>{{ $nombrePdf ?? ($titulo . (isset($retiro) ? ' · ' . $retiro->nombre : '')) }}</title>
 </head>
 
 {{-- ?miniatura=1: dentro de la galería de letreros, solo la hoja, sin barra --}}

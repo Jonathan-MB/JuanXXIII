@@ -37,6 +37,12 @@ class DirectoriosAnterioresTest extends TestCase
         $this->get(route('impresiones.directorio', ['retiro' => $retiro->id]))->assertOk()
             ->assertSee('Inventado')->assertSee('Ficticia');
 
+        //  El nombre del PDF lleva solo el grupo que se imprimió
+        $anio = $retiro->fecha_inicio->year;
+        $this->get(route('impresiones.directorio', ['retiro' => $retiro->id, 'sexo' => 'hombres']))->assertSee('<title>Directorio · Retiro ' . $retiro->numero_hombres . ' Hombres · ' . $anio . '</title>', false);
+        $this->get(route('impresiones.directorio', ['retiro' => $retiro->id, 'sexo' => 'mujeres']))->assertSee('<title>Directorio · Retiro ' . $retiro->numero_mujeres . ' Mujeres · ' . $anio . '</title>', false);
+        $this->get(route('impresiones.directorio', ['retiro' => $retiro->id]))->assertSee('<title>Directorio · Retiro ' . $retiro->numero_hombres . ' Hombres y ' . $retiro->numero_mujeres . ' Mujeres · ' . $anio . '</title>', false);
+
         $this->get(route('impresiones.directorio', ['retiro' => 9999]))->assertNotFound();
     }
 }

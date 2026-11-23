@@ -289,6 +289,12 @@ class ImpresionController extends Controller
             'tieneQr'        => (bool) ($qr = $this->qrWhatsapp()),
             'qrWhatsapp'     => $qr,
             'titulo'         => 'Directorio',
+            //  Al guardar en PDF: solo el grupo que se imprimió
+            'nombrePdf'      => 'Directorio · ' . match ($sexo) {
+                'Masculino' => 'Retiro ' . $retiro->numero_hombres . ' Hombres',
+                'Femenino'  => 'Retiro ' . $retiro->numero_mujeres . ' Mujeres',
+                default     => 'Retiro ' . $retiro->numero_hombres . ' Hombres y ' . $retiro->numero_mujeres . ' Mujeres',
+            } . ' · ' . $retiro->fecha_inicio->year,
             //  Desde Directorios anteriores, el botón de la barra vuelve allá
             'volver'         => $request->filled('retiro') ? route('directoriosAnteriores') : null,
             'volverTexto'    => $request->filled('retiro') ? 'Volver a directorios anteriores' : null,
