@@ -93,11 +93,8 @@ class ImpresionController extends Controller
     {
         $retiro = Retiro::actual();
 
-        //  Retiros que ya terminaron: sus directorios se pueden volver a descargar
-        $anteriores = Retiro::whereDate('fecha_fin', '<', now()->toDateString())->orderByDesc('fecha_inicio')->get();
-
         if (! $retiro) {
-            return view('impresiones.index', ['retiro' => null, 'anteriores' => $anteriores]);
+            return view('impresiones.index', ['retiro' => null]);
         }
 
         $todos = $this->inscritos($retiro, null);
@@ -114,7 +111,7 @@ class ImpresionController extends Controller
             'proximoRetiro'  => $this->proximoRetiro($retiro),
         ];
 
-        return view('impresiones.index', compact('retiro', 'todos', 'avisos', 'anteriores'));
+        return view('impresiones.index', compact('retiro', 'todos', 'avisos'));
     }
 
 
@@ -262,8 +259,20 @@ class ImpresionController extends Controller
 
 
 
-    //  ?retiro=ID: el directorio de un retiro que ya pasó (Directorios de
-    // retiros anteriores); sin eso, el del retiro actual.
+    //  Directorios de retiros anteriores (menú General, aparte de Impresiones
+    // para no confundirlos con el retiro que se está haciendo): una tarjeta
+    // por cada retiro que ya terminó, con Hombres, Mujeres y Los dos.
+    public function directoriosAnteriores()
+    {
+        return view('impresiones.directoriosAnteriores', [
+            'anteriores' => Retiro::whereDate('fecha_fin', '<', now()->toDateString())->orderByDesc('fecha_inicio')->get(),
+        ]);
+    }
+
+
+
+    //  ?retiro=ID: el directorio de un retiro que ya pasó (Directorios
+    // anteriores); sin eso, el del retiro actual.
     public function directorio(Request $request)
     {
         $retiro = $request->filled('retiro') ? Retiro::findOrFail((int) $request->retiro) : $this->retiroOFallar();
@@ -280,6 +289,9 @@ class ImpresionController extends Controller
             'tieneQr'        => (bool) ($qr = $this->qrWhatsapp()),
             'qrWhatsapp'     => $qr,
             'titulo'         => 'Directorio',
+            //  Desde Directorios anteriores, el botón de la barra vuelve allá
+            'volver'         => $request->filled('retiro') ? route('directoriosAnteriores') : null,
+            'volverTexto'    => $request->filled('retiro') ? 'Volver a directorios anteriores' : null,
         ]);
     }
 

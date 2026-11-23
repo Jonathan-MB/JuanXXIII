@@ -8,7 +8,7 @@ use Tests\EscenarioRetiro;
 use Tests\TestCase;
 
 //  Los directorios de los retiros que ya terminaron se pueden volver a
-// abrir (hombres, mujeres o los dos) desde Impresiones.
+// abrir (hombres, mujeres o los dos) desde su propia página (menú General).
 class DirectoriosAnterioresTest extends TestCase
 {
     use RefreshDatabase, EscenarioRetiro;
@@ -24,12 +24,14 @@ class DirectoriosAnterioresTest extends TestCase
         $retiro = Retiro::first();
         $retiro->update(['fecha_inicio' => now()->subDays(12), 'fecha_fin' => now()->subDays(10)]);
 
-        $this->get(route('impresiones.index'))->assertOk()
+        //  Aparte de Impresiones, en su propia página del menú
+        $this->get(route('impresiones.index'))->assertOk()->assertDontSee('Directorios de retiros anteriores');
+        $this->get(route('directoriosAnteriores'))->assertOk()
             ->assertSee('Directorios de retiros anteriores')
             ->assertSee(route('impresiones.directorio', ['retiro' => $retiro->id, 'sexo' => 'mujeres']));
 
         $this->get(route('impresiones.directorio', ['retiro' => $retiro->id, 'sexo' => 'hombres']))->assertOk()
-            ->assertSee('Inventado')->assertDontSee('Ficticia');
+            ->assertSee('Inventado')->assertDontSee('Ficticia')->assertSee('Volver a directorios anteriores');
         $this->get(route('impresiones.directorio', ['retiro' => $retiro->id, 'sexo' => 'mujeres']))->assertOk()
             ->assertSee('Ficticia')->assertDontSee('Inventado');
         $this->get(route('impresiones.directorio', ['retiro' => $retiro->id]))->assertOk()

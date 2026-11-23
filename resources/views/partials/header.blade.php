@@ -76,6 +76,7 @@
                 <a class="menu-enlace {{ request()->routeIs('retiros.*') ? 'menu-activo' : '' }}" href="{{ route('retiros.index') }}">Retiros</a>
                 <a class="menu-enlace {{ request()->routeIs('perseverancias.*') ? 'menu-activo' : '' }}" href="{{ route('perseverancias.index') }}">Perseverancias</a>
                 <a class="menu-enlace {{ request()->routeIs('historial.*') ? 'menu-activo' : '' }}" href="{{ route('historial.index') }}">Historial</a>
+                <a class="menu-enlace {{ request()->routeIs('directoriosAnteriores') ? 'menu-activo' : '' }}" href="{{ route('directoriosAnteriores') }}">Directorios anteriores</a>
                 <a class="menu-enlace {{ request()->routeIs('ajustes.*') ? 'menu-activo' : '' }}" href="{{ route('ajustes.index') }}">Ajustes</a>
             @endif
             <a class="menu-enlace {{ request()->routeIs('inventario.*') ? 'menu-activo' : '' }}" href="{{ route('inventario.index') }}">Inventario</a>

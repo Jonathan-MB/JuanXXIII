@@ -124,28 +124,4 @@
         <p class="texto-ayuda">Cada documento se abre en una pestaña nueva, listo para imprimir en hoja carta. Allí está el botón <strong>Imprimir</strong>.</p>
     @endif
 
-    {{-- --------------------DIRECTORIOS DE RETIROS ANTERIORES------------------- --}}
-    {{-- Siempre se ven, haya o no un retiro próximo --}}
-    <section class="seccion-directorios-anteriores" id="directorios-anteriores">
-        <h2 class="titulo-seccion-impresion">Directorios de retiros anteriores</h2>
-        @if ($anteriores->isEmpty())
-            <p class="texto-vacio">Todavía no hay retiros terminados.</p>
-        @else
-            <p class="texto-ayuda">El directorio de cada retiro que ya terminó, con sus mesas, sillas y rectorado. Se abre en una pestaña nueva: para descargarlo, <strong>Imprimir</strong> y elegir <strong>Guardar como PDF</strong>. Las perseverancias, el Cuarto día y el WhatsApp salen como están hoy.</p>
-            <div class="rejilla-impresiones">
-                @foreach ($anteriores as $anterior)
-                    <article class="tarjeta-impresion">
-                        <h3 class="nombre-impresion">Retiro {{ $anterior->numero_hombres }} hombres · {{ $anterior->numero_mujeres }} mujeres</h3>
-                        <p class="cuando-impresion">{{ $anterior->dias_texto }} de {{ $anterior->fecha_inicio->year }}@if ($anterior->lugar) · {{ $anterior->lugar }}@endif</p>
-                        <div class="botones-impresion">
-                            <a class="boton-azul" href="{{ route('impresiones.directorio', ['retiro' => $anterior->id, 'sexo' => 'hombres']) }}" target="_blank" rel="noopener">Hombres</a>
-                            <a class="boton-azul" href="{{ route('impresiones.directorio', ['retiro' => $anterior->id, 'sexo' => 'mujeres']) }}" target="_blank" rel="noopener">Mujeres</a>
-                            <a class="boton-azul" href="{{ route('impresiones.directorio', ['retiro' => $anterior->id]) }}" target="_blank" rel="noopener">Los dos</a>
-                        </div>
-                    </article>
-                @endforeach
-            </div>
-        @endif
-    </section>
-
 @include('partials.footerPanel')
