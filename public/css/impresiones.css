@@ -195,3 +195,15 @@
 .segunda-carpeta a {
     font-weight: 700;
 }
+
+
+/* ----------Directorios de retiros anteriores-------------- */
+.seccion-directorios-anteriores {
+    margin-top: 30px;
+    padding-top: 18px;
+    border-top: 2px solid #dde3f0;
+}
+
+.seccion-directorios-anteriores .texto-ayuda {
+    margin-bottom: 12px;
+}

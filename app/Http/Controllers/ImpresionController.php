@@ -93,8 +93,11 @@ class ImpresionController extends Controller
     {
         $retiro = Retiro::actual();
 
+        //  Retiros que ya terminaron: sus directorios se pueden volver a descargar
+        $anteriores = Retiro::whereDate('fecha_fin', '<', now()->toDateString())->orderByDesc('fecha_inicio')->get();
+
         if (! $retiro) {
-            return view('impresiones.index', ['retiro' => null]);
+            return view('impresiones.index', ['retiro' => null, 'anteriores' => $anteriores]);
         }
 
         $todos = $this->inscritos($retiro, null);
@@ -111,7 +114,7 @@ class ImpresionController extends Controller
             'proximoRetiro'  => $this->proximoRetiro($retiro),
         ];
 
-        return view('impresiones.index', compact('retiro', 'todos', 'avisos'));
+        return view('impresiones.index', compact('retiro', 'todos', 'avisos', 'anteriores'));
     }
 
 
@@ -259,9 +262,11 @@ class ImpresionController extends Controller
 
 
 
+    //  ?retiro=ID: el directorio de un retiro que ya pasó (Directorios de
+    // retiros anteriores); sin eso, el del retiro actual.
     public function directorio(Request $request)
     {
-        $retiro = $this->retiroOFallar();
+        $retiro = $request->filled('retiro') ? Retiro::findOrFail((int) $request->retiro) : $this->retiroOFallar();
         $sexo   = $this->sexoPedido($request);
 
         return view('impresiones.directorio', [
