@@ -1,3 +1,7 @@
+@php
+    //  Cumpleaños con año («15 mar 1990»): solo en los directorios de retiros anteriores
+    $cumple = fn ($fecha) => $fecha ? str_replace('.', '', \Carbon\Carbon::parse($fecha)->locale('es')->translatedFormat('j M Y')) : '';
+@endphp
 @include('partials.headImpresion')
 
     {{-- Solo en pantalla: directorio.js dice aquí si cada hoja cabe en carta o necesita oficio --}}
@@ -26,7 +30,7 @@
                 {{-- --------------------RECTORADO------------------- --}}
                 <table class="tabla-directorio tabla-rectorado-directorio">
                     <thead>
-                        <tr><th>Rectorado</th><th>Nombres y apellidos</th><th>Ciudad / barrio</th><th>Teléfono</th></tr>
+                        <tr><th>Rectorado</th><th>Nombres y apellidos</th><th>Ciudad / barrio</th><th>Teléfono</th>@if ($conCumpleanos)<th>Cumpleaños</th>@endif</tr>
                     </thead>
                     <tbody>
                         @forelse ($rectorados[$sexo] ?? [] as $cargo)
@@ -35,9 +39,10 @@
                                 <td>{{ $cargo->nombre }}</td>
                                 <td>{{ $cargo->ciudad }}</td>
                                 <td>{{ $cargo->telefono }}</td>
+                                @if ($conCumpleanos)<td>{{ $cumple($cargo->fecha_nacimiento) }}</td>@endif
                             </tr>
                         @empty
-                            <tr><td colspan="4">Rectorado sin registrar.</td></tr>
+                            <tr><td colspan="{{ $conCumpleanos ? 5 : 4 }}">Rectorado sin registrar.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -46,10 +51,10 @@
                 {{-- Cada mesa a todo el ancho; los títulos van una sola vez arriba --}}
                 <table class="tabla-directorio tabla-titulos-directorio">
                     <colgroup>
-                        <col class="col-mesa"><col class="col-silla"><col><col class="col-barrio"><col class="col-ciudad"><col class="col-telefono">
+                        <col class="col-mesa"><col class="col-silla"><col><col class="col-barrio"><col class="col-ciudad"><col class="col-telefono">@if ($conCumpleanos)<col class="col-cumple">@endif
                     </colgroup>
                     <thead>
-                        <tr><th>Mesa</th><th>Silla</th><th>Nombre</th><th>Barrio</th><th>Ciudad</th><th>Teléfono</th></tr>
+                        <tr><th>Mesa</th><th>Silla</th><th>Nombre</th><th>Barrio</th><th>Ciudad</th><th>Teléfono</th>@if ($conCumpleanos)<th>Cumpleaños</th>@endif</tr>
                     </thead>
                 </table>
                 @foreach ($grupo['mesas'] as $fila)
@@ -58,7 +63,7 @@
                     @endphp
                     <table class="tabla-directorio tabla-mesa-directorio">
                         <colgroup>
-                            <col class="col-mesa"><col class="col-silla"><col><col class="col-barrio"><col class="col-ciudad"><col class="col-telefono">
+                            <col class="col-mesa"><col class="col-silla"><col><col class="col-barrio"><col class="col-ciudad"><col class="col-telefono">@if ($conCumpleanos)<col class="col-cumple">@endif
                         </colgroup>
                         <tbody>
                             <tr class="fila-catequista">
@@ -71,6 +76,7 @@
                                 <td>{{ $mesa->titular_barrio }}</td>
                                 <td>{{ $mesa->titular_ciudad }}</td>
                                 <td>{{ $mesa->titular_celular }}</td>
+                                @if ($conCumpleanos)<td>{{ $cumple($mesa->titular_nacimiento) }}</td>@endif
                             </tr>
                             <tr class="fila-catequista">
                                 <td>CA</td>
@@ -78,6 +84,7 @@
                                 <td>{{ $mesa->auxiliar_barrio }}</td>
                                 <td>{{ $mesa->auxiliar_ciudad }}</td>
                                 <td>{{ $mesa->auxiliar_celular }}</td>
+                                @if ($conCumpleanos)<td>{{ $cumple($mesa->auxiliar_nacimiento) }}</td>@endif
                             </tr>
                             @foreach ($fila['inscritos'] as $inscrito)
                                 <tr>
@@ -86,6 +93,7 @@
                                     <td>{{ $inscrito->persona->barrio }}</td>
                                     <td>{{ $inscrito->persona->ciudad }}</td>
                                     <td>{{ $inscrito->persona->celular }}</td>
+                                    @if ($conCumpleanos)<td>{{ $cumple($inscrito->persona->fecha_nacimiento) }}</td>@endif
                                 </tr>
                             @endforeach
                         </tbody>

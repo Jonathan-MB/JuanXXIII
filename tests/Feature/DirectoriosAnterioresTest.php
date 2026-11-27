@@ -17,8 +17,11 @@ class DirectoriosAnterioresTest extends TestCase
     {
         $this->prepararRetiro();
         $this->actingAs($this->usuario());
-        $this->inscrito('Masculino', ['persona' => ['nombres' => 'Inventado']], 1, 1);
+        $this->inscrito('Masculino', ['persona' => ['nombres' => 'Inventado', 'fecha_nacimiento' => '1990-03-15']], 1, 1);
         $this->inscrito('Femenino', ['persona' => ['nombres' => 'Ficticia']], 1, 1);
+
+        //  Mientras es el actual, el directorio no lleva cumpleaños
+        $this->get(route('impresiones.directorio'))->assertOk()->assertDontSee('Cumpleaños');
 
         //  El retiro termina: ya no es el actual, pasa a los anteriores
         $retiro = Retiro::first();
@@ -31,7 +34,8 @@ class DirectoriosAnterioresTest extends TestCase
             ->assertSee(route('impresiones.directorio', ['retiro' => $retiro->id, 'sexo' => 'mujeres']));
 
         $this->get(route('impresiones.directorio', ['retiro' => $retiro->id, 'sexo' => 'hombres']))->assertOk()
-            ->assertSee('Inventado')->assertDontSee('Ficticia')->assertSee('Volver a directorios anteriores');
+            ->assertSee('Inventado')->assertDontSee('Ficticia')->assertSee('Volver a directorios anteriores')
+            ->assertSee('Cumpleaños')->assertSee('15 mar 1990');
         $this->get(route('impresiones.directorio', ['retiro' => $retiro->id, 'sexo' => 'mujeres']))->assertOk()
             ->assertSee('Ficticia')->assertDontSee('Inventado');
         $this->get(route('impresiones.directorio', ['retiro' => $retiro->id]))->assertOk()

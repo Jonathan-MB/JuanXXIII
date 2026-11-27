@@ -289,6 +289,8 @@ class ImpresionController extends Controller
             'tieneQr'        => (bool) ($qr = $this->qrWhatsapp()),
             'qrWhatsapp'     => $qr,
             'titulo'         => 'Directorio',
+            //  Los de retiros anteriores llevan el cumpleaños de cada uno
+            'conCumpleanos'  => $request->filled('retiro'),
             //  Al guardar en PDF: solo el grupo que se imprimió
             'nombrePdf'      => 'Directorio · ' . match ($sexo) {
                 'Masculino' => 'Retiro ' . $retiro->numero_hombres . ' Hombres',

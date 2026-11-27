@@ -541,6 +541,11 @@ p {
     width: 6.6em;
 }
 
+/* Cumpleaños (solo en directorios de retiros anteriores) */
+.col-cumple {
+    width: 7.6em;
+}
+
 .tabla-directorio .celda-mesa {
     background: #ffffff;
     font-weight: 400;
